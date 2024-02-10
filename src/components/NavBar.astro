@@ -1,0 +1,68 @@
+---
+import { Icon } from "astro-icon/components";
+
+import ThemeController from "./ThemeController.astro";
+
+import { MENU_ITEMS } from "../config";
+
+const { urlMenuItem } = Astro.props;
+---
+
+<div
+  class = "sticky pt-4 shadow-sm lg:shadow-none lg:backdrop-blur-none lg:bg-opacity-100 z-30 flex h-auto w-full justify-center backdrop-blur transition-all duration-100 bg-base-100 text-base-content"
+>
+  <div class="navbar max-w-screen-lg p-0">
+    <div class="navbar-start w-1/5">
+      <a
+        class="hover:scale-125 pl-0 normal-case text-xl justify-center"
+        href="/"
+        title="Inicio"
+      >
+        <Icon
+          name="favicon"
+          size={45}
+        />
+      </a>  
+    </div>
+    <ul class="navbar-center max-sm:gap-0 gap-3">
+      {
+        MENU_ITEMS.map((item) => (
+          <li
+            class:list={[
+              "max-xl:tooltip max-xl:tooltip-primary",
+              {
+                "max-sm:tooltip-bottom max-xl:tooltip-left":
+                  item.tooltip === "left",
+                "max-sm:tooltip-bottom max-xl:tooltip-right":
+                  item.tooltip === "right",
+                "max-sm:tooltip-bottom max-xl:tooltip-bottom":
+                  item.tooltip === "bottom",
+              },
+            ]}
+            data-tip={item.title}
+          >
+            <a
+              class:list={[
+                "btn btn-ghost text-lg prose prose-lg hover:text-primary",
+                {
+                  "bg-primary text-white": urlMenuItem === item.url,
+                },
+              ]}
+              href={item.url}
+              title={item.title}
+            >
+              <Icon name={item.icon} />
+              <span class="hidden lg:block">{item.title}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="navbar-end max-sm:w-1/3 ml-2 md:ml-0">
+      <ThemeController />
+      <button class="btn btn-sm text-lg btn-accent ml-4 max-md:hidden ">
+        <Icon name="download" />
+        Descargar CV</button>
+    </div>
+  </div>
+</div>

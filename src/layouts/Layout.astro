@@ -1,0 +1,37 @@
+---
+import NavBar from "../components/NavBar.astro";
+import BaseHead  from "../components/BaseHead.astro";
+
+import { TRANSITION_API,SITE_TITLE, SITE_DESCRIPTION } from "../config";
+
+import { ViewTransitions } from "astro:transitions";
+
+const {
+  image,
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  urlMenuItem,
+  ogType,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" data-theme="fantasy">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      ogType={ogType}
+    />
+    {TRANSITION_API && <ViewTransitions />}
+  </head>
+  <body class="p-5">
+	<NavBar title={SITE_TITLE} urlMenuItem={urlMenuItem} />
+	<main class="">
+		<div class="">
+			<slot />
+		</div>
+	</main>
+  </body>
+</html>
