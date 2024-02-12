@@ -1,56 +1,244 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import sep  from "../assets/sep.svg";
+import autrored from "../assets/job_logos/austrored.svg";
+import bancodelaustro from "../assets/job_logos/bancodelaustro.png";
+import mastermoto from "../assets/job_logos/mastermoto.png";
 ---
+
 <Layout urlMenuItem="/home">
-    <div class="flex justify-center flex-col">
-        <section class="max-w-screen-lg w-full my-10 flex flex-col gap-4 lg:grid lg: lg:grid-cols-4">
-            <div class="flex md:justify-center lg:grid lg:order-last lg:justify-end lg:items-center animate-fade-left max-sm:animate-fade-right">
-                <Image src="/yo.webp"
-                    height=175
-                    width=175
-                    alt="Logo Luis Palacios"
-                    class="rounded-full" />
-            </div>
-            <div class="mb-2 md:flex md:items-center md:flex-col lg:grid-cols-subgrid lg:col-span-1 lg:col-span-2 lg:col-span-3 lg:items-start"> 
-                <h1 class="prose dark:prose-invert text-2xl md:text-3xl font-bold mb-3 animate-fade-left lg:animate-fade-right">
-                    Hola, mi nombre es
-                    <span class="text-4xl md:text-5xl text-primary block">Luis Palacios</span>
-                </h1>
+  <div class="flex justify-center flex-col px-5 pb-20 items-center">
+    <!-- Presentation -->
+    <section
+      class="max-w-screen-lg w-full my-10 flex flex-col gap-4 lg:grid lg:grid-cols-4 mb-12"
+    >
+      <div
+        class="flex md:justify-center lg:grid lg:order-last lg:justify-end lg:items-center animate-fade-left max-sm:animate-fade-right"
+      >
+        <Image
+          src="/yo.webp"
+          height="175"
+          width="175"
+          alt="Logo Luis Palacios"
+          class="rounded-full"
+        />
+      </div>
+      <div
+        class="md:flex md:items-center md:flex-col lg:grid-cols-subgrid lg:col-span-1 lg:col-span-2 lg:col-span-3 lg:items-start"
+      >
+        <h1
+          class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold mb-3 animate-fade-left lg:animate-fade-right"
+        >
+          Hola, mi nombre es
+          <span class="text-3xl md:text-4xl lg:text-5xl text-primary block"
+            >Luis Palacios</span
+          >
+        </h1>
 
-                <div class="mb-6 flex gap-4 items-center animate-fade-left lg:animate-fade-right">
-                    <p class="prose dark:prose-invert text-xl md:text-2xl font-bold inline text-accent">Desarrollador Full Stack </p>
-                    <Icon name="ecu"size={25}/>
+        <div
+          class="mb-6 flex gap-4 items-center animate-fade-left lg:animate-fade-right"
+        >
+          <p
+            class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold inline text-accent"
+          >
+            Desarrollador Full Stack
+          </p>
+          <Icon name="ecu" size={25} />
+        </div>
+
+        <article
+          class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-6 animate-fade lg:animate-fade-right"
+        >
+          <p>
+            Me dedico profesionalmente más de 4 años al desarrollo de software
+            especializado en el sector financiero 👨🏻‍💻. Mi último trabajo fue como
+            Ingeniero de desarrollo en el Banco del Austro. 💼 Actualmente
+            trabajo en AustroRed. También realizo proyectos como Freelancer. 📚
+            Me gusta leer libros sobre educación financiera y emprendimiento. 👨🏻‍🏫
+            Me gusta trabajar en equipo, ayudar a los demás y mi principal valor
+            es el respeto.
+          </p>
+        </article>
+        
+        <div
+          class="flex flex-row gap-16 md:items-center md:justify-center animate-fade lg:animate-fade-right"
+        >
+          <a
+            class="hover:text-primary"
+            href="https://www.linkedin.com/in/palaciosluismig/"
+            target="_blank"
+          >
+            <Icon name="social_networks/github" size={30} />
+          </a>
+          <a
+            class="hover:text-primary"
+            href="https://www.linkedin.com/in/palaciosluismig/"
+            target="_blank"
+          >
+            <Icon name="social_networks/linkedin" size={30} />
+          </a>
+          <a
+            class="hover:text-primary"
+            href="https://www.linkedin.com/in/palaciosluismig/"
+            target="_blank"
+          >
+            <Icon name="social_networks/instagram" size={30} />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="max-w-screen-lg w-full mb-12">
+      <div class="md:flex md:flex-col md:items-center lg:items-start">
+        <h1
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 animate-fade-left lg:animate-fade-right"
+        >
+          Experiencia
+        </h1>
+
+        <ol
+          class="relative border-s border-primary dark:border-gray-700 ml-4"
+        >
+          <!-- Austrored -->
+          <li class="mb-10 ms-6 lg:mb-0">
+            <span
+              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1 "
+            >
+              <Icon name="experience" size={15} />
+            </span>
+            <h2
+              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
+            >
+              Ingeniero de desarrollo en AustroRed
+              <span
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Actual
+              </span>
+              <span
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded">Presencial
+              </span>
+            </h2>
+            <time
+              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              >Oct 2022 - Actualidad | Cuenca - Ecuador
+            </time>
+            <div class="lg:flex lg:justify-between">
+                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
+                  En el área de Medios de Pago realizó requerimientos en Backend como creación de microservicios con Quarkus - Spring Boot y en el Frontend con aplicación de Low-Code como OutSystems. Manejo de base de datos en SQL Server. Integración y/o mejoras de software de proveedores hacia el sistema transaccional.
+                </p>
+                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
+                    <Image
+                    src={autrored}
+                    height="100"
+                    width="100"
+                    alt="Logo Austro Red"
+                    />
                 </div>
-
-                <article class="prose dark:prose-invert md:prose-lg lg:prose-xl mb-6 animate-fade lg:animate-fade-right">               
-                    <p>Me dedico profesionalmente al desarrollo de software más de 4 años especializado en el sector financiero 👨🏻‍💻. Mi último trabajo fue como Ingeniero de desarrollo en el Banco del Austro. 💼 Actualmente trabajo en AustroRed. También realizo proyectos como Freelancer. 📚 Me gusta leer libros sobre educación financiera y emprendimiento. 👨🏻‍🏫 Me gusta trabajar en equipo, ayudar a los demás y mi principal valor es el respeto.</p>
-                </article>
-                <div class="flex flex-row gap-16 md:items-center md:justify-center animate-fade lg:animate-fade-right">
-                    <a class="hover:text-primary" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank" >
-                        <Icon name="social_networks/github"size={30}/>
-                    </a>
-                    <a class="hover:text-primary" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank" >
-                        <Icon name="social_networks/linkedin"size={30}/>
-                    </a>
-                    <a class="hover:text-primary" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank" >
-                        <Icon name="social_networks/instagram"size={30}/>
-                    </a>    
+            </div>
+          </li>
+          <!-- Banco del Austro -->
+          <li class="mb-10 ms-6 lg:mb-0">
+            <span
+              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1"
+            >
+              <Icon name="experience" size={15} />
+            </span>
+            <h2
+              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
+            >
+              Ingeniero de desarrollo en Banco del Austro
+              <span
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Presencial
+              </span>
+            </h2>
+            <time
+              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              >May 2022 - Sep 2022 | Cuenca - Ecuador
+            </time>
+            <div class="lg:flex lg:justify-between">
+                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
+                  En el área de Tarjetas de Crédito  ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL. 
+                </p>
+                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
+                    <Image
+                    src={bancodelaustro}
+                    height="150"
+                    width="150"
+                    alt="Logo banco del austro"
+                    />
                 </div>
             </div>
-        </section>
 
-        <!-- Experience -->
-        <section>
-            <div>
-                <h1 class="prose dark:prose-invert text-2xl md:text-3xl font-bold mb-3 animate-fade-left lg:animate-fade-right">
-                    Experiencia
-                </h1>
+          </li>
+          <!-- MasterMoto -->
+          <li class="mb-10 ms-6 lg:mb-0">
+            <span
+              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1"
+            >
+              <Icon name="experience" size={15} />
+            </span>
+            <h2
+              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
+            >
+              Programador senior en Mastermoto
+              <span
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Presencial
+              </span>
+            </h2>
+            <time
+              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              >Ene 2022 - May 2022 | Cuenca - Ecuador
+            </time>
+            <div class="lg:flex lg:justify-between">
+                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
+                  En el departamento de tecnología ejecute requerimientos de Frontend con Django y Backend con Python. Administración de base de datos en Oracle y mantenimiento de la infraestructura. Gestión de la seguridad informática y soporte técnico de Software y Hardware. 
+                </p>
+                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
+                    <Image
+                    src={mastermoto}
+                    height="100"
+                    width="100"
+                    alt="Logo Austro Red"
+                    />
+                </div>
             </div>
-        </section>
-
-    </div>
-
+          </li>
+          <!-- Banco del Austro -->
+          <li class="mb-2 ms-6 lg:mb-0">
+            <span
+              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1"
+            >
+              <Icon name="experience" size={15} />
+            </span>
+            <h2
+              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
+            >
+              Ingeniero de desarrollo en Banco del Austro
+              <span
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Presencial
+              </span>
+            </h2>
+            <time
+              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              >Ago 2019 - Ene 2022 | Cuenca - Ecuador
+            </time>
+            <div  class="lg:flex lg:justify-between">
+                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-0 lg:pb-8 lg:max-w-none lg:w-4/5">
+                  En el área de Tarjetas de Crédito  ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL. 
+                </p>
+                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max ">
+                    <Image
+                    src={bancodelaustro}
+                    height="150"
+                    width="150"
+                    alt="Logo banco del austro"
+                    />
+                </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </div>
 </Layout>

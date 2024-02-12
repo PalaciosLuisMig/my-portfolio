@@ -51,10 +51,14 @@
   function switchTheme(doc, newTheme) {
 
     doc.querySelector("html").setAttribute("data-theme", newTheme);
+    
 
     window.localStorage.setItem("data-theme", newTheme);
 
     if (newTheme === DARK_THEME) {
+
+      doc.querySelector("html").setAttribute("class", newTheme);
+
       let theme_controller;
       // Get theme-controller element base on media query
       if (window.screen.width < 768) {
@@ -64,6 +68,9 @@
       }
 
       theme_controller.checked = true;
+    }
+    else{
+      doc.querySelector("html").setAttribute("class", "");
     }
   }
 
