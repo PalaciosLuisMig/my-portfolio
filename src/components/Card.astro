@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+const { title, desc, pubDate, img,  badge, url, target = "_blank", github,website, tags, } = Astro.props;
+
+var month = pubDate.toLocaleString('default', { month: 'short' }).charAt(0).toUpperCase() + pubDate.toLocaleString('default', { month: 'short' }).slice(1); // Get the month with the first letter capitalized
+var year = pubDate.getFullYear(); //Get the year
+
+
+---
+
+<div>
+  <a href={url} target={target}>
+    <div
+      class="card border-2 rounded-t-2x transition ease-in-out shadow hover:shadow-md hover:shadow-primary hover:scale-[102%] h-full"
+    >
+      <!-- Image -->
+      <div class="min-h-50 max-h-60">
+        <Image width={1} height={1} class="rounded-t-xl" format="webp" src={img} alt={title} class="w-full h-60 object-cover"/>
+      </div>
+
+      <div class="card-body p-4">
+        <h3 class="card-title prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold text-primary mb-0">
+          {title}
+          {badge && <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">{badge} </span>}
+        </h3>
+
+        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{month} {year}</p>
+
+        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 lg:max-w-none font-normal line-clamp-3 md:line-clamp-4">{desc}</p>
+
+      </div>
+      <div class="bg-gray-200 rounded-b-xl px-4 py-2 flex justify-between	mt-auto">
+        <div class="flex flex-wrap gap-2">
+        {
+          tags &&
+            tags.map((tag:string) => 
+            <img alt="Static Badge" src={`https://img.shields.io/badge/${tag}-black?logo=${tag}`}>
+            )
+        } 
+        </div>
+        <div id="github-link" class="flex flex-wrap justify-end gap-2 dark:text-primary-content">
+          { website &&
+            <a
+            class="hover:text-primary"
+            href={website}
+            target="_blank"
+            >
+            <Icon name="link" size={20} />
+            </a>
+          }
+          {
+            github &&
+            <a
+              class="hover:text-primary"
+              href={github}
+              target="_blank"
+            >
+              <Icon name="social_networks/github" size={20} />
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

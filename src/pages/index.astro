@@ -5,6 +5,15 @@ import { Image } from "astro:assets";
 import autrored from "../assets/job_logos/austrored.svg";
 import bancodelaustro from "../assets/job_logos/bancodelaustro.png";
 import mastermoto from "../assets/job_logos/mastermoto.png";
+import { getCollection } from "astro:content";
+import createSlug from "../lib/create_slug";
+import Card from "../components/Card.astro";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.important === true)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
 ---
 
 <Layout urlMenuItem="/home">
@@ -25,7 +34,7 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
         />
       </div>
       <div
-        class="md:flex md:items-center md:flex-col lg:grid-cols-subgrid lg:col-span-1 lg:col-span-2 lg:col-span-3 lg:items-start"
+        class="md:flex md:items-center md:flex-col lg:grid-cols-subgrid lg:col-span-3 lg:items-start"
       >
         <h1
           class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold mb-3 animate-fade-left lg:animate-fade-right"
@@ -48,10 +57,10 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
         </div>
 
         <article
-          class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-6 animate-fade lg:animate-fade-right"
+          class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-6 animate-fade lg:animate-fade-right lg:max-w-none"
         >
           <p>
-            Me dedico profesionalmente más de 4 años al desarrollo de software
+            Me dedico profesionalmente más de 3 años al desarrollo de software
             especializado en el sector financiero 👨🏻‍💻. Mi último trabajo fue como
             Ingeniero de desarrollo en el Banco del Austro. 💼 Actualmente
             trabajo en AustroRed. También realizo proyectos como Freelancer. 📚
@@ -92,31 +101,29 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
     <!-- Experience -->
     <section class="max-w-screen-lg w-full mb-12">
       <div class="md:flex md:flex-col md:items-center lg:items-start">
-        <h1
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 animate-fade-left lg:animate-fade-right"
-        >
-          Experiencia
-        </h1>
+        <h2 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 flex flex-row items-center">
+          <Icon name="experience" class="mr-2"/>Experiencia
+        </h2>
 
         <ol
-          class="relative border-s border-primary dark:border-gray-700 ml-4"
+          class="relative border-s border-primary dark:border-gray-700 ml-4 animate-fade-left lg:animate-fade-right"
         >
           <!-- Austrored -->
           <li class="mb-10 ms-6 lg:mb-0">
             <span
-              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1 "
+              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="experience" size={15} />
+              <Icon name="check" size={15} class="text-primary"/>
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Ingeniero de desarrollo en AustroRed
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Actual
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Actual
               </span>
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl">Presencial
               </span>
             </h2>
             <time
@@ -140,16 +147,16 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
           <!-- Banco del Austro -->
           <li class="mb-10 ms-6 lg:mb-0">
             <span
-              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1"
+              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="experience" size={15} />
+              <Icon name="check" size={15} class="text-primary"/>
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Ingeniero de desarrollo en Banco del Austro
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Presencial
               </span>
             </h2>
             <time
@@ -174,16 +181,16 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
           <!-- MasterMoto -->
           <li class="mb-10 ms-6 lg:mb-0">
             <span
-              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1"
+              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="experience" size={15} />
+              <Icon name="check" size={15} class="text-primary"/>
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Programador senior en Mastermoto
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Presencial
               </span>
             </h2>
             <time
@@ -207,16 +214,16 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
           <!-- Banco del Austro -->
           <li class="mb-2 ms-6 lg:mb-0">
             <span
-              class="absolute flex items-center justify-center w-6 h-6 bg-primary-content rounded-full -start-3 ring-2 ring-primary mt-1"
+              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="experience" size={15} />
+              <Icon name="check" size={15} class="text-primary"/>
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Ingeniero de desarrollo en Banco del Austro
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-2 md:ms-6">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Presencial
               </span>
             </h2>
             <time
@@ -224,7 +231,7 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
               >Ago 2019 - Ene 2022 | Cuenca - Ecuador
             </time>
             <div  class="lg:flex lg:justify-between">
-                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-0 lg:pb-8 lg:max-w-none lg:w-4/5">
+                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-2 lg:max-w-none lg:w-4/5">
                   En el área de Tarjetas de Crédito  ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL. 
                 </p>
                 <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max ">
@@ -240,5 +247,44 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
         </ol>
       </div>
     </section>
+
+    <!-- Projects -->
+    <section class="max-w-screen-lg w-full mb-12">
+      <div class="text-3xl w-full font-bold mb-2">
+        <h2 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 flex flex-row items-center">
+          <Icon name="projects" class="mr-2"/>Projectos como Freelancer
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          {
+          projects.map((project) => (
+              <Card
+              title={project.data.title}
+              desc={project.data.description}
+              pubDate={project.data.pubDate}
+              img={project.data.heroImage}
+              badge={project.data.badge}
+              url={"/projects/" + createSlug(project.data.title, project.slug)}
+              target="_self"
+              tags={project.data.tags}
+              github={project.data.github}
+              website={project.data.website}
+              />
+          ))
+          }
+        </div>
+        
+        
+
+        <!-- Button: show all projects -->
+        <div class="col-span-full md:flex md:justify-end">
+        <a href="/projects" class="btn btn-outline w-full md:w-auto">
+            All projects
+            <Icon name="projects" class="inline-block ml-2" size={22} />
+        </a>
+        </div>
+    </div>
+    </section>
+
   </div>
 </Layout>
