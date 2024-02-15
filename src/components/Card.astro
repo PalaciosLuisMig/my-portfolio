@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-const { title, desc, pubDate, img,  badge, url, target = "_blank", github,website, tags, } = Astro.props;
+const { title, desc, pubDate, img,  badge, url, target = "_blank", github,website, skills} = Astro.props;
 
 var month = pubDate.toLocaleString('default', { month: 'short' }).charAt(0).toUpperCase() + pubDate.toLocaleString('default', { month: 'short' }).slice(1); // Get the month with the first letter capitalized
 var year = pubDate.getFullYear(); //Get the year
@@ -17,7 +17,7 @@ var year = pubDate.getFullYear(); //Get the year
     >
       <!-- Image -->
       <div class="min-h-50 max-h-60">
-        <Image width={1} height={1} class="rounded-t-xl" format="webp" src={img} alt={title} class="w-full h-60 object-cover"/>
+        <Image width={1} height={1} format="webp" src={img} alt={title} class="w-full h-60 object-cover rounded-t-xl"/>
       </div>
 
       <div class="card-body p-4">
@@ -34,9 +34,9 @@ var year = pubDate.getFullYear(); //Get the year
       <div class="bg-gray-200 rounded-b-xl px-4 py-2 flex justify-between	mt-auto">
         <div class="flex flex-wrap gap-2">
         {
-          tags &&
-            tags.map((tag:string) => 
-            <img alt="Static Badge" src={`https://img.shields.io/badge/${tag}-black?logo=${tag}`}>
+          skills &&
+            skills.map((skill:any) => 
+            <img alt="Static Badge" src={`https://img.shields.io/badge/${skill.name}-black?logo=${skill.logo}`}>
             )
         } 
         </div>

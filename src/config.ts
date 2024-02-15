@@ -38,6 +38,59 @@ export const MENU_ITEMS = [
   },
 ];
 
+// ---------- Icons Tech Stack  ----------
+export const TECH_STACK = [
+  {
+    category: "Front-end",
+    logo: "html",
+    name: "HTML",
+  },
+  {
+    category: "Front-end",
+    logo: "css",
+    name: "CSS",
+  },
+  {
+    category: "Front-end",
+    logo: "javascript",
+    name: "JavaScript",
+  },
+  {
+    category: "Front-end",
+    logo: "typescript",
+    name: "TypeScript",
+  },
+  {
+    category: "Front-end",
+    logo: "react",
+    name: "React",
+  },
+  {
+    category: "Front-end",
+    logo: "angular",
+    name: "Angular",
+  },
+  {
+    category: "Front-end",
+    logo: "django",
+    name: "Django",
+  },
+  {
+    category: "Front-end",
+    logo: "dot-net",
+    name: "ASP.NET",
+  },
+  {
+    category: "Front-end",
+    logo: "astro",
+    name: "Astro",
+  },
+  {
+    category: "Front-end",
+    logo: "tailwindcss",
+    name: "Tailwind",
+  },
+];
 
 // ---------- Global Variables ----------
 export const TRANSITION_API = true;

@@ -3,11 +3,12 @@ title: "Palaciosoft"
 description: "Sitio web donde se ofrece servicios de creación de landing pages, sitios web y tiendas online según sea el requerimiento del cliente."
 pubDate: "Apr 01 2022"
 important: true
-badge: "Nuevo"
+badge: ""
 heroImage: "/palaciosoft.webp"
 github: ""
 website: "https://palaciosoft.netlify.app/"
-tags: ["Angular","HTML5","CSS3","JavaScript",]
+tags: ["Front-end"]
+skills: [{"logo":"angular","name":"Angular"},{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"}]
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
