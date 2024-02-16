@@ -21,9 +21,9 @@ var year = pubDate.getFullYear(); //Get the year
       </div>
 
       <div class="card-body p-4">
-        <h3 class="card-title prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold text-primary mb-0">
+        <h3 class="card-title prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-normal text-accent mb-0">
           {title}
-          {badge && <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">{badge} </span>}
+          {badge && <span class="bg-accent-content text-accent text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">{badge} </span>}
         </h3>
 
         <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{month} {year}</p>

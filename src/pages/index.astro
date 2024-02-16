@@ -8,24 +8,22 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
 import { getCollection } from "astro:content";
 import createSlug from "../lib/create_slug";
 import Card from "../components/Card.astro";
-import Technologies from "../components/Technologies.astro"
+import Technologies from "../components/Technologies.astro";
 
-import { TECH_STACK } from "../config";
+import { TECH_STACK, EDUCATIONS } from "../config";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.important === true)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
-
-
+const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
 ---
 
 <Layout urlMenuItem="/home">
   <div class="flex justify-center flex-col px-5 pb-20 items-center">
     <!-- Presentation -->
-    <section class="max-w-screen-lg w-full my-10 flex flex-col gap-4 lg:grid lg:grid-cols-4 mb-12" >
+    <section class="max-w-screen-lg w-full my-10 flex flex-col gap-4 lg:grid lg:grid-cols-4 mb-16">
       <div
         class="flex md:justify-center lg:grid lg:order-last lg:justify-end lg:items-center animate-fade-left max-sm:animate-fade-right"
       >
@@ -73,7 +71,7 @@ const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
             es el respeto.
           </p>
         </article>
-        
+
         <div
           class="flex flex-row gap-16 md:items-center md:justify-center animate-fade lg:animate-fade-right"
         >
@@ -103,10 +101,12 @@ const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
     </section>
 
     <!-- Experience -->
-    <section class="max-w-screen-lg w-full mb-12">
+    <section class="max-w-screen-lg w-full mb-16">
       <div class="md:flex md:flex-col md:items-center lg:items-start">
-        <h2 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 flex flex-row items-center">
-          <Icon name="experience" class="mr-2"/>Experiencia
+        <h2
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
+        >
+          <Icon name="experience" class="mr-2" />Experiencia
         </h2>
 
         <ol
@@ -117,35 +117,45 @@ const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
             <span
               class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="check" size={15} class="text-primary"/>
+              <Icon name="check" size={15} class="text-primary" />
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Ingeniero de desarrollo en AustroRed
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Actual
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
+                >Actual
               </span>
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl"
+                >Presencial
               </span>
             </h2>
             <time
-              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
               >Oct 2022 - Actualidad | Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
-                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
-                  En el área de Medios de Pago realizó requerimientos en Backend como creación de microservicios con Quarkus - Spring Boot y en el Frontend con aplicación de Low-Code como OutSystems. Manejo de base de datos en SQL Server. Integración y/o mejoras de software de proveedores hacia el sistema transaccional.
-                </p>
-                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-                    <Image
-                    src={autrored}
-                    height="100"
-                    width="100"
-                    alt="Logo Austro Red"
-                    />
-                </div>
+              <p
+                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
+              >
+                En el área de Medios de Pago realizó requerimientos en Backend
+                como creación de microservicios con Quarkus - Spring Boot y en
+                el Frontend con aplicación de Low-Code como OutSystems. Manejo
+                de base de datos en SQL Server. Integración y/o mejoras de
+                software de proveedores hacia el sistema transaccional.
+              </p>
+              <div
+                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
+              >
+                <Image
+                  src={autrored}
+                  height="100"
+                  width="100"
+                  alt="Logo Austro Red"
+                />
+              </div>
             </div>
           </li>
           <!-- Banco del Austro -->
@@ -153,66 +163,83 @@ const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
             <span
               class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="check" size={15} class="text-primary"/>
+              <Icon name="check" size={15} class="text-primary" />
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Ingeniero de desarrollo en Banco del Austro
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
+                >Presencial
               </span>
             </h2>
             <time
-              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
               >May 2022 - Sep 2022 | Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
-                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
-                  En el área de Tarjetas de Crédito  ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL. 
-                </p>
-                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-                    <Image
-                    src={bancodelaustro}
-                    height="150"
-                    width="150"
-                    alt="Logo banco del austro"
-                    />
-                </div>
+              <p
+                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
+              >
+                En el área de Tarjetas de Crédito ejecute requerimientos de
+                Frontend con ASP.NET y Bankend con C#. Administración de base de
+                datos en SQL Server. Implementaciones de mandatos de franquicias
+                como Visa y MasterCard. Integración con pasarelas de pago y
+                Reporteria utilizando ETL.
+              </p>
+              <div
+                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
+              >
+                <Image
+                  src={bancodelaustro}
+                  height="150"
+                  width="150"
+                  alt="Logo banco del austro"
+                />
+              </div>
             </div>
-
           </li>
           <!-- MasterMoto -->
           <li class="mb-10 ms-6 lg:mb-0">
             <span
               class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="check" size={15} class="text-primary"/>
+              <Icon name="check" size={15} class="text-primary" />
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Programador senior en Mastermoto
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
+                >Presencial
               </span>
             </h2>
             <time
-              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
               >Ene 2022 - May 2022 | Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
-                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
-                  En el departamento de tecnología ejecute requerimientos de Frontend con Django y Backend con Python. Administración de base de datos en Oracle y mantenimiento de la infraestructura. Gestión de la seguridad informática y soporte técnico de Software y Hardware. 
-                </p>
-                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-                    <Image
-                    src={mastermoto}
-                    height="100"
-                    width="100"
-                    alt="Logo Austro Red"
-                    />
-                </div>
+              <p
+                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
+              >
+                En el departamento de tecnología ejecute requerimientos de
+                Frontend con Django y Backend con Python. Administración de base
+                de datos en Oracle y mantenimiento de la infraestructura.
+                Gestión de la seguridad informática y soporte técnico de
+                Software y Hardware.
+              </p>
+              <div
+                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
+              >
+                <Image
+                  src={mastermoto}
+                  height="100"
+                  width="100"
+                  alt="Logo Austro Red"
+                />
+              </div>
             </div>
           </li>
           <!-- Banco del Austro -->
@@ -220,32 +247,41 @@ const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
             <span
               class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
             >
-              <Icon name="check" size={15} class="text-primary"/>
+              <Icon name="check" size={15} class="text-primary" />
             </span>
             <h2
               class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
             >
               Ingeniero de desarrollo en Banco del Austro
               <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">Presencial
+                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
+                >Presencial
               </span>
             </h2>
             <time
-              class=" prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
+              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
               >Ago 2019 - Ene 2022 | Cuenca - Ecuador
             </time>
-            <div  class="lg:flex lg:justify-between">
-                <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-2 lg:max-w-none lg:w-4/5">
-                  En el área de Tarjetas de Crédito  ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL. 
-                </p>
-                <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max ">
-                    <Image
-                    src={bancodelaustro}
-                    height="150"
-                    width="150"
-                    alt="Logo banco del austro"
-                    />
-                </div>
+            <div class="lg:flex lg:justify-between">
+              <p
+                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-2 lg:max-w-none lg:w-4/5"
+              >
+                En el área de Tarjetas de Crédito ejecute requerimientos de
+                Frontend con ASP.NET y Bankend con C#. Administración de base de
+                datos en SQL Server. Implementaciones de mandatos de franquicias
+                como Visa y MasterCard. Integración con pasarelas de pago y
+                Reporteria utilizando ETL.
+              </p>
+              <div
+                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
+              >
+                <Image
+                  src={bancodelaustro}
+                  height="150"
+                  width="150"
+                  alt="Logo banco del austro"
+                />
+              </div>
             </div>
           </li>
         </ol>
@@ -253,67 +289,271 @@ const categories = Array.from(new Set(TECH_STACK.map(item => item.category)));
     </section>
 
     <!-- Projects -->
-    <section class="max-w-screen-lg w-full mb-12">
+    <section class="max-w-screen-lg w-full mb-16">
       <div class="text-3xl w-full font-bold mb-2">
-        <h2 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 flex flex-row items-center">
-          <Icon name="projects" class="mr-2"/>Proyectos como Freelancer
+        <h2
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
+        >
+          <Icon name="projects" class="mr-2" />Proyectos como Freelancer
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {
-          projects.map((project) => (
+            projects.map((project) => (
               <Card
-              title={project.data.title}
-              desc={project.data.description}
-              pubDate={project.data.pubDate}
-              img={project.data.heroImage}
-              badge={project.data.badge}
-              url={"/projects/" + createSlug(project.data.title, project.slug)}
-              target="_self"
-              github={project.data.github}
-              website={project.data.website}
-              skills={project.data.skills}
+                title={project.data.title}
+                desc={project.data.description}
+                pubDate={project.data.pubDate}
+                img={project.data.heroImage}
+                badge={project.data.badge}
+                url={
+                  "/projects/" + createSlug(project.data.title, project.slug)
+                }
+                target="_self"
+                github={project.data.github}
+                website={project.data.website}
+                skills={project.data.skills}
               />
-          ))
+            ))
           }
         </div>
-        
+
         <!-- Button: show all projects -->
         <div class="col-span-full md:flex md:justify-center">
-          <a href="/projects" class="btn btn-outline btn-primary w-full md:w-auto">
-            <Icon name="projects" class="inline-block ml-2" size={22} />
-              Más proyectos
+          <a
+            href="/projects"
+            class="btn btn-outline btn-primary w-full md:w-auto"
+          >
+            <Icon name="more" class="inline-block ml-2" size={22} />
+            Más proyectos
           </a>
-        </div>
-    </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="max-w-screen-lg w-full mb-12">
-      <div class="text-3xl w-full font-bold mb-2">
-        <h2 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-6 flex flex-row items-center">
-          <Icon name="bug" class="mr-2"/>Tecnologías
-        </h2>
-
-        <h3 class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-primary mb-6 flex flex-row content-center justify-center max-w-none">
-          Front-end
-        </h3>
-
-        <div class="grid grid-cols-4 md:grid-cols-5 gap-4">
-        {
-          TECH_STACK.map((skill) => {
-            if (skill.category === 'Front-end') {
-              return (
-                <div class="flex flex-col items-center gap-2">
-                  <Icon name={`tech_skills/${skill.logo}`} class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out" size={100}/> 
-                  <p class="prose text-sm font-normal">{skill.name}</p>
-                </div>
-              );
-            }
-            })
-        }
         </div>
       </div>
     </section>
+
+    <!-- Tech Stack -->
+    <section class="max-w-screen-lg w-full mb-16">
+      <div class="2text-3xl w-full font-bold">
+        <h2
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
+        >
+          <Icon name="bug" class="mr-2" />Tecnologías
+        </h2>
+
+        <div class="flex flex-wrap flex-col sm:flex-row">
+          <!-- Front-end -->
+          <div class="w-full md:w-1/2">
+            <h3
+              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
+            >
+              Front-end
+            </h3>
+
+            <div class="flex flex-wrap justify-start gap-4 mb-12">
+              {
+                TECH_STACK.map((skill) => {
+                  if (skill.category === "Front-end") {
+                    return (
+                      <div class="flex flex-col items-center gap-2">
+                        <Icon
+                          name={`tech_skills/${skill.logo}`}
+                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
+                          size={100}
+                        />
+                        <p class="prose text-sm font-normal">{skill.name}</p>
+                      </div>
+                    );
+                  }
+                })
+              }
+            </div>
+          </div>
+
+          <!-- Back-end -->
+          <div class="w-full md:w-1/2">
+            <h3
+              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
+            >
+              Back-end
+            </h3>
+
+            <div class="flex flex-wrap justify-start gap-4 mb-12">
+              {
+                TECH_STACK.map((skill) => {
+                  if (skill.category === "Back-end") {
+                    return (
+                      <div class="flex flex-col items-center gap-2">
+                        <Icon
+                          name={`tech_skills/${skill.logo}`}
+                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
+                          size={100}
+                        />
+                        <p class="prose text-sm font-normal">{skill.name}</p>
+                      </div>
+                    );
+                  }
+                })
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap flex-col sm:flex-row">
+          <!-- Data base -->
+          <div class="w-full md:w-1/2">
+            <h3
+              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
+            >
+              Base de Datos
+            </h3>
+
+            <div class="flex flex-wrap justify-start gap-4 mb-12">
+              {
+                TECH_STACK.map((skill) => {
+                  if (skill.category === "Database") {
+                    return (
+                      <div class="flex flex-col items-center gap-2">
+                        <Icon
+                          name={`tech_skills/${skill.logo}`}
+                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
+                          size={100}
+                        />
+                        <p class="prose text-sm font-normal">{skill.name}</p>
+                      </div>
+                    );
+                  }
+                })
+              }
+            </div>
+          </div>
+
+          <!-- Version Control -->
+          <div class="w-full md:w-1/2">
+            <h3
+              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
+            >
+              Control de Versiones
+            </h3>
+
+            <div class="flex flex-wrap justify-start gap-4 mb-12">
+              {
+                TECH_STACK.map((skill) => {
+                  if (skill.category === "Version-Control") {
+                    return (
+                      <div class="flex flex-col items-center gap-2">
+                        <Icon
+                          name={`tech_skills/${skill.logo}`}
+                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
+                          size={100}
+                        />
+                        <p class="prose text-sm font-normal">{skill.name}</p>
+                      </div>
+                    );
+                  }
+                })
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap flex-col sm:flex-row">
+          <!-- Low Code -->
+          <div class="w-full md:w-1/2">
+            <h3
+              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center sm:justify-start sm:content-start max-w-none"
+            >
+              Low-Code
+            </h3>
+
+            <div class="flex flex-wrap gap-4">
+              {
+                TECH_STACK.map((skill) => {
+                  if (skill.category === "Low-Code") {
+                    return (
+                      <div class="flex flex-col items-center gap-2">
+                        <Icon
+                          name={`tech_skills/${skill.logo}`}
+                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
+                          size={150}
+                        />
+                        <p class="prose text-sm font-normal">{skill.name}</p>
+                      </div>
+                    );
+                  }
+                })
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="max-w-screen-lg w-full mb-12">
+      <div class="w-full">
+        <h2
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
+        >
+          <Icon name="education" class="mr-2" />Educación
+        </h2>
+
+        <div class="flex flex-wrap flex-col">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+            {
+              EDUCATIONS.map((education) => {
+                return (
+                    <div class="flex flex-row">
+                      <div class="min-w-40">
+                        <img format="webp" src=`/${education.image}` alt={education.specialty} class="w-40 mb-6 pr-6" />
+                      </div>
+                      <div>
+                        <h3 class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-3 flex flex-row content-center justify-start max-w-none" >
+                        {education.educational_center}
+                        </h3>
+                        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{education.date}</p>
+                        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 lg:max-w-none font-normal line-clamp-3 md:line-clamp-4">{education.specialty}</p>
+                      </div>
+                    </div>
+
+                );
+              })
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="max-w-screen-lg w-full mb-12">
+      <div class="w-full">
+        <h2
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center">
+          <Icon name="contact" class="mr-2" />Contacto
+        </h2>
+
+        <div class="flex flex-wrap gap-4 justify-between">
+          <label class="input input-primary input-bordered flex items-center gap-2 w-full md:w-2/3">
+            <Icon name="email" size={20} />
+            palaciosluismig@gmial.com
+          </label>
+          <div class="flex w-full gap-4 justify-between">
+            <div class="w-1/2">
+              <a href="/projects" class="btn btn-primary w-full">
+                <Icon name="send" class="inline-block ml-2" size={22} />
+                Enviar
+              </a>
+            </div>
+            <div class="w-1/2">
+              <a href="/projects" class="btn btn-primary w-full">
+                <Icon name="copy" class="inline-block ml-2" size={22} />
+                Pegar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
   </div>
 </Layout>
