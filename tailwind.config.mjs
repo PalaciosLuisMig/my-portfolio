@@ -23,6 +23,16 @@ export default {
         },
       },
       {
+        bumblebee: {
+          ...require("daisyui/src/theming/themes")["bumblebee"],
+        },
+      },
+      {
+        corporate: {
+          ...require("daisyui/src/theming/themes")["corporate"],
+        },
+      },
+      {
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
         },
