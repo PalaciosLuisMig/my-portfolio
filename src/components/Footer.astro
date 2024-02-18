@@ -1,13 +1,119 @@
 ---
+import { MYEMAIL } from "../config";
+import { Icon } from "astro-icon/components";
 
+const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-primary-content flex h-auto w-full justify-center">
-    <div class="max-w-screen-lg py-5 text-base-content w-full prose">
-        <div class="flex">
+<footer class="bg-primary-content flex h-auto w-full justify-center px-5">
+    <div class="max-w-screen-lg pt-7 pb-2 text-base-content w-full prose">
+        <div class="grid grid-cols-1 md:grid-cols-3 mb-6 gap-12">
+            <!-- Contact -->
             <div>
-                <h4></h4>
+                <h4
+                    class="prose dark:prose-invert text-base md:text-lg lg:text-xl font-bold text-primary mb-5 mt-0 flex flex-row items-center"
+                >
+                    <Icon name="contact" class="mr-2" />Contacto
+                </h4>
+                <div class="flex flex-wrap gap-4 justify-between">
+                    <label
+                        id="lblEmailFooter"
+                        class="input input-primary input-bordered flex items-center gap-2 w-full"
+                    >
+                        <Icon name="email" size={20} />
+                        {MYEMAIL}
+                    </label>
+                    <div class="flex w-full gap-4 justify-between">
+                        <div class="w-1/2">
+                            <a
+                                href={`mailto:${MYEMAIL}`}
+                                class="btn btn-primary w-full"
+                            >
+                                <Icon name="send" class="inline-block ml-2" />
+                                Enviar
+                            </a>
+                        </div>
+                        <div class="w-1/2">
+                            <button
+                                id="btnEmailCopyFooter"
+                                class="btn btn-primary w-full"
+                            >
+                                <Icon name="copy" class="inline-block ml-2" />
+                                Copiar
+                            </button>
+                        </div>
+                        <div
+                            id="altEmailCopyFooter"
+                            class="toast toast-center hidden"
+                        >
+                            <div class="alert alert-info">
+                                <span>Copiado</span>
+                                <Icon name="copy" class="inline-block ml-2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- Social Networks -->
+            <div>
+                <h4
+                    class="prose dark:prose-invert text-base md:text-lg lg:text-xl font-bold text-primary mb-5 mt-0 flex flex-row items-center"
+                >
+                    <Icon name="bug" class="mr-2" />Redes Sociales
+                </h4>
+                <div
+                    class="flex flex-row gap-12 justify-start">
+                    <a  class="hover:text-primary" href="https://github.com/palaciosluismig" target="_blank">
+                        <Icon name="social_networks/github" size={30} />
+                    </a>
+                    <a class="hover:text-primary" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank">
+                        <Icon name="social_networks/linkedin" size={30} />
+                    </a>
+                    <a class="hover:text-primary" href="https://www.instagram.com/palaciosluismig/" target="_blank">
+                        <Icon name="social_networks/instagram" size={30} />
+                    </a>
+                </div>
+            </div>
+            <!-- Links of interest -->
+            <div>
+                <h4 class="prose dark:prose-invert text-base md:text-lg lg:text-xl font-bold text-primary mb-5 mt-0 flex flex-row items-center" >
+                    <Icon name="programming" class="mr-2" /> Link de interes
+                </h4>
+                <ul class="list-image-[url(/check.svg)]">
+                    <li><a href="/experience" class="no-underline hover:underline">Experiencia</a></li>
+                    <li><a href="/proyects" class="no-underline hover:underline">Proyectos</a></li>
+                    <li><a href="/blog" class="no-underline hover:underline">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Copyright -->
+        <div class="flex justify-center text-center border-t border-primary py-0">
+            <p class="mt-4 mb-2">
+                ❤️ Realizado con mucho cariño |  📍 Cuenca, Ecuador |  📅 {currentYear} ©
+            </p>
         </div>
     </div>
 </footer>
+<script>
+  
+    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
+    
+    function emailCopy() {
+      const labelEmail = document.getElementById("lblEmailFooter");
+      if (labelEmail){
+  
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
+    }
+  
+    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
+  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", emailCopy);
+    }
+  </script>
