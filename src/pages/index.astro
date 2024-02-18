@@ -8,16 +8,15 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
 import { getCollection } from "astro:content";
 import createSlug from "../lib/create_slug";
 import Card from "../components/Card.astro";
-import Technologies from "../components/Technologies.astro";
 
-import { TECH_STACK, EDUCATIONS } from "../config";
+import { TECH_STACK, EDUCATIONS, MYEMAIL} from "../config";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.important === true)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
+
 ---
 
 <Layout urlMenuItem="/home">
@@ -77,7 +76,7 @@ const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
         >
           <a
             class="hover:text-primary"
-            href="https://www.linkedin.com/in/palaciosluismig/"
+            href="https://github.com/palaciosluismig"
             target="_blank"
           >
             <Icon name="social_networks/github" size={30} />
@@ -91,7 +90,7 @@ const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
           </a>
           <a
             class="hover:text-primary"
-            href="https://www.linkedin.com/in/palaciosluismig/"
+            href="https://www.instagram.com/palaciosluismig/"
             target="_blank"
           >
             <Icon name="social_networks/instagram" size={30} />
@@ -505,7 +504,7 @@ const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
                 return (
                     <div class="flex flex-row">
                       <div class="min-w-40">
-                        <img format="webp" src=`/${education.image}` alt={education.specialty} class="w-40 mb-6 pr-6" />
+                        <img src=`/${education.image}` alt={education.specialty} class="w-40 mb-6 pr-6" />
                       </div>
                       <div>
                         <h3 class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-3 flex flex-row content-center justify-start max-w-none" >
@@ -533,22 +532,28 @@ const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
         </h2>
 
         <div class="flex flex-wrap gap-4 justify-between">
-          <label class="input input-primary input-bordered flex items-center gap-2 w-full md:w-[60%]">
+          <label id="lblEmail" class="input input-primary input-bordered flex items-center gap-2 w-full md:w-[60%]">
             <Icon name="email" size={20} />
-            palaciosluismig@gmial.com
+            {MYEMAIL}
           </label>
           <div class="flex w-full md:w-[37%] gap-4 justify-between">
             <div class="w-1/2">
-              <a href="/projects" class="btn btn-primary w-full">
-                <Icon name="send" class="inline-block ml-2" size={22} />
+              <a href={`mailto:${MYEMAIL}`} class="btn btn-primary w-full">
+                <Icon name="send" class="inline-block ml-2" />
                 Enviar
               </a>
             </div>
             <div class="w-1/2">
-              <a href="/projects" class="btn btn-primary w-full">
-                <Icon name="copy" class="inline-block ml-2" size={22} />
-                Pegar
-              </a>
+              <button id="btnEmailCopy" class="btn btn-primary w-full">
+                <Icon name="copy" class="inline-block ml-2" />
+                Copiar
+              </button>
+            </div>
+            <div id="altEmailCopy" class="toast toast-center hidden">
+              <div class="alert alert-info">
+                <span>Copiado</span>
+                <Icon name="copy" class="inline-block ml-2" />
+              </div>
             </div>
           </div>
         </div>
@@ -557,3 +562,26 @@ const categories = Array.from(new Set(TECH_STACK.map((item) => item.category)));
   
   </div>
 </Layout>
+<script>
+  
+  const toastEmailCopy = document.getElementById("altEmailCopy");
+  
+  function emailCopy() {
+    const labelEmail = document.getElementById("lblEmail");
+    if (labelEmail){
+
+      const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+      navigator.clipboard.writeText(textEmail);
+      toastEmailCopy?.classList.remove("hidden");
+      setTimeout(()=> {
+        toastEmailCopy?.classList.add("hidden");
+      },2000);
+    }
+  }
+
+  const btnEmailCopy = document.querySelector("#btnEmailCopy");
+
+  if (btnEmailCopy){
+    btnEmailCopy.addEventListener("click", emailCopy);
+  }
+</script>
