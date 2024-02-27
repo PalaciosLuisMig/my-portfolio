@@ -22,9 +22,9 @@ const projects = (await getCollection("projects"))
 <Layout urlMenuItem="/home">
   <div class="flex justify-center flex-col px-5  items-center">
     <!-- Presentation -->
-    <section class="max-w-screen-lg w-full my-10 flex flex-col gap-4 lg:grid lg:grid-cols-4 mb-16">
+    <section class="max-w-screen-lg w-full my-10 flex flex-col gap-4 md:grid md:grid-cols-4 mb-16">
       <div
-        class="flex md:justify-center lg:grid lg:order-last lg:justify-end lg:items-center animate-fade-left max-sm:animate-fade-right"
+        class="flex md:grid md:order-last md:justify-end md:items-center animate-fade-left max-sm:animate-fade-right"
       >
         <Image
           src="/yo.webp"
@@ -35,7 +35,7 @@ const projects = (await getCollection("projects"))
         />
       </div>
       <div
-        class="md:flex md:items-center md:flex-col lg:grid-cols-subgrid lg:col-span-3 lg:items-start"
+        class="md:flex md:flex-col md:grid-cols-subgrid md:col-span-3 lg:items-start"
       >
         <h1
           class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold mb-3 animate-fade-left lg:animate-fade-right"
@@ -72,7 +72,7 @@ const projects = (await getCollection("projects"))
         </article>
 
         <div
-          class="flex flex-row gap-16 md:items-center md:justify-center animate-fade lg:animate-fade-right"
+          class="flex flex-row gap-16  animate-fade lg:animate-fade-right"
         >
           <a
             class="hover:text-primary"
@@ -101,7 +101,7 @@ const projects = (await getCollection("projects"))
 
     <!-- Experience -->
     <section class="max-w-screen-lg w-full mb-16">
-      <div class="md:flex md:flex-col md:items-center lg:items-start">
+      <div class="md:flex md:flex-col lg:items-start">
         <h2
           class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
         >
@@ -133,7 +133,7 @@ const projects = (await getCollection("projects"))
             </h2>
             <time
               class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >Oct 2022 - Actualidad | Cuenca - Ecuador
+              >Oct 2022 - Actualidad • Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
               <p
@@ -175,7 +175,7 @@ const projects = (await getCollection("projects"))
             </h2>
             <time
               class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >May 2022 - Sep 2022 | Cuenca - Ecuador
+              >May 2022 - Sep 2022 • Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
               <p
@@ -217,7 +217,7 @@ const projects = (await getCollection("projects"))
             </h2>
             <time
               class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >Ene 2022 - May 2022 | Cuenca - Ecuador
+              >Ene 2022 - May 2022 • Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
               <p
@@ -259,7 +259,7 @@ const projects = (await getCollection("projects"))
             </h2>
             <time
               class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >Ago 2019 - Ene 2022 | Cuenca - Ecuador
+              >Ago 2019 - Ene 2022 • Cuenca - Ecuador
             </time>
             <div class="lg:flex lg:justify-between">
               <p
@@ -318,7 +318,7 @@ const projects = (await getCollection("projects"))
         </div>
 
         <!-- Button: show all projects -->
-        <div class="col-span-full md:flex md:justify-center">
+        <div class="col-span-full md:flex md:justify-start lg:justify-center">
           <a
             href="/projects"
             class="btn btn-primary w-full md:w-auto"
@@ -501,6 +501,7 @@ const projects = (await getCollection("projects"))
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
             {
               EDUCATIONS.map((education) => {
+                if (education.priority === 1) {
                 return (
                     <div class="flex flex-row">
                       <div class="min-w-40">
@@ -516,7 +517,7 @@ const projects = (await getCollection("projects"))
                     </div>
 
                 );
-              })
+              }})
             }
           </div>
         </div>

@@ -8,7 +8,7 @@ export const CV_DOWNLOAD = "";
 export const MENU_ITEMS = [
   {
     title: "Perfil",
-    tooltip: "bottom",
+    tooltip: "left",
     url: "/profile",
     icon: "profile",
   },
@@ -172,30 +172,94 @@ export const TECH_STACK = [
   },
 ];
 
+// ---------- Education  ----------
 export const EDUCATIONS = [
-  {
-    educational_center: "Universidad Católica de Cuenca",
-    specialty: "Ingeniería de Sistemas",
-    date: "Ago 2016 - Feb 2020",
-    image: "ucacue.png",
-  },
   {
     educational_center: "Universidad Internacional de la Rioja",
     specialty: "Maestría en Ingeniería de Software y Sistemas Informáticos",
     date: "Oct 2022 - Jul 2023",
     image: "unir.webp",
+    country: "España",
+    modality: "Online",
+    type: "university",
+    priority: 1,
+  },
+  {
+    educational_center: "Universidad Católica de Cuenca",
+    specialty: "Ingeniería de Sistemas",
+    date: "Ago 2016 - Feb 2020",
+    image: "ucacue.png",
+    country: "Ecuador",
+    modality: "Presencial",
+    type: "university",
+    priority: 1,
+  },
+  {
+    educational_center: "TÜV Rheinland Europe",
+    specialty:
+      "Internal Auditor ISO 27001:2022, Information Security Management Systems",
+    date: "Nov 2023",
+    image: "treurope.webp",
+    country: "",
+    modality: "Online",
+    type: "certification",
+    url: "https://www.certipedia.com/quality_marks/0217523425?locale=es",
+    priority: 2,
   },
   {
     educational_center: "CertiProf",
     specialty: "SDPC - Scrum Developer Professional Certificate",
     date: "Ene 2021",
     image: "certiprof.webp",
+    country: "",
+    modality: "Online",
+    type: "certification",
+    priority: 1,
   },
   {
     educational_center: "CertiProf",
     specialty: "SMPC - Scrum Master Professional Certificate",
     date: "Jul 2020",
     image: "certiprof.webp",
+    country: "",
+    modality: "Online",
+    type: "certification",
+    priority: 2,
+  },
+  {
+    educational_center: "CertiProf",
+    specialty: "SFPC - Scrum Foundation Professional Certificate",
+    date: "Jul 2020",
+    image: "certiprof.webp",
+    country: "",
+    modality: "Online",
+    type: "certification",
+    priority: 2,
+  },
+  {
+    educational_center: "Udemy",
+    specialty: "Master en JavaScript",
+    date: "Nov 2020",
+    image: "udemy.webp",
+    country: "",
+    modality: "Online",
+    type: "course",
+    priority: 1,
+  },
+];
+
+// ---------- Experience  ----------
+export const EXPERIENCE = [
+  {
+    company: "AustoRed",
+    job: "Ingeniero de desarrollo",
+    tags: ["Actual", "Presencial"],
+    date: "Oct 2022 - Actualidad",
+    city: "Cuenca",
+    country: "Ecuador",
+    logo: "austrored.svg",
+    description:
+      "En el área de Medios de Pago realizó requerimientos en Backend como creación de microservicios con Quarkus - Spring Boot y en el Frontend con aplicación de Low-Code como OutSystems. Manejo de base de datos en SQL Server. Integración y/o mejoras de software de proveedores hacia el sistema transaccional."
   },
 ];
 
