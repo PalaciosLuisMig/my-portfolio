@@ -2,9 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import autrored from "../assets/job_logos/austrored.svg";
-import bancodelaustro from "../assets/job_logos/bancodelaustro.png";
-
 import {EDUCATIONS} from "../config";
 ---
 
@@ -64,7 +61,6 @@ import {EDUCATIONS} from "../config";
                 </div>
             </div>
 
-
             </section>
             
             <!-- University -->
@@ -88,7 +84,7 @@ import {EDUCATIONS} from "../config";
                             {education.educational_center}
                         </h2>
 
-                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6">
+                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
                             {education.date} • {education.country} • {education.modality}
                         </time>
                         
@@ -101,7 +97,7 @@ import {EDUCATIONS} from "../config";
                                 src=`/${education.image}` alt={education.specialty}
                                 height="100"
                                 width="100"
-                                alt="Logo Austro Red"
+                                alt=`Logo ${education.specialty}`
                                 />
                             </div>
                         </div>
@@ -133,7 +129,7 @@ import {EDUCATIONS} from "../config";
                             {education.educational_center}
                         </h2>
 
-                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6">
+                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
                             {education.date} • {education.modality}
                         </time>
                         
@@ -178,7 +174,7 @@ import {EDUCATIONS} from "../config";
                             {education.educational_center}
                         </h2>
 
-                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6">
+                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
                             {education.date} • {education.modality}
                         </time>
                         
@@ -201,6 +197,8 @@ import {EDUCATIONS} from "../config";
             }
             </ol>
             </section>
+
+            <!--  -->
             
     </div>
   </div>

@@ -8,8 +8,9 @@ import mastermoto from "../assets/job_logos/mastermoto.png";
 import { getCollection } from "astro:content";
 import createSlug from "../lib/create_slug";
 import Card from "../components/Card.astro";
+import TimeLine from "../components/TimeLine.astro";
 
-import { TECH_STACK, EDUCATIONS, MYEMAIL} from "../config";
+import { TECH_STACK, EDUCATIONS, MYEMAIL, EXPERIENCES} from "../config";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.important === true)
@@ -107,183 +108,26 @@ const projects = (await getCollection("projects"))
         >
           <Icon name="experience" class="mr-2" />Experiencia
         </h2>
-
-        <ol
-          class="relative border-s border-primary dark:border-gray-700 ml-4 animate-fade-left lg:animate-fade-right"
-        >
-          <!-- Austrored -->
-          <li class="mb-10 ms-6 lg:mb-0">
-            <span
-              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
-            >
-              <Icon name="check" size={15} class="text-primary" />
-            </span>
-            <h2
-              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
-            >
-              Ingeniero de desarrollo en AustroRed
-              <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
-                >Actual
-              </span>
-              <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl"
-                >Presencial
-              </span>
-            </h2>
-            <time
-              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >Oct 2022 - Actualidad • Cuenca - Ecuador
-            </time>
-            <div class="lg:flex lg:justify-between">
-              <p
-                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
-              >
-                En el área de Medios de Pago realizó requerimientos en Backend
-                como creación de microservicios con Quarkus - Spring Boot y en
-                el Frontend con aplicación de Low-Code como OutSystems. Manejo
-                de base de datos en SQL Server. Integración y/o mejoras de
-                software de proveedores hacia el sistema transaccional.
-              </p>
-              <div
-                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
-              >
-                <Image
-                  src={autrored}
-                  height="100"
-                  width="100"
-                  alt="Logo Austro Red"
-                />
-              </div>
-            </div>
-          </li>
-          <!-- Banco del Austro -->
-          <li class="mb-10 ms-6 lg:mb-0">
-            <span
-              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
-            >
-              <Icon name="check" size={15} class="text-primary" />
-            </span>
-            <h2
-              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
-            >
-              Ingeniero de desarrollo en Banco del Austro
-              <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
-                >Presencial
-              </span>
-            </h2>
-            <time
-              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >May 2022 - Sep 2022 • Cuenca - Ecuador
-            </time>
-            <div class="lg:flex lg:justify-between">
-              <p
-                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
-              >
-                En el área de Tarjetas de Crédito ejecute requerimientos de
-                Frontend con ASP.NET y Bankend con C#. Administración de base de
-                datos en SQL Server. Implementaciones de mandatos de franquicias
-                como Visa y MasterCard. Integración con pasarelas de pago y
-                Reporteria utilizando ETL.
-              </p>
-              <div
-                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
-              >
-                <Image
-                  src={bancodelaustro}
-                  height="150"
-                  width="150"
-                  alt="Logo banco del austro"
-                />
-              </div>
-            </div>
-          </li>
-          <!-- MasterMoto -->
-          <li class="mb-10 ms-6 lg:mb-0">
-            <span
-              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
-            >
-              <Icon name="check" size={15} class="text-primary" />
-            </span>
-            <h2
-              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
-            >
-              Programador senior en Mastermoto
-              <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
-                >Presencial
-              </span>
-            </h2>
-            <time
-              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >Ene 2022 - May 2022 • Cuenca - Ecuador
-            </time>
-            <div class="lg:flex lg:justify-between">
-              <p
-                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
-              >
-                En el departamento de tecnología ejecute requerimientos de
-                Frontend con Django y Backend con Python. Administración de base
-                de datos en Oracle y mantenimiento de la infraestructura.
-                Gestión de la seguridad informática y soporte técnico de
-                Software y Hardware.
-              </p>
-              <div
-                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
-              >
-                <Image
-                  src={mastermoto}
-                  height="100"
-                  width="100"
-                  alt="Logo Austro Red"
-                />
-              </div>
-            </div>
-          </li>
-          <!-- Banco del Austro -->
-          <li class="mb-2 ms-6 lg:mb-0">
-            <span
-              class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
-            >
-              <Icon name="check" size={15} class="text-primary" />
-            </span>
-            <h2
-              class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
-            >
-              Ingeniero de desarrollo en Banco del Austro
-              <span
-                class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6"
-                >Presencial
-              </span>
-            </h2>
-            <time
-              class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-500 pb-6"
-              >Ago 2019 - Ene 2022 • Cuenca - Ecuador
-            </time>
-            <div class="lg:flex lg:justify-between">
-              <p
-                class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-2 lg:max-w-none lg:w-4/5"
-              >
-                En el área de Tarjetas de Crédito ejecute requerimientos de
-                Frontend con ASP.NET y Bankend con C#. Administración de base de
-                datos en SQL Server. Implementaciones de mandatos de franquicias
-                como Visa y MasterCard. Integración con pasarelas de pago y
-                Reporteria utilizando ETL.
-              </p>
-              <div
-                class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
-              >
-                <Image
-                  src={bancodelaustro}
-                  height="150"
-                  width="150"
-                  alt="Logo banco del austro"
-                />
-              </div>
-            </div>
-          </li>
-        </ol>
+        <div id="timeline">
+          {EXPERIENCES.slice(0, 4).map((experience) => {
+            return (
+                <TimeLine
+                company = {experience.company}
+                job = {experience.job}
+                tags = {experience.tags}
+                date = {experience.date}
+                city = {experience.city}
+                country = {experience.country}
+                logo = {experience.logo}
+                description = {experience.description}
+                height = {experience.height}
+                width = {experience.width}
+                >
+                </TimeLine>  
+            );
+            })
+          }
+        </div>
       </div>
     </section>
 

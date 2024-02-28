@@ -249,7 +249,7 @@ export const EDUCATIONS = [
 ];
 
 // ---------- Experience  ----------
-export const EXPERIENCE = [
+export const EXPERIENCES = [
   {
     company: "AustoRed",
     job: "Ingeniero de desarrollo",
@@ -257,9 +257,63 @@ export const EXPERIENCE = [
     date: "Oct 2022 - Actualidad",
     city: "Cuenca",
     country: "Ecuador",
-    logo: "austrored.svg",
+    logo: "/job_logos/austrored.svg",
     description:
-      "En el área de Medios de Pago realizó requerimientos en Backend como creación de microservicios con Quarkus - Spring Boot y en el Frontend con aplicación de Low-Code como OutSystems. Manejo de base de datos en SQL Server. Integración y/o mejoras de software de proveedores hacia el sistema transaccional."
+      "En el área de Medios de Pago realizó requerimientos en Backend como creación de microservicios con Quarkus - Spring Boot y en el Frontend con aplicación de Low-Code como OutSystems. Manejo de base de datos en SQL Server. Integración y/o mejoras de software de proveedores hacia el sistema transaccional.",
+    height: 100,
+    width: 100,
+  },
+  {
+    company: "Banco del Austro",
+    job: "Ingeniero de desarrollo",
+    tags: ["Presencial"],
+    date: "May 2022 - Sep 2022",
+    city: "Cuenca",
+    country: "Ecuador",
+    logo: "/job_logos/bancodelaustro.png",
+    description:
+      "En el área de Tarjetas de Crédito ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL.",
+    height: 150,
+    width: 150,
+  },
+  {
+    company: "Mastermoto",
+    job: "Programador senior",
+    tags: ["Presencial"],
+    date: "Ene 2022 - May 2022",
+    city: "Cuenca",
+    country: "Ecuador",
+    logo: "/job_logos/mastermoto.png",
+    description:
+      "En el departamento de tecnología ejecute requerimientos de Frontend con Django y Backend con Python. Administración de base de datos en Oracle y mantenimiento de la infraestructura. Gestión de la seguridad informática y soporte técnico de Software y Hardware.",
+    height: 100,
+    width: 100,
+  },
+  {
+    company: "Banco del Austro",
+    job: "Ingeniero de desarrollo",
+    tags: ["Presencial"],
+    date: "Ago 2019 - Ene 2022",
+    city: "Cuenca",
+    country: "Ecuador",
+    logo: "/job_logos/bancodelaustro.png",
+    description:
+      "En el área de Tarjetas de Crédito ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL.",
+    height: 150,
+    width: 150,
+  },
+  {
+    company: "Consejo Nacional Electoral ",
+    job: "Operador de escaner",
+    tags: ["Presencial"],
+    date: "Mar 2019",
+    city: "Cuenca",
+    country: "Ecuador",
+    logo: "/job_logos/cne.png",
+    description:
+      "Realizar el proceso de transmisión de votos electorales 🗳️.",
+    height: 100,
+    width: 100,
   },
 ];
 

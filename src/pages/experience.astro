@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import { EXPERIENCES } from "../config";
+import TimeLine from "../components/TimeLine.astro";
+---
+<Layout urlMenuItem="/experience">
+
+    <div class="flex justify-center flex-col px-5 items-center">
+        <div class="max-w-screen-lg w-full">
+            
+            <!-- Experience -->
+            <section >
+            
+                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
+                    <Icon name="experience" class="mr-2" /> Experiencia
+                </h1>
+
+                <div id="timeline" class="mb-16">
+                
+                {EXPERIENCES.map((experience) => {
+                    return (
+                        <TimeLine
+                        company = {experience.company}
+                        job = {experience.job}
+                        tags = {experience.tags}
+                        date = {experience.date}
+                        city = {experience.city}
+                        country = {experience.country}
+                        logo = {experience.logo}
+                        description = {experience.description}
+                        height = {experience.height}
+                        width = {experience.width}
+                        >
+                        </TimeLine>  
+                    );
+                })
+                }
+                </div>
+
+            </section>
+
+            
+    </div>
+  </div>
+</Layout >
