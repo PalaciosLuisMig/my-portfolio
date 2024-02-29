@@ -2,9 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import autrored from "../assets/job_logos/austrored.svg";
-import bancodelaustro from "../assets/job_logos/bancodelaustro.png";
-import mastermoto from "../assets/job_logos/mastermoto.png";
 import { getCollection } from "astro:content";
 import createSlug from "../lib/create_slug";
 import Card from "../components/Card.astro";
@@ -16,7 +13,6 @@ const projects = (await getCollection("projects"))
   .filter((p) => p.data.important === true)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
-
 
 ---
 
@@ -108,7 +104,7 @@ const projects = (await getCollection("projects"))
         >
           <Icon name="experience" class="mr-2" />Experiencia
         </h2>
-        <div id="timeline">
+        <div id="timeline" class="mb-10">
           {EXPERIENCES.slice(0, 4).map((experience) => {
             return (
                 <TimeLine
@@ -128,6 +124,17 @@ const projects = (await getCollection("projects"))
             })
           }
         </div>
+
+      </div>
+      <!-- Button: show more experience -->
+      <div class="col-span-full md:flex md:justify-start lg:justify-center">
+        <a
+          href="/experience"
+          class="btn btn-primary w-full md:w-auto  "
+        >
+          <Icon name="more" class="inline-block ml-2" size={22} />
+          Conocer más
+        </a>
       </div>
     </section>
 
@@ -165,7 +172,7 @@ const projects = (await getCollection("projects"))
         <div class="col-span-full md:flex md:justify-start lg:justify-center">
           <a
             href="/projects"
-            class="btn btn-primary w-full md:w-auto"
+            class="btn btn-primary w-full md:w-auto  "
           >
             <Icon name="more" class="inline-block ml-2" size={22} />
             Más proyectos
@@ -411,8 +418,8 @@ const projects = (await getCollection("projects"))
   
   const toastEmailCopy = document.getElementById("altEmailCopy");
   
-  function emailCopy() {
-    const labelEmail = document.getElementById("lblEmail");
+  function emailCopy(text:string) {
+    const labelEmail = document.getElementById(text);
     if (labelEmail){
 
       const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
@@ -427,6 +434,7 @@ const projects = (await getCollection("projects"))
   const btnEmailCopy = document.querySelector("#btnEmailCopy");
 
   if (btnEmailCopy){
-    btnEmailCopy.addEventListener("click", emailCopy);
+    btnEmailCopy.addEventListener("click", () => {emailCopy("lblEmail")});
   }
+  
 </script>

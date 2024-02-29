@@ -38,7 +38,33 @@ const {
   </body>
 </html>
 <style is:global>
+    #timeline ol:last-of-type p:last-of-type {
+        padding-bottom: 0px;
+    }
     #timeline ol:last-of-type li:last-of-type {
         padding-bottom: 0px;
     }
 </style>
+<script>
+  
+    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
+    
+    function emailCopy() {
+      const labelEmail = document.getElementById("lblEmailFooter");
+      if (labelEmail){
+  
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
+    }
+  
+    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
+  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", emailCopy);
+    }
+</script>

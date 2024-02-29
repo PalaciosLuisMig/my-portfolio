@@ -1,0 +1,138 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import Card from "../../components/Card.astro";
+import { getCollection } from "astro:content";
+import createSlug from "../../lib/create_slug";
+
+export const prerender = true;
+
+export async function getStaticPaths({ paginate }) {
+  const projects = await getCollection("projects");
+  if (!projects) return paginate([], { pageSize: 10 });
+
+  let orderedProjects 
+  // Add important projects to the top
+  const importantProjects = projects.filter((project) => project.data.important);
+  orderedProjects = importantProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  // Add the rest of the projects
+  const otherProjects = projects.filter((project) => !project.data.important);
+  orderedProjects = orderedProjects.concat(otherProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()));
+
+  projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(orderedProjects, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+
+---
+<Layout title="Proyectos" urlMenuItem="/projects">
+
+  <div class="flex justify-center flex-col px-5 items-center">
+    <div class="max-w-screen-lg w-full">
+            
+      <!-- Projects -->
+      <section >
+            
+        <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
+            <Icon name="projects" class="mr-2" /> Proyectos
+        </h1>
+
+        {
+        page.data.length === 0 ? (
+          <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
+            <p class="font-bold">Lo siento!</p>
+            <p>No hay posts para mostrar en este momento. Vuelve más tarde!</p>
+          </div>
+        ) : (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {page.data.map((project) => (
+              <>
+                <Card
+                  title={project.data.title}
+                  desc={project.data.description}
+                  pubDate={project.data.pubDate}
+                  img={project.data.heroImage}
+                  badge={project.data.badge}
+                  url={
+                  "/projects/" + createSlug(project.data.title, project.slug)
+                  }
+                  target="_self"
+                  github={project.data.github}
+                  website={project.data.website}
+                  skills={project.data.skills}
+                />
+              </>
+            ))}
+          </div>
+            )
+        } 
+
+      <div class="flex justify-between">
+        {
+          page.url.prev ? (
+            <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">
+              {" "}
+              <svg
+                class="h-6 w-6 fill-current md:h-8 md:w-8"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+              </svg>{" "}
+              Proyectos Recientes
+            </a>
+          ) : (
+            <div />
+          )
+        }
+        {
+          page.url.next ? (
+            <a href={page.url.next} class="btn btn-ghost my-10 mx-5">
+              Proyectos Anteriores{" "}
+              <svg
+                class="h-6 w-6 fill-current md:h-8 md:w-8"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                {" "}
+                <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+              </svg>
+            </a>
+          ) : (
+            <div />
+          )
+        }
+      </div>
+
+      </section>
+    </div>
+  </div>
+</Layout >
+<script>
+  
+    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
+    
+    function emailCopy() {
+      const labelEmail = document.getElementById("lblEmailFooter");
+      if (labelEmail){
+  
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
+    }
+  
+    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
+  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", emailCopy);
+    }
+</script>

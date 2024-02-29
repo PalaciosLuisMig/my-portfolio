@@ -311,7 +311,7 @@ export const EXPERIENCES = [
     country: "Ecuador",
     logo: "/job_logos/cne.png",
     description:
-      "Realizar el proceso de transmisión de votos electorales 🗳️.",
+      "Realizar el proceso de transmisión de votos electorales 🗳️. Fue mi primera experiencia laboral remunerada. Poder validar la transparencia del proceso de votación fue muy lindo hasta realizar el reconteo voto a voto.",
     height: 100,
     width: 100,
   },

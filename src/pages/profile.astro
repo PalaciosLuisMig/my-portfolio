@@ -5,7 +5,7 @@ import { Image } from "astro:assets";
 import {EDUCATIONS} from "../config";
 ---
 
-<Layout urlMenuItem="/profile">
+<Layout title="Perfil" urlMenuItem="/profile">
     <div class="flex justify-center flex-col px-5 items-center">
         <div class="max-w-screen-lg w-full">
             
@@ -18,7 +18,7 @@ import {EDUCATIONS} from "../config";
 
             <div class="md:flex md:justify-between gap-10">
                 <div
-                    class="flex md:grid md:order-last md:justify-end md:items-center animate-fade-left md:content-start max-sm:animate-fade-right mb-10"
+                    class="flex md:grid md:order-last justify-center items-center md:justify-end md:items-center animate-fade-left md:content-start max-sm:animate-fade-right mb-10"
                 >
                     <Image
                     src="/yo.webp"
@@ -29,29 +29,29 @@ import {EDUCATIONS} from "../config";
                     />
                 </div>
                 
-                <div class="flex flex-col w-3/4">
+                <div class="flex flex-col md:w-3/4">
 
                     <span class="bg-accent-content text-accent text-base font-medium me-2 px-2.5 py-0.5 rounded-xl mb-6">Mg. en Ingeniería de Software y Sistemas Informáticos • Ing. en Sistemas • Desarrollador Fullstack • SDPC • SMPC</span>
 
-                    <p class="prose dark:prose-invert mb-4 md:max-w-none">
+                    <p class="prose dark:prose-invert mb-4 max-w-none">
                     Bienvenido a mi perfil. 👋 Soy Luis Palacios, un apasionado de la
                     tecnología de origen ecuatoriano y una crianza en el entorno rural de la
                     provincia del Azuay, rodeado de naturaleza y animales.
                     </p>
-                    <p class="prose dark:prose-invert mb-4 md:max-w-none">
+                    <p class="prose dark:prose-invert mb-4 max-w-none">
                     Desde mis primeros años escolares, la informática 🖥️ capturó mi interés de
                     manera innegable. Recuerdo con emoción la sensación de asombro al
                     descubrir que mi computadora podía conectarse a internet, abriendo un
                     mundo de posibilidades para investigar y aprender sobre mis intereses.
                     </p>
-                    <p class="prose dark:prose-invert mb-4 md:max-w-none">
+                    <p class="prose dark:prose-invert mb-4 max-w-none">
                     Este descubrimiento marcó mi ingreso al mundo de la programación 👨‍💻, donde
                     encontré una vía para materializar ideas que alguna vez consideré
                     imposibles. A lo largo de mi trayectoria, he adquirido habilidades y
                     conocimientos que me permiten abordar proyectos de software complejos
                     con confianza y determinación.
                     </p>
-                    <p class="prose dark:prose-invert mb-4 md:max-w-none">
+                    <p class="prose dark:prose-invert mb-4 max-w-none">
                     Mi experiencia 💼 me ha llevado a desarrollar competencias en áreas tan
                     diversas como arquitectura de software, infraestructura tecnológica,
                     seguridad de la información, gestión de operaciones y cumplimiento
@@ -115,7 +115,7 @@ import {EDUCATIONS} from "../config";
             </h1>
 
             <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16  animate-fade-left lg:animate-fade-right">
-
+            
             {
             EDUCATIONS.map((education) => {
                 if (education.type === "certification") {
@@ -151,6 +151,7 @@ import {EDUCATIONS} from "../config";
             }})
             }
             </ol>
+
             </section>
 
             <!-- Courses -->
@@ -159,6 +160,7 @@ import {EDUCATIONS} from "../config";
                 <Icon name="programming" class="mr-2" />Cursos
             </h1>
 
+            
             <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16 animate-fade-left lg:animate-fade-right">
 
             {
@@ -196,10 +198,32 @@ import {EDUCATIONS} from "../config";
             }})
             }
             </ol>
-            </section>
 
-            <!--  -->
+            </section>
             
     </div>
   </div>
 </Layout>
+<script>
+  
+    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
+    
+    function emailCopy() {
+      const labelEmail = document.getElementById("lblEmailFooter");
+      if (labelEmail){
+  
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
+    }
+  
+    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
+  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", emailCopy);
+    }
+  </script>

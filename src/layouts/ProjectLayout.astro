@@ -1,0 +1,136 @@
+---
+import { type ProjectSchema } from "../content/config";
+import Layout from "./Layout.astro";
+import dayjs from "dayjs";
+import es from "dayjs/locale/es";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import { Icon } from "astro-icon/components";
+
+export interface Props extends ProjectSchema {}
+
+const {
+  title,
+  description,
+  pubDate,
+  badge,
+  heroImage,
+  github,
+  website,
+  tags,
+  skills
+} = Astro.props;
+
+dayjs.extend(localizedFormat);
+dayjs.locale(es);
+const displayDate = dayjs(pubDate).format("LL");
+import { Image } from "astro:assets";
+---
+
+<Layout
+  title={title}
+  description={description}
+  image={heroImage}
+  ogType="article"
+>
+  <main class="flex justify-center flex-col px-5 items-center">
+    <article class="prose max-w-screen-lg w-full">
+      
+      <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center ">
+        {title}
+      </h1>
+      <div class="flex justify-start items-start">
+        {
+          heroImage && (
+            <Image
+              width={1}
+              height={1}
+              format="webp"
+              src={heroImage}
+              alt={title}
+              class="w-full md:w-2/3 mb-4 mt-0 border-2 rounded-t-2x rounded-lg border-primary"
+            />
+          )
+        }
+      </div>
+      
+      <!-- Date -->
+      {pubDate && <time class="block mb-4">{displayDate}</time>}
+
+      <!-- Badge -->
+      {badge && 
+        <div class="badge badge-primary font-medium mr-2 p-4">
+          {badge}
+        </div>
+      }
+      
+      <!-- Tags -->
+      {
+        tags &&
+          tags.map((tag) => (
+            <div
+              class="badge badge-outline mr-2 no-underline text-primary font-medium p-4"
+            >
+              {tag}
+            </div>
+          ))
+      }
+      
+      <!-- Skills -->
+      <div class="divider my-2"></div>
+      <div class=" py-2 flex justify-between	mt-auto w-full">
+        <div class="flex flex-wrap gap-2">
+          {
+            skills &&
+              skills.map((skill:any) => 
+              <img alt="Static Badge" class="m-0" src={`https://img.shields.io/badge/${skill.name}-black?logo=${skill.logo}`}>
+              )
+          } 
+        </div>
+        <div id="github-link" class="flex flex-wrap justify-end gap-2 dark:text-primary-content">
+            { website &&
+              <a
+              class="hover:text-primary"
+              href={website}
+              target="_blank"
+              >
+              <Icon name="link" size={20} />
+              </a>
+            }
+            {
+              github &&
+              <a
+                class="hover:text-primary"
+                href={github}
+                target="_blank"
+              >
+                <Icon name="social_networks/github" size={20} />
+              </a>
+            }
+        </div>
+      </div>
+      <slot />
+    </article>
+  </main>
+</Layout>
+<script>
+    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
+    
+    function emailCopy() {
+      const labelEmail = document.getElementById("lblEmailFooter");
+      if (labelEmail){
+  
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
+    }
+  
+    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
+  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", emailCopy);
+    }
+</script>
