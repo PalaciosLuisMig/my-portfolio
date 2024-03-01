@@ -4,12 +4,14 @@ import { Icon } from "astro-icon/components";
 import Card from "../../components/Card.astro";
 import { getCollection } from "astro:content";
 import createSlug from "../../lib/create_slug";
+import { type ProjectSchema } from "../../content/config";
+
 
 export const prerender = true;
 
-export async function getStaticPaths({ paginate }) {
+export async function getStaticPaths({ paginate }: { paginate: Function }) {
   const projects = await getCollection("projects");
-  if (!projects) return paginate([], { pageSize: 10 });
+  if (!projects) return paginate([], { pageSize: 2 });
 
   let orderedProjects 
   // Add important projects to the top
@@ -20,10 +22,11 @@ export async function getStaticPaths({ paginate }) {
   orderedProjects = orderedProjects.concat(otherProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()));
 
   projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  return paginate(orderedProjects, { pageSize: 10 });
+  return paginate(orderedProjects, { pageSize: 2 });
 }
 
 const { page } = Astro.props;
+
 
 ---
 <Layout title="Proyectos" urlMenuItem="/projects">
@@ -46,7 +49,7 @@ const { page } = Astro.props;
           </div>
         ) : (
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {page.data.map((project) => (
+            {page.data.map((project:ProjectSchema) => (
               <>
                 <Card
                   title={project.data.title}
@@ -71,7 +74,7 @@ const { page } = Astro.props;
       <div class="flex justify-between">
         {
           page.url.prev ? (
-            <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">
+            <a href={page.url.prev} class="btn btn-ghost text-primary my-10 mx-5">
               {" "}
               <svg
                 class="h-6 w-6 fill-current md:h-8 md:w-8"
@@ -90,7 +93,7 @@ const { page } = Astro.props;
         }
         {
           page.url.next ? (
-            <a href={page.url.next} class="btn btn-ghost my-10 mx-5">
+            <a href={page.url.next} class="btn btn-ghost text-primary my-10 mx-5">
               Proyectos Anteriores{" "}
               <svg
                 class="h-6 w-6 fill-current md:h-8 md:w-8"
