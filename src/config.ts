@@ -319,7 +319,7 @@ export const EXPERIENCES = [
 
 // ---------- Global Variables ----------
 export const TRANSITION_API = true;
-export const SITE_TITLE = "Portfolio de Luis Palacios ";
+export const SITE_TITLE = "Portafolio de Luis Palacios ";
 export const SITE_DESCRIPTION = "Sitio web de mi portafolio personal creado con Astro y TailwindCSS.";
 export const GENERATE_SLUG_FROM_TITLE = true;
 export const MYEMAIL = "palaciosluismig@gmail.com";

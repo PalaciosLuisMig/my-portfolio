@@ -15,5 +15,6 @@ export default function (title: string, staticSlug: string) {
         // remove special characters
         .replace(/[^\w-]/g, "")
         // remove leading & trailing separtors
-        .replace(/^-+|-+$/g, "");
+        .replace(/(^-+)|(-+$)/g, "");
+
 }
