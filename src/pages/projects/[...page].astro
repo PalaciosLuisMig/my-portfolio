@@ -2,31 +2,31 @@
 import Layout from "../../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import Card from "../../components/Card.astro";
-import { getCollection } from "astro:content";
+import {getCollection } from "astro:content";
 import createSlug from "../../lib/create_slug";
-import { type ProjectSchema } from "../../content/config";
-
+import type { Page } from "astro";
 
 export const prerender = true;
 
-export async function getStaticPaths({ paginate }: { paginate: Function }) {
+export async function getStaticPaths({paginate}) {
+  
   const projects = await getCollection("projects");
-  if (!projects) return paginate([], { pageSize: 2 });
+  if (!projects) return paginate([], { pageSize: 2, });
 
-  let orderedProjects 
-  // Add important projects to the top
+  let orderedProjects;
   const importantProjects = projects.filter((project) => project.data.important);
   orderedProjects = importantProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  // Add the rest of the projects
   const otherProjects = projects.filter((project) => !project.data.important);
   orderedProjects = orderedProjects.concat(otherProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()));
-
   projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   return paginate(orderedProjects, { pageSize: 2 });
+};
+
+interface Props{
+  page:Page;
 }
 
 const { page } = Astro.props;
-
 
 ---
 <Layout title="Proyectos" urlMenuItem="/projects">
@@ -49,7 +49,7 @@ const { page } = Astro.props;
           </div>
         ) : (
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {page.data.map((project:ProjectSchema) => (
+            {page.data.map((project) => (
               <>
                 <Card
                   title={project.data.title}
