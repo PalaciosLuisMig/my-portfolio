@@ -1,0 +1,57 @@
+---
+
+import { Image } from "astro:assets";
+import dayjs from "dayjs";
+import es from "dayjs/locale/es";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+
+const { title, description, pubDate, updatedDate, heroImage,  badge, url, target = "_blank", tags} = Astro.props;
+
+const tag_url = url.split("/").slice(0, -1).join("/") + "/tag";
+
+dayjs.extend(localizedFormat);
+dayjs.locale(es);
+const displayDate = dayjs(pubDate).format("LL");
+
+---
+
+<div
+  class="rounded-lg bg-base-100 hover:shadow-xl transition ease-in-out hover:scale-[102%] "
+>
+  <a href={url} target={target}>
+    <div class="hero-content flex-col md:flex-row items-start">
+     
+        {
+            heroImage && (
+            <Image
+                src={heroImage}
+                width={750}
+                height={422}
+                format="webp"
+                alt={title}
+                class="max-w-full md:max-w-[13rem] rounded-lg"
+            />
+            )
+        }
+
+      <div class="grow w-full">
+        <h1 class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-normal text-accent">
+          {title}
+          {badge && <span class="bg-accent-content text-accent text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">{badge} </span>}
+        </h1>
+        <p class="py-1 prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 lg:max-w-none font-normal line-clamp-3 md:line-clamp-4">{description}</p>
+        {pubDate && <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{displayDate}</time>}
+        <div class="card-actions justify-end">
+          {
+            tags &&
+              tags.map((tag) => (
+                <a href={`${tag_url}/${tag}`} class="badge badge-outline mr-2 no-underline text-primary font-medium p-4">
+                  {tag}
+                </a>
+              ))
+          }
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

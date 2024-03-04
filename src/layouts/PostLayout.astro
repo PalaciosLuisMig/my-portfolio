@@ -1,5 +1,5 @@
 ---
-import { type ProjectSchema } from "../content/config";
+import { type BlogSchema } from "../content/config";
 import Layout from "./Layout.astro";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -7,16 +7,15 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-export interface Props extends ProjectSchema {}
+export interface Props extends BlogSchema {}
 
-const { title, description, pubDate, badge, heroImage, github, website, tags, skills} = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, badge, tags, url } = Astro.props;
 
 dayjs.extend(localizedFormat);
 dayjs.locale(es);
 const displayDate = dayjs(pubDate).format("LL");
 
 ---
-
 <Layout
   title={title}
   description={description}
@@ -49,7 +48,7 @@ const displayDate = dayjs(pubDate).format("LL");
 
       <!-- Badge -->
       {badge && 
-        <div class="badge badge-primary font-medium mr-2 p-4">
+        <div class="badge badge-primary font-medium mr-2 p-4 mb-2">
           {badge}
         </div>
       }
@@ -59,46 +58,13 @@ const displayDate = dayjs(pubDate).format("LL");
         tags &&
           tags.map((tag) => (
             <div
-              class="badge badge-outline mr-2 no-underline text-primary font-medium p-4"
+              class="badge badge-outline mr-2 no-underline text-primary font-medium p-4 mb-2"
             >
               {tag}
             </div>
           ))
       }
       
-      <!-- Skills -->
-      <div class="divider my-2"></div>
-      <div class=" py-2 flex justify-between	mt-auto w-full">
-        <div class="flex flex-wrap gap-2">
-          {
-            skills &&
-              skills.map((skill:any) => 
-              <img alt="Static Badge" class="m-0" src={`https://img.shields.io/badge/${skill.name}-black?logo=${skill.logo}`}>
-              )
-          } 
-        </div>
-        <div id="github-link" class="flex flex-wrap justify-end gap-2 dark:text-primary-content">
-            { website &&
-              <a
-              class="hover:text-primary"
-              href={website}
-              target="_blank"
-              >
-              <Icon name="link" size={20} />
-              </a>
-            }
-            {
-              github &&
-              <a
-                class="hover:text-primary"
-                href={github}
-                target="_blank"
-              >
-                <Icon name="social_networks/github" size={20} />
-              </a>
-            }
-        </div>
-      </div>
       <slot />
     </article>
   </main>

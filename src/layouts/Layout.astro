@@ -27,14 +27,14 @@ const {
     />
     {TRANSITION_API && <ViewTransitions />}
   </head>
-  <body>
-	<NavBar title={SITE_TITLE} urlMenuItem={urlMenuItem} />
-	<main class="">
-		<div class="">
-			<slot />
-		</div>
-	</main>
-  <Footer></Footer>
+  <body class="flex flex-col min-h-screen">
+    <main class="flex-1">
+      <NavBar title={SITE_TITLE} urlMenuItem={urlMenuItem} />
+      <div class="min-h-fit">
+        <slot />
+      </div>
+    </main>
+    <Footer></Footer>
   </body>
 </html>
 <style is:global>

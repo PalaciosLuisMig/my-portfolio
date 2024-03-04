@@ -1,73 +1,88 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
-import Card from "../../components/Card.astro";
+import HorizontalCard from "../../components/HorizontalCard.astro";
 import {getCollection } from "astro:content";
 import createSlug from "../../lib/create_slug";
 import type { Page } from "astro";
 
 export const prerender = true;
 
-export async function getStaticPaths({paginate}) {
-  
-  const projects = await getCollection("projects");
-  if (!projects) return paginate([], { pageSize: 3, });
+export async function getStaticPaths ({paginate}) {
+    
+    const posts = await getCollection("blog");
+    if(!posts) return paginate([], {pageSize:3,});
 
-  let orderedProjects;
-  const importantProjects = projects.filter((project) => project.data.important);
-  orderedProjects = importantProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  const otherProjects = projects.filter((project) => !project.data.important);
-  orderedProjects = orderedProjects.concat(otherProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()));
-  projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  return paginate(orderedProjects, { pageSize: 3 });
-};
+    posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    return paginate(posts, { pageSize: 3 });
+}
 
-interface Props{
-  page:Page;
+interface Props {
+    page:Page;
 }
 
 const { page } = Astro.props;
 
----
-<Layout title="Proyectos" urlMenuItem="/projects">
+const postTags = page.data.reduce((acc, post) => {
+  // Get the url for filtering by tag
+  const url = "/blog/" + createSlug(post.data.title, post.slug)
+  const tag_url = url.split("/").slice(0, -1).join("/") + "/tag";
 
-  <div class="flex justify-center flex-col px-5 items-center">
+  // Add the tag to the list of tags
+  post.data.tags.forEach((tag) => {
+    if (!acc.includes(tag)) acc.push({
+      name: tag,
+      url: `${tag_url}/${tag}`
+    });
+  });
+  return acc;
+}, []);
+
+---
+<Layout title="Blog" urlMenuItem="/blog">
+
+  <div id="blog" class="flex justify-center flex-col px-5 items-center">
     <div class="max-w-screen-lg w-full">
             
-      <!-- Projects -->
+      <!-- Posts -->
       <section >
             
         <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
-            <Icon name="projects" class="mr-2" /> Proyectos
+            <Icon name="projects" class="mr-2" /> Blog
         </h1>
+
+        <!-- Input para búsqueda -->
+        <!-- <label class="input input-bordered flex items-center gap-2 mb-2">
+            <input type="text" class="grow" placeholder="Buscar" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
+        </label> -->
 
         {
         page.data.length === 0 ? (
           <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
-            <p class="font-bold">Lo siento!</p>
-            <p>No hay posts para mostrar en este momento. Vuelve más tarde!</p>
+            <p class="font-bold">Lo sientimos!</p>
+            <p>No hay posts para mostrar en este momento. Regresa más tarde.</p>
           </div>
         ) : (
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <ul>
             {page.data.map((project) => (
               <>
-                <Card
+                <HorizontalCard
                   title={project.data.title}
-                  desc={project.data.description}
+                  description={project.data.description}
                   pubDate={project.data.pubDate}
-                  img={project.data.heroImage}
+                  heroImage={project.data.heroImage}
                   badge={project.data.badge}
+                  tags={project.data.tags}
                   url={
-                  "/projects/" + createSlug(project.data.title, project.slug)
+                  "/blog/" + createSlug(project.data.title, project.slug)
                   }
                   target="_self"
-                  github={project.data.github}
-                  website={project.data.website}
-                  skills={project.data.skills}
                 />
+                <div class="divider my-0" />
               </>
             ))}
-          </div>
+          </ul>
             )
         } 
 
@@ -85,7 +100,7 @@ const { page } = Astro.props;
               >
                 <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
               </svg>{" "}
-              Proyectos Recientes
+              Posts Recientes
             </a>
           ) : (
             <div />
@@ -94,7 +109,7 @@ const { page } = Astro.props;
         {
           page.url.next ? (
             <a href={page.url.next} class="btn btn-ghost text-primary my-10 mx-5">
-              Proyectos Anteriores{" "}
+              Posts Anteriores{" "}
               <svg
                 class="h-6 w-6 fill-current md:h-8 md:w-8"
                 xmlns="http://www.w3.org/2000/svg"
