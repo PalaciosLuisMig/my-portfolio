@@ -1,11 +1,12 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import createSlug from "../lib/create_slug";
-import Card from "../components/Card.astro";
-import TimeLine from "../components/TimeLine.astro";
+import createSlug from "@lib/create_slug";
+import Card from "@components/Card.astro";
+import TimeLine from "@components/TimeLine.astro";
+import HorizontalCard from "@components/HorizontalCard.astro";
 
 import { TECH_STACK, EDUCATIONS, MYEMAIL, EXPERIENCES} from "../config";
 
@@ -14,6 +15,11 @@ const projects = (await getCollection("projects"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const last_posts = posts.slice(0, 3);
 ---
 
 <Layout urlMenuItem="/home">
@@ -73,17 +79,17 @@ const projects = (await getCollection("projects"))
         >
           <a
             class="hover:text-primary"
-            href="https://github.com/palaciosluismig"
-            target="_blank"
-          >
-            <Icon name="social_networks/github" size={30} />
-          </a>
-          <a
-            class="hover:text-primary"
             href="https://www.linkedin.com/in/palaciosluismig/"
             target="_blank"
           >
             <Icon name="social_networks/linkedin" size={30} />
+          </a>
+          <a
+            class="hover:text-primary"
+            href="https://github.com/palaciosluismig"
+            target="_blank"
+          >
+            <Icon name="social_networks/github" size={30} />
           </a>
           <a
             class="hover:text-primary"
@@ -383,7 +389,7 @@ const projects = (await getCollection("projects"))
           <Icon name="contact" class="mr-2" />Contacto
         </h2>
 
-        <div class="flex flex-wrap gap-4 justify-between">
+        <div class="flex flex-wrap gap-4 justify-between mb-6">
           <label id="lblEmail" class="input input-primary input-bordered flex items-center gap-2 w-full md:w-[60%]">
             <Icon name="email" size={20} />
             {MYEMAIL}
@@ -411,30 +417,60 @@ const projects = (await getCollection("projects"))
         </div>
       </div>
     </section>
+
+    <!-- Last Posts -->
+    <section class="max-w-screen-lg w-full mb-12">
+      <div class="w-full">
+        <h2
+          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center">
+          <Icon name="blog" class="mr-2" />Últimos posts
+        </h2>
+
+        <div class="flex flex-wrap gap-4 justify-between">
+          {last_posts.map((project) => (
+              <>
+                <HorizontalCard
+                  title={project.data.title}
+                  description={project.data.description}
+                  pubDate={project.data.pubDate}
+                  heroImage={project.data.heroImage}
+                  badge={project.data.badge}
+                  tags={project.data.tags}
+                  url={
+                  "/blog/" + createSlug(project.data.title, project.slug)
+                  }
+                  target="_self"
+                />
+                <div class="divider my-0" />
+              </>
+            ))}
+        </div>
+      </div>
+    </section>
   
   </div>
 </Layout>
 <script>
-  
-  const toastEmailCopy = document.getElementById("altEmailCopy");
-  
-  function emailCopy(text:string) {
-    const labelEmail = document.getElementById(text);
-    if (labelEmail){
+  document.addEventListener('astro:page-load', () => {
+    const toastEmailCopy = document.getElementById("altEmailCopy");
+    
+    function emailCopy(text:string) {
+      const labelEmail = document.getElementById(text);
+      if (labelEmail){
 
-      const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
-      navigator.clipboard.writeText(textEmail);
-      toastEmailCopy?.classList.remove("hidden");
-      setTimeout(()=> {
-        toastEmailCopy?.classList.add("hidden");
-      },2000);
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
     }
-  }
 
-  const btnEmailCopy = document.querySelector("#btnEmailCopy");
+    const btnEmailCopy = document.querySelector("#btnEmailCopy");
 
-  if (btnEmailCopy){
-    btnEmailCopy.addEventListener("click", () => {emailCopy("lblEmail")});
-  }
-  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", () => {emailCopy("lblEmail")});
+    }
+  })
 </script>

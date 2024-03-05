@@ -8,6 +8,7 @@ import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://luispalacios.dev',
   integrations: [tailwind(), mdx(), sitemap(), icon()],
   output: "server",
   adapter: netlify()

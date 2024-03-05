@@ -3,5 +3,11 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@lib/*": ["src/lib/*"],
+      "@content/*": ["src/content/*"]
+    }
   }
 }

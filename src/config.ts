@@ -31,7 +31,7 @@ export const MENU_ITEMS = [
     icon: "blog",
   },
   {
-    title: "Contact",
+    title: "Contacto",
     tooltip: "right",
     url: "/contact",
     icon: "contact",

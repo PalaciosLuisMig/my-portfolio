@@ -1,0 +1,120 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import HorizontalCard from "@components/HorizontalCard.astro";
+import {getCollection } from "astro:content";
+import createSlug from "@lib/create_slug";
+import type { Page } from "astro";
+
+export const prerender = true;
+
+export async function getStaticPaths({ paginate }) {
+  const all_posts = await getCollection("blog");
+  const all_tags = all_posts.flatMap((post) => {
+    return post.data.tags || [];
+  });
+
+  return all_tags.flatMap((tag) => {
+    const filtred_posts = all_posts.filter((post) => {
+      return post.data.tags?.includes(tag);
+    });
+    return paginate(filtred_posts, {
+      params: { tag },
+      pageSize: 10,
+    });
+  });
+}
+interface Props {
+    page:Page;
+}
+
+const { page } = Astro.props;
+const params = Astro.params;
+
+---
+<Layout title={"Blog - " + params.tag} urlMenuItem="/blog">
+
+  <div id="blog" class="flex justify-center flex-col px-5 items-center">
+    <div class="max-w-screen-lg w-full">
+            
+      <!-- Posts -->
+      <section >
+            
+        <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
+            <Icon name="projects" class="mr-2" /> Blog - {params.tag}
+        </h1>
+
+        {
+        page.data.length === 0 ? (
+          <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
+            <p class="font-bold">Lo sientimos!</p>
+            <p>No hay posts para mostrar en este momento. Regresa más tarde.</p>
+          </div>
+        ) : (
+          <ul>
+            {page.data.map((project) => (
+              <>
+                <HorizontalCard
+                  title={project.data.title}
+                  description={project.data.description}
+                  pubDate={project.data.pubDate}
+                  heroImage={project.data.heroImage}
+                  badge={project.data.badge}
+                  tags={project.data.tags}
+                  url={
+                  "/blog/" + createSlug(project.data.title, project.slug)
+                  }
+                  target="_self"
+                />
+                <div class="divider my-0" />
+              </>
+            ))}
+          </ul>
+            )
+        } 
+
+      <div class="flex justify-between">
+        {
+          page.url.prev ? (
+            <a href={page.url.prev} class="btn btn-ghost text-primary my-10 mx-5">
+              {" "}
+              <svg
+                class="h-6 w-6 fill-current md:h-8 md:w-8"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+              </svg>{" "}
+              Posts Recientes
+            </a>
+          ) : (
+            <div />
+          )
+        }
+        {
+          page.url.next ? (
+            <a href={page.url.next} class="btn btn-ghost text-primary my-10 mx-5">
+              Posts Anteriores{" "}
+              <svg
+                class="h-6 w-6 fill-current md:h-8 md:w-8"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                {" "}
+                <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+              </svg>
+            </a>
+          ) : (
+            <div />
+          )
+        }
+      </div>
+
+      </section>
+    </div>
+  </div>
+</Layout >

@@ -1,9 +1,9 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
-import Card from "../../components/Card.astro";
+import Card from "@components/Card.astro";
 import {getCollection } from "astro:content";
-import createSlug from "../../lib/create_slug";
+import createSlug from "@lib/create_slug";
 import type { Page } from "astro";
 
 export const prerender = true;
@@ -35,7 +35,7 @@ const { page } = Astro.props;
     <div class="max-w-screen-lg w-full">
             
       <!-- Projects -->
-      <section >
+      <section class="mb-12">
             
         <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
             <Icon name="projects" class="mr-2" /> Proyectos

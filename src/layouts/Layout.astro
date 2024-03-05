@@ -1,7 +1,7 @@
 ---
-import NavBar from "../components/NavBar.astro";
-import Footer from "../components/Footer.astro";
-import BaseHead  from "../components/BaseHead.astro";
+import NavBar from "@components/NavBar.astro";
+import Footer from "@components/Footer.astro";
+import BaseHead  from "@components/BaseHead.astro";
 
 import { TRANSITION_API,SITE_TITLE, SITE_DESCRIPTION } from "../config";
 
@@ -19,6 +19,7 @@ const {
 <!doctype html>
 <html lang="es" data-theme="fantasy" class="">
   <head>
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <BaseHead
       title={title}
       description={description}
@@ -45,26 +46,3 @@ const {
         padding-bottom: 0px;
     }
 </style>
-<script>
-  
-    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
-    
-    function emailCopy() {
-      const labelEmail = document.getElementById("lblEmailFooter");
-      if (labelEmail){
-  
-        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
-        navigator.clipboard.writeText(textEmail);
-        toastEmailCopy?.classList.remove("hidden");
-        setTimeout(()=> {
-          toastEmailCopy?.classList.add("hidden");
-        },2000);
-      }
-    }
-  
-    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
-  
-    if (btnEmailCopy){
-      btnEmailCopy.addEventListener("click", emailCopy);
-    }
-</script>

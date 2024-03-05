@@ -1,15 +1,14 @@
 ---
-import { type BlogSchema } from "../content/config";
-import Layout from "./Layout.astro";
+import { type BlogSchema } from "@content/config";
+import Layout from "@layouts/Layout.astro";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
 export interface Props extends BlogSchema {}
 
-const { title, description, pubDate, updatedDate, heroImage, badge, tags, url } = Astro.props;
+const { title, description, pubDate, heroImage, badge, tags } = Astro.props;
 
 dayjs.extend(localizedFormat);
 dayjs.locale(es);
@@ -69,25 +68,3 @@ const displayDate = dayjs(pubDate).format("LL");
     </article>
   </main>
 </Layout>
-<script>
-    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
-    
-    function emailCopy() {
-      const labelEmail = document.getElementById("lblEmailFooter");
-      if (labelEmail){
-  
-        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
-        navigator.clipboard.writeText(textEmail);
-        toastEmailCopy?.classList.remove("hidden");
-        setTimeout(()=> {
-          toastEmailCopy?.classList.add("hidden");
-        },2000);
-      }
-    }
-  
-    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
-  
-    if (btnEmailCopy){
-      btnEmailCopy.addEventListener("click", emailCopy);
-    }
-</script>

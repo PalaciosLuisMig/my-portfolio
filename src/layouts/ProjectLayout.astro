@@ -1,6 +1,6 @@
 ---
-import { type ProjectSchema } from "../content/config";
-import Layout from "./Layout.astro";
+import { type ProjectSchema } from "@content/config";
+import Layout from "@layouts/Layout.astro";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -103,25 +103,3 @@ const displayDate = dayjs(pubDate).format("LL");
     </article>
   </main>
 </Layout>
-<script>
-    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
-    
-    function emailCopy() {
-      const labelEmail = document.getElementById("lblEmailFooter");
-      if (labelEmail){
-  
-        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
-        navigator.clipboard.writeText(textEmail);
-        toastEmailCopy?.classList.remove("hidden");
-        setTimeout(()=> {
-          toastEmailCopy?.classList.add("hidden");
-        },2000);
-      }
-    }
-  
-    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
-  
-    if (btnEmailCopy){
-      btnEmailCopy.addEventListener("click", emailCopy);
-    }
-</script>

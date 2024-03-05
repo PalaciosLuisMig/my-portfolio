@@ -1,9 +1,9 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
-import HorizontalCard from "../../components/HorizontalCard.astro";
+import HorizontalCard from "@components/HorizontalCard.astro";
 import {getCollection } from "astro:content";
-import createSlug from "../../lib/create_slug";
+import createSlug from "@lib/create_slug";
 import type { Page } from "astro";
 
 export const prerender = true;
@@ -11,7 +11,7 @@ export const prerender = true;
 export async function getStaticPaths ({paginate}) {
     
     const posts = await getCollection("blog");
-    if(!posts) return paginate([], {pageSize:3,});
+    if(!posts) return paginate([], {pageSize: 3,});
 
     posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
     return paginate(posts, { pageSize: 3 });

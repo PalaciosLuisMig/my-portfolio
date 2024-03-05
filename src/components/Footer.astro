@@ -63,11 +63,11 @@ const currentYear = new Date().getFullYear();
                 </h4>
                 <div
                     class="flex flex-row gap-12 justify-start">
-                    <a  class="hover:text-primary" href="https://github.com/palaciosluismig" target="_blank">
-                        <Icon name="social_networks/github" size={30} />
-                    </a>
                     <a class="hover:text-primary" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank">
                         <Icon name="social_networks/linkedin" size={30} />
+                    </a>
+                    <a  class="hover:text-primary" href="https://github.com/palaciosluismig" target="_blank">
+                        <Icon name="social_networks/github" size={30} />
                     </a>
                     <a class="hover:text-primary" href="https://www.instagram.com/palaciosluismig/" target="_blank">
                         <Icon name="social_networks/instagram" size={30} />
@@ -82,7 +82,7 @@ const currentYear = new Date().getFullYear();
                 <ul class="list-image-[url(/check.svg)]">
                     <li><a href="/profile" class="no-underline hover:underline">Perfil</a></li>
                     <li><a href="/experience" class="no-underline hover:underline">Experiencia</a></li>
-                    <li><a href="/proyects" class="no-underline hover:underline">Proyectos</a></li>
+                    <li><a href="/projects" class="no-underline hover:underline">Proyectos</a></li>
                     <li><a href="/blog" class="no-underline hover:underline">Blog</a></li>
                 </ul>
             </div>
@@ -95,3 +95,28 @@ const currentYear = new Date().getFullYear();
         </div>
     </div>
 </footer>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const toastEmailCopy = document.getElementById("altEmailCopyFooter");
+    
+    function emailCopyFooter() {
+      const labelEmail = document.getElementById("lblEmailFooter");
+      if (labelEmail){
+  
+        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
+        navigator.clipboard.writeText(textEmail);
+        toastEmailCopy?.classList.remove("hidden");
+        setTimeout(()=> {
+          toastEmailCopy?.classList.add("hidden");
+        },2000);
+      }
+    }
+  
+    const btnEmailCopy = document.querySelector("#btnEmailCopyFooter");
+  
+    if (btnEmailCopy){
+      btnEmailCopy.addEventListener("click", emailCopyFooter);
+    }
+  })
+</script>
