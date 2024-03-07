@@ -138,7 +138,7 @@ export const TECH_STACK = [
   {
     category: "Database",
     logo: "postgresql",
-    name: "PosrgresQL",
+    name: "PostgreSQL",
   },
   {
     category: "Database",
