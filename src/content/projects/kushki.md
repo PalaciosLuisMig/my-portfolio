@@ -1,6 +1,6 @@
 ---
 title: "Integración con Kushki"
-description: "Página web de prueba utilizando la API de Kushki para simular una parasela de pagos con tarjeta de crédito."
+description: "Página web de prueba utilizando la API de Kushki para simular una pasarela de pagos con tarjeta de crédito."
 pubDate: "Mar 11 2022"
 important: true
 badge: ""

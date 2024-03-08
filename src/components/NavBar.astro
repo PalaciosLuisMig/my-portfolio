@@ -60,9 +60,27 @@ const { urlMenuItem } = Astro.props;
     </ul>
     <div class="navbar-end max-sm:w-1/3 ml-2 md:ml-0">
       <ThemeController />
-      <button class="btn text-lg btn-accent ml-4 max-md:hidden animate-bounce animate-twice transition">
+      <button id="btn-download" class="btn text-lg btn-accent ml-4 max-md:hidden hover:scale-105">
         <Icon name="download" />
         Descargar CV</button>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+
+    const btnDownload =  document.getElementById("btn-download");
+    
+    if (btnDownload){
+      btnDownload.addEventListener("click", function() {
+        const url = "/cv/CV-Luis-Miguel-Palacios.pdf";
+        var link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
+        link.click();
+    });
+    }
+    
+  });
+</script>

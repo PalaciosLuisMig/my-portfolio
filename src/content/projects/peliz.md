@@ -1,6 +1,6 @@
 ---
 title: "Peliz"
-description: "Sitio web para buscar películas y seríes de TV. Presentando el trailer, fecha de lanzamiento, género, tiempo de duración y la puntuación."
+description: "Sitio web para buscar películas y series de TV. Presentando el tráiler, fecha de lanzamiento, género, tiempo de duración y la puntuación."
 pubDate: "Aug 01 2023"
 important: true
 badge: "Nuevo"
