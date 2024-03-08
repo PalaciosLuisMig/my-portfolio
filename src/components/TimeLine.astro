@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-const { company, job, tags, date, city, country, logo, description, height, width } = Astro.props;
+const { company, job, tags, date, city, country, logo, description, requirements, height, width } = Astro.props;
 ---
 
 <ol
@@ -33,11 +33,23 @@ const { company, job, tags, date, city, country, logo, description, height, widt
       >{date} • {city} - {country}
     </time>
     <div class="lg:flex lg:justify-between">
-      <p
+      <div
         class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
       >
-        {description}
-      </p>
+        <p>{description}</p>   
+        
+        {requirements && <p class="font-semibold">Requerimientos:</p>}
+        <ol>
+          {
+          requirements &&
+            requirements.map((requirement: any) => (
+              <li>{requirement}</li>
+            ))
+          }
+        </ol>  
+        
+    </div>
+      
       <div
         class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
       >
