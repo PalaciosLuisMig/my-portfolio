@@ -4,7 +4,7 @@ description: "Sitio web para buscar películas y series de TV. Presentando el tr
 pubDate: "Aug 01 2023"
 important: true
 badge: "Nuevo"
-heroImage: "/peliz.webp"
+heroImage: "/projects/peliz.webp"
 github: "https://github.com/PalaciosLuisMig/peliz"
 website: "https://peliz.netlify.app/"
 tags: ["Front-end","API"]

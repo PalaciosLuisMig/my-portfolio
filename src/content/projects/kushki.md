@@ -4,7 +4,7 @@ description: "Página web de prueba utilizando la API de Kushki para simular una
 pubDate: "Mar 11 2022"
 important: true
 badge: ""
-heroImage: "/kushki.webp"
+heroImage: "/projects/kushki.webp"
 github: "https://github.com/PalaciosLuisMig/frontend-pasarela-de-pagos-con-kushki"
 website: "https://palaciosluismig.github.io/frontend-kushki"
 tags: ["Front-end","Back-end","API"]

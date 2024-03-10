@@ -41,7 +41,7 @@ const displayDate = dayjs(pubDate).format("LL");
         </h1>
         <p class="py-1 prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 lg:max-w-none font-normal line-clamp-3 md:line-clamp-4">{description}</p>
         {pubDate && <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{displayDate}</time>}
-        <div class="card-actions justify-end">
+        <div class="card-actions justify-end mt-4 ">
           {
             tags &&
               tags.map((tag) => (

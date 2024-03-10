@@ -3,7 +3,7 @@ title: "Aplicaciones para mejorar la productividad | Parte 1"
 description: "Se presenta tres aplicaciones para que puedas mejorar la productivadad en cualquier ámbito. Estas son Notion, Focus Plant y Bitwarden. Ingresa para conocer más :) "
 pubDate: "Mar 03 2024"
 updatedDate: "Mar 03 2024"
-heroImage: "/herrramientas-productivadad-p1.webp"
+heroImage: "/blogs/herrramientas-productivadad-p1.webp"
 badge: "Primer Post"
 tags: ["Aplicaciones","Productividad", "Notion","Focus Plant","Bitwarden"]
 url: "aplicaciones-productividad-parte-1"

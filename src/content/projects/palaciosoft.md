@@ -4,7 +4,7 @@ description: "Sitio web donde se ofrece servicios de creación de landing pages,
 pubDate: "Apr 01 2022"
 important: true
 badge: "Privado"
-heroImage: "/palaciosoft.webp"
+heroImage: "/projects/palaciosoft.webp"
 github: ""
 website: "https://palaciosoft.netlify.app/"
 tags: ["Front-end"]
