@@ -89,7 +89,7 @@ const postTags = page.data.reduce((acc, post) => {
       <div class="flex justify-between">
         {
           page.url.prev ? (
-            <a href={page.url.prev} class="btn btn-ghost text-primary my-10 mx-5">
+            <a href={page.url.prev} class="btn btn-primary my-10">
               {" "}
               <svg
                 class="h-6 w-6 fill-current md:h-8 md:w-8"
@@ -108,7 +108,7 @@ const postTags = page.data.reduce((acc, post) => {
         }
         {
           page.url.next ? (
-            <a href={page.url.next} class="btn btn-ghost text-primary my-10 mx-5">
+            <a href={page.url.next} class="btn btn-primary my-10">
               Posts Anteriores{" "}
               <svg
                 class="h-6 w-6 fill-current md:h-8 md:w-8"
