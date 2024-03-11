@@ -1,0 +1,53 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+---
+<Layout title="404 - Not Found" urlMenuItem="/">
+
+    <div class="flex justify-center flex-col px-5 items-center">
+        <div class="max-w-screen-lg w-full ">
+            
+            <!-- 404 -->
+            <section >
+            
+                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center  justify-center " >
+                    <Icon name="bug" class="mr-2" /> Error 404 - Página no encontrada
+                </h1>
+
+                <div class="flex flex-col flex-wrap gap-6  items-center  justify-center">
+                    <div class="flex justify-center items-center">
+                        <img
+                        src="/404.webp"
+                        alt="logo luis palacios"
+                        class="rounded-2xl max-w-xl"
+                        />
+                    </div>
+                    <div class="max-w-xl mb-8">
+                        <p class="mb-8">
+                            "¡Oops! Parece que te has aventurado a un lugar desconocido en el ciberespacio. Nuestros ingenieros están buscando bajo las alfombras y detrás de los monitores para encontrar la página que buscas. Mil disculpas por las molestias ocasionadas. Recuerda, el botón 'Regresar' es tu mejor amigo en esta travesía digital. ¡Ánimo, no estás solo en esta aventura!"
+                        </p>
+
+                        <button  id="btnReturnPage" class="btn btn-primary w-full">
+                            <Icon name="return" class="mr-2" /> Regresar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</Layout >
+<script>
+    document.addEventListener('astro:page-load', () => {
+
+        function goBack() {
+            window.history.back();
+        }
+
+        const btnReturnPage = document.querySelector("#btnReturnPage");
+        if(btnReturnPage){
+            btnReturnPage.addEventListener("click", goBack);
+        }
+    })
+</script>
