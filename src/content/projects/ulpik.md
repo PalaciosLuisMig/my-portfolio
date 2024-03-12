@@ -6,9 +6,9 @@ important: false
 badge: ""
 heroImage: "/projects/ulpik.webp"
 github: ""
-website: ""
+website: "https://www.ulpik.com"
 tags: ["Front-end","Bitrix24"]
-skills: [{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"},{"logo":"figma","name":"Figma"}]
+skills: [{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"},{"logo":"figma","name":"Figma"},{"logo":"bitrix24","name":"Bitrix24"}]
 ---
 
 # ⚙ Rediseño desde cero de la página web ULPIK
