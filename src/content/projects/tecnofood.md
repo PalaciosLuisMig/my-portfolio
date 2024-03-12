@@ -2,7 +2,7 @@
 title: "Tecno Food"
 description: "Rediseño desde cero del sitio web de TECNO FOOD que se encarga de la venta de productos para restaurantes como Sistemas de atención al cliente, Powerbanks con pantalla y Llamadores de clientes.  "
 pubDate: "Noviembre 22 2021"
-important: false
+important: true
 badge: ""
 heroImage: "/projects/tecnofood.webp"
 github: ""

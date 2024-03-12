@@ -11,7 +11,7 @@ export const prerender = true;
 export async function getStaticPaths({paginate}) {
   
   const projects = await getCollection("projects");
-  if (!projects) return paginate([], { pageSize: 3, });
+  if (!projects) return paginate([], { pageSize: 6, });
 
   let orderedProjects;
   const importantProjects = projects.filter((project) => project.data.important);
@@ -19,7 +19,7 @@ export async function getStaticPaths({paginate}) {
   const otherProjects = projects.filter((project) => !project.data.important);
   orderedProjects = orderedProjects.concat(otherProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()));
   projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  return paginate(orderedProjects, { pageSize: 3 });
+  return paginate(orderedProjects, { pageSize: 6 });
 };
 
 interface Props{
