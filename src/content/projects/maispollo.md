@@ -2,7 +2,7 @@
 title: "Maispollo"
 description: "Creación de una APP móvil en Android para mostrar información de la crianza de pollos en la asociación ASOPROTUR en el cantón Cuenca"
 pubDate: "Febrero 07 2019"
-important: false
+important: true
 badge: "Universidad"
 heroImage: "/projects/maispollo.webp"
 github: ""
