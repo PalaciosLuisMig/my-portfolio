@@ -69,6 +69,11 @@ const last_posts = posts.slice(0, 3);
           <p>
           📚 Si no estoy codificando, estoy leyendo libros sobre educación financiera y emprendimiento. Me gusta trabajar en equipo, ayudar a los demás y mi personalidad es extrovertido.
           </p>
+          
+          <button id="btn-download-index" class="btn text-lg btn-accent md:hidden hover:scale-105">
+            <Icon name="download" />Descargar CV
+          </button>
+
         </article>
 
         <div
@@ -449,6 +454,8 @@ const last_posts = posts.slice(0, 3);
 </Layout>
 <script>
   document.addEventListener('astro:page-load', () => {
+    
+    // Email Copy
     const toastEmailCopy = document.getElementById("altEmailCopy");
     
     function emailCopy(text:string) {
@@ -469,5 +476,19 @@ const last_posts = posts.slice(0, 3);
     if (btnEmailCopy){
       btnEmailCopy.addEventListener("click", () => {emailCopy("lblEmail")});
     }
+
+    // Download button 
+    const btnDownload =  document.getElementById("btn-download-index");
+    
+    if (btnDownload){
+      btnDownload.addEventListener("click", function() {
+        const url = "/cv/CV-Luis-Miguel-Palacios.pdf";
+        var link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
+        link.click();
+    });
+    }
+
   })
 </script>

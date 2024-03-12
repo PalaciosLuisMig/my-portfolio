@@ -31,7 +31,11 @@ import {EDUCATIONS} from "../config";
                 
                 <div class="flex flex-col md:w-3/4">
 
-                    <span class="bg-accent-content text-accent text-base font-medium me-2 px-2.5 py-0.5 rounded-xl mb-6">Mg. en Ingeniería de Software y Sistemas Informáticos • Ing. en Sistemas • Desarrollador Fullstack • SDPC • SMPC</span>
+                    <span class="bg-accent-content text-accent text-base font-medium px-2.5 py-1 rounded-xl mb-6">Mg. en Ingeniería de Software y Sistemas Informáticos • Ing. en Sistemas • Desarrollador Fullstack • SDPC • SMPC</span>
+                    
+                    <button id="btn-download-profile" class="btn mb-6 px-2.5 text-lg btn-accent md:hidden hover:scale-105">
+                        <Icon name="download" />Descargar CV
+                    </button>
 
                     <p class="prose dark:prose-invert mb-4 max-w-none">
                     Bienvenido a mi perfil. 👋 Soy Luis Palacios, un apasionado de la
@@ -204,3 +208,20 @@ import {EDUCATIONS} from "../config";
     </div>
   </div>
 </Layout>
+<script>
+  document.addEventListener('astro:page-load', () => {
+
+    const btnDownload =  document.getElementById("btn-download-profile");
+    
+    if (btnDownload){
+      btnDownload.addEventListener("click", function() {
+        const url = "/cv/CV-Luis-Miguel-Palacios.pdf";
+        var link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
+        link.click();
+    });
+    }
+    
+  });
+</script>
