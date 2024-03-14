@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import dayjs from "dayjs";
+import es from "dayjs/locale/es";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+
+const {title, date, subtitle, subtitle2, description, logo, imagen} = Astro.props;
+
+dayjs.extend(localizedFormat);
+dayjs.locale(es);
+const displayDate = dayjs(date).format("LL");
+---
+
+<li class="mb-10 ms-6 lg:mb-0">
+    <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
+        <Icon name="check" size={15} class="text-primary" />
+    </span>
+
+    <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
+        {title}
+    </h2>
+    <div class="flex flex-row gap-4 md:gap-0 mt-4 md:mt-6">
+        <div class="w-2/3 md:w-[40%]">
+            <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-5 leading-none text-gray-400 ">
+            {displayDate} • {subtitle} {subtitle2 && <span> • {subtitle2} </span>}
+            </time>
+            <div class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mt-4 font-semibold pb-4 lg:pb-2 lg:max-w-none lg:w-4/5" > 
+                <p class="md:mb-6">{description}</p>
+            </div>
+        </div>
+        <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max mb-4">
+            <Image
+            src=`${logo}` 
+            alt=`Logo de ${title}`
+            height="100"
+            width="100"
+            />
+        </div>
+    </div>    
+    <div class="flex flex-col-reverse md:flex-row lg:justify-between mb-8">
+        <img 
+            src=`${imagen}` 
+            alt=`$Imagen del ${description}`
+            class="w-1/2 max-md:w-full rounded-md"
+        />
+    </div>
+</li>

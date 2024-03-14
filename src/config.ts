@@ -177,8 +177,9 @@ export const EDUCATIONS = [
   {
     educational_center: "Universidad Internacional de la Rioja",
     specialty: "Maestría en Ingeniería de Software y Sistemas Informáticos",
-    date: "Oct 2022 - Jul 2023",
+    date: "Noviembre 30 2023",
     image: "/education/unir.webp",
+    certificate: "/education/maestria.webp",
     country: "España",
     modality: "Online",
     type: "university",
@@ -187,8 +188,9 @@ export const EDUCATIONS = [
   {
     educational_center: "Universidad Católica de Cuenca",
     specialty: "Ingeniería de Sistemas",
-    date: "Ago 2016 - Feb 2020",
+    date: "Febrero 12 2020",
     image: "/education/ucacue.png",
+    certificate: "/education/ingsistemas.webp",
     country: "Ecuador",
     modality: "Presencial",
     type: "university",
@@ -198,8 +200,9 @@ export const EDUCATIONS = [
     educational_center: "TÜV Rheinland Europe",
     specialty:
       "Internal Auditor ISO 27001:2022, Information Security Management Systems",
-    date: "Nov 2023",
+    date: "Noviembre 2023",
     image: "/education/treurope.webp",
+    certificate: "/education/27001.webp",
     country: "",
     modality: "Online",
     type: "certification",
@@ -209,8 +212,9 @@ export const EDUCATIONS = [
   {
     educational_center: "CertiProf",
     specialty: "SDPC - Scrum Developer Professional Certificate",
-    date: "Ene 2021",
+    date: "Enero 2021",
     image: "/education/certiprof.webp",
+    certificate: "/education/sdpc.webp",
     country: "",
     modality: "Online",
     type: "certification",
@@ -219,8 +223,9 @@ export const EDUCATIONS = [
   {
     educational_center: "CertiProf",
     specialty: "SMPC - Scrum Master Professional Certificate",
-    date: "Jul 2020",
+    date: "Julio 2020",
     image: "/education/certiprof.webp",
+    certificate: "/education/smpc.webp",
     country: "",
     modality: "Online",
     type: "certification",
@@ -229,8 +234,9 @@ export const EDUCATIONS = [
   {
     educational_center: "CertiProf",
     specialty: "SFPC - Scrum Foundation Professional Certificate",
-    date: "Jul 2020",
+    date: "Julio 2020",
     image: "/education/certiprof.webp",
+    certificate: "/education/sfpc.webp",
     country: "",
     modality: "Online",
     type: "certification",
@@ -239,8 +245,9 @@ export const EDUCATIONS = [
   {
     educational_center: "Udemy",
     specialty: "Master en JavaScript",
-    date: "Nov 2020",
+    date: "Noviembre 29 2020",
     image: "/education/udemy.webp",
+    certificate: "/education/masterjavascript.webp",
     country: "",
     modality: "Online",
     type: "course",
@@ -345,6 +352,26 @@ export const EXPERIENCES = [
       "Realizar el proceso de transmisión de votos electorales 🗳️. Fue mi primera experiencia laboral remunerada. Poder validar la transparencia del proceso de votación fue muy lindo hasta realizar el reconteo voto a voto.",
     height: 100,
     width: 100,
+  },
+];
+
+// ---------- Experience  ----------
+export const RECOGNITIONSANDAWARDS = [
+  {
+    title: "Mejor graduado de la Carrera de Ingeniería de Sistemas 2020",
+    center: "Universidad Católica de Cuenca",
+    expedition_date: "Febrero 12 2020",
+    description:
+      "La  Universidad  Católica  de  Cuenca,  y  Seguimiento  a  Graduados  me  ha  otorgado  el presente reconocimiento a la Excelencia y Mérito Académico por ser el mejor graduado de la Carrera de Ingeniería de Sistemas con un promedio 95 (Sobresaliente).",
+    image: "/awards/mejorgraduado.webp",
+  },
+  {
+    title: "2do lugar en el SALON  DE  EMPRENDIMIENTO  E  INNOVACIÓN  2016",
+    center: "Universidad Católica de Cuenca",
+    expedition_date: "Diciembre 08 2016",
+    description:
+      "Universidad Católica de Cuenca confiere el reconocimiento al proyecto: ALINPOL por haber obtenido el 2do. lugar en el SALON  DE  EMPRENDIMIENTO  E  INNOVACIÓN  2016, realizado en la Plaza del PORTAL REGIONAL DE ARTESANÍAS DE CUENCA-PRAC",
+    image: "/awards/alinpol.webp",
   },
 ];
 

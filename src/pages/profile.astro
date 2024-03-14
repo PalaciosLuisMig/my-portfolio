@@ -2,7 +2,8 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import {EDUCATIONS} from "../config";
+import {EDUCATIONS, RECOGNITIONSANDAWARDS} from "../config";
+import MiniCard from "@components/MiniCard.astro";
 ---
 
 <Layout title="Perfil" urlMenuItem="/profile">
@@ -79,33 +80,17 @@ import {EDUCATIONS} from "../config";
             EDUCATIONS.map((education) => {
                 if (education.type === "university") {
                 return (
-                    <li class="mb-10 ms-6 lg:mb-0">
-                        <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
-                            <Icon name="check" size={15} class="text-primary" />
-                        </span>
-                        
-                        <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
-                            {education.educational_center}
-                        </h2>
-
-                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
-                            {education.date} • {education.country} • {education.modality}
-                        </time>
-                        
-                        <div class="lg:flex lg:justify-between">
-                            <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5" > 
-                                {education.specialty} 
-                            </p>
-                            <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-                                <Image
-                                src=`${education.image}` alt={education.specialty}
-                                height="100"
-                                width="100"
-                                alt=`Logo ${education.specialty}`
-                                />
-                            </div>
-                        </div>
-                    </li>
+                    <>
+                    <MiniCard
+                        title={education.educational_center}
+                        date={education.date}
+                        subtitle={education.modality}
+                        subtitle2={education.country}
+                        description={education.specialty}
+                        logo={education.image}
+                        imagen={education.certificate}
+                    />
+                    </>
                 );
             }})
             }
@@ -124,33 +109,16 @@ import {EDUCATIONS} from "../config";
             EDUCATIONS.map((education) => {
                 if (education.type === "certification") {
                 return (
-                    <li class="mb-10 ms-6 lg:mb-0">
-                        <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
-                            <Icon name="check" size={15} class="text-primary" />
-                        </span>
-                        
-                        <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
-                            {education.educational_center}
-                        </h2>
-
-                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
-                            {education.date} • {education.modality}
-                        </time>
-                        
-                        <div class="lg:flex lg:justify-between">
-                            <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5" > 
-                                {education.specialty}
-                            </p>
-                            <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-                                <Image
-                                src=`${education.image}` alt={education.specialty}
-                                height="100"
-                                width="100"
-                                alt="Logo Austro Red"
-                                />
-                            </div>
-                        </div>
-                    </li>
+                    <>
+                    <MiniCard
+                        title={education.educational_center}
+                        date={education.date}
+                        subtitle={education.modality}
+                        description={education.specialty}
+                        logo={education.image}
+                        imagen={education.certificate}
+                    />
+                    </>
                 );
             }})
             }
@@ -160,51 +128,55 @@ import {EDUCATIONS} from "../config";
 
             <!-- Courses -->
             <section>
-            <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
-                <Icon name="programming" class="mr-2" />Cursos
-            </h1>
+                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
+                    <Icon name="programming" class="mr-2" />Cursos
+                </h1>
 
             
-            <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16 animate-fade-left lg:animate-fade-right">
+                <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16 animate-fade-left lg:animate-fade-right">
 
-            {
-            EDUCATIONS.map((education) => {
-                if (education.type === "course") {
-                return (
-                    <li class="mb-10 ms-6 lg:mb-0">
-                        <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
-                            <Icon name="check" size={15} class="text-primary" />
-                        </span>
-                        
-                        <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
-                            {education.educational_center}
-                        </h2>
-
-                        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
-                            {education.date} • {education.modality}
-                        </time>
-                        
-                        <div class="lg:flex lg:justify-between">
-                            <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5" > 
-                                {education.specialty}
-                            </p>
-                            <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-                                <Image
-                                src=`${education.image}` alt={education.specialty}
-                                height="100"
-                                width="100"
-                                alt="Logo Austro Red"
+                {
+                    EDUCATIONS.map((education) => {
+                        if (education.type === "course") {
+                        return (
+                            <>
+                                <MiniCard
+                                    title={education.educational_center}
+                                    date={education.date}
+                                    subtitle={education.modality}
+                                    description={education.specialty}
+                                    logo={education.image}
+                                    imagen={education.certificate}
                                 />
-                            </div>
-                        </div>
-                    </li>
-                );
-            }})
-            }
-            </ol>
+                            </>
+                            );
+                        }})
+                }
+                </ol>
 
             </section>
             
+            <!-- Recognitions and Awards -->
+            <section>
+                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
+                    <Icon name="medal" class="mr-2" />Reconocimientos & Premios
+                </h1>
+                <div class="flex flex-col md:flex-row gap-6 mb-12">
+                    {
+                        RECOGNITIONSANDAWARDS.map((award) =>{
+                            return(
+                                <div>
+                                    <img
+                                        src=`${award.image}`
+                                        alt=`Logo de ${award.title}`
+                                        class="rounded-md w-full"
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </section>
     </div>
   </div>
 </Layout>
@@ -221,7 +193,6 @@ import {EDUCATIONS} from "../config";
         link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
         link.click();
     });
-    }
-    
+    }    
   });
 </script>
