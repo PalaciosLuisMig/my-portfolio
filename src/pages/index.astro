@@ -126,6 +126,7 @@ const last_posts = posts.slice(0, 3);
                 description = {experience.description}
                 height = {experience.height}
                 width = {experience.width}
+                href = `/experience#${experience.href}`
                 >
                 </TimeLine>  
             );
@@ -443,10 +444,9 @@ const last_posts = posts.slice(0, 3);
                   }
                   target="_self"
                 />
-                <div class="divider my-0" />
+                <div class="divider my-0"></div>
               </>
             ))}
-        </div>
       </div>
     </section>
   

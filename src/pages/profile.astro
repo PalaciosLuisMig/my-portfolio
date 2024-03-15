@@ -165,13 +165,25 @@ import MiniCard from "@components/MiniCard.astro";
                     {
                         RECOGNITIONSANDAWARDS.map((award) =>{
                             return(
+                                <>
+                                <div>
+                                    
                                 <div>
                                     <img
-                                        src=`${award.image}`
-                                        alt=`Logo de ${award.title}`
-                                        class="rounded-md w-full"
-                                    />
+                                    src=`${award.image}`
+                                    alt=`Logo de ${award.title}`
+                                    class="rounded-md w-full"
+                                    />                                    
                                 </div>
+                                <div>
+                                    <h2 class="font-semibold prose-sm md:prose-base lg:prose-lg  my-2">{award.title}
+                                    </h2>
+                                    <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-5 leading-none text-gray-400">
+                                    {award.center} • {award.expedition_date}
+                                    </p>                                    
+                                </div>
+                                </div>
+                                </>
                             )
                         })
                     }

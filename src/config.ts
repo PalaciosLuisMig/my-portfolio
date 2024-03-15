@@ -277,12 +277,14 @@ export const EXPERIENCES = [
     ],
     height: 100,
     width: 100,
+    href: "autrored",
+    id: "autrored",
   },
   {
     company: "Banco del Austro",
     job: "Ingeniero de desarrollo",
     tags: ["Presencial"],
-    date: "Mayo 2022 - Septiembre 2022",
+    date: "Mayo 2022 - Septiembre 2022 • 5 meses ",
     city: "Cuenca",
     country: "Ecuador",
     logo: "/job_logos/bancodelaustro.png",
@@ -298,12 +300,14 @@ export const EXPERIENCES = [
     ],
     height: 150,
     width: 150,
+    href: "ba2",
+    id: "ba2",
   },
   {
     company: "Mastermoto",
     job: "Programador senior",
     tags: ["Presencial"],
-    date: "Enero 2022 - Mayo 2022",
+    date: "Enero 2022 - Mayo 2022 • 5 meses ",
     city: "Cuenca",
     country: "Ecuador",
     logo: "/job_logos/mastermoto.png",
@@ -317,12 +321,14 @@ export const EXPERIENCES = [
     ],
     height: 100,
     width: 100,
+    href: "mastermotops",
+    id: "mastermotops",
   },
   {
     company: "Banco del Austro",
     job: "Ingeniero de desarrollo",
     tags: ["Presencial"],
-    date: "Agosto 2019 - Enero 2022",
+    date: "Agosto 2019 - Enero 2022 • 2 años 6 meses ",
     city: "Cuenca",
     country: "Ecuador",
     logo: "/job_logos/bancodelaustro.png",
@@ -339,12 +345,14 @@ export const EXPERIENCES = [
     ],
     height: 150,
     width: 150,
+    href: "ba1",
+    id: "ba1",
   },
   {
     company: "Consejo Nacional Electoral ",
     job: "Operador de escaner",
     tags: ["Presencial"],
-    date: "Marzo 2019",
+    date: "Marzo 2019 • 1 mes",
     city: "Cuenca",
     country: "Ecuador",
     logo: "/job_logos/cne.png",
@@ -352,23 +360,27 @@ export const EXPERIENCES = [
       "Realizar el proceso de transmisión de votos electorales 🗳️. Fue mi primera experiencia laboral remunerada. Poder validar la transparencia del proceso de votación fue muy lindo hasta realizar el reconteo voto a voto.",
     height: 100,
     width: 100,
+    href: "cne",
+    id: "cne",
   },
 ];
 
 // ---------- Experience  ----------
 export const RECOGNITIONSANDAWARDS = [
   {
-    title: "Mejor graduado de la Carrera de Ingeniería de Sistemas 2020",
+    title:
+      "Mejor graduado de la Carrera de Ingeniería de Sistemas de la promosión 2020",
     center: "Universidad Católica de Cuenca",
-    expedition_date: "Febrero 12 2020",
+    expedition_date: "12 de febrero de 2020",
     description:
       "La  Universidad  Católica  de  Cuenca,  y  Seguimiento  a  Graduados  me  ha  otorgado  el presente reconocimiento a la Excelencia y Mérito Académico por ser el mejor graduado de la Carrera de Ingeniería de Sistemas con un promedio 95 (Sobresaliente).",
     image: "/awards/mejorgraduado.webp",
   },
   {
-    title: "2do lugar en el SALON  DE  EMPRENDIMIENTO  E  INNOVACIÓN  2016",
+    title:
+      "2do lugar en el Salon  de  emprendimiento e  innovación en el año 2016",
     center: "Universidad Católica de Cuenca",
-    expedition_date: "Diciembre 08 2016",
+    expedition_date: "08 de diciembre de 2016",
     description:
       "Universidad Católica de Cuenca confiere el reconocimiento al proyecto: ALINPOL por haber obtenido el 2do. lugar en el SALON  DE  EMPRENDIMIENTO  E  INNOVACIÓN  2016, realizado en la Plaza del PORTAL REGIONAL DE ARTESANÍAS DE CUENCA-PRAC",
     image: "/awards/alinpol.webp",

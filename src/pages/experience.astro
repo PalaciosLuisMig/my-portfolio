@@ -32,6 +32,7 @@ import TimeLine from "@components/TimeLine.astro";
                         requirements = {experience.requirements}
                         height = {experience.height}
                         width = {experience.width}
+                        id = {experience.id}
                         >
                         </TimeLine>  
                     );
@@ -43,3 +44,20 @@ import TimeLine from "@components/TimeLine.astro";
     </div>
   </div>
 </Layout >
+<script>  
+    document.addEventListener('astro:page-load', () => {
+    // Para ir a la sección especifica más la altura del menú
+    const url = new URL(window.location.href);
+    const fragment = url.hash;
+    if (fragment) {
+        const element = document.querySelector(fragment);
+        if (element) {
+            const menu = document.querySelector('#menulp') as HTMLElement;
+            const menuHeight = menu.offsetHeight; 
+            const offset = menuHeight + 20; 
+            element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" }); 
+            window.scrollBy(0, -offset);
+        }
+    }
+})
+</script>

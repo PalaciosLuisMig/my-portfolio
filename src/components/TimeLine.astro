@@ -2,59 +2,83 @@
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-const { company, job, tags, date, city, country, logo, description, requirements, height, width } = Astro.props;
+const { company, job, tags, date, city, country, logo, description, requirements, height, width, href, id} = Astro.props;
 ---
 
-<ol
-  class="relative border-s border-primary dark:border-gray-700 ml-4 animate-fade-left lg:animate-fade-right"
->
-  <li class="pb-8 md:pb-0 md:mb-10 ms-6 lg:mb-0">
-    <span
-      class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1"
-    >
-      <Icon name="check" size={15} class="text-primary" />
-    </span>
-    <h2
-      class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent"
-    >
-      {job} en {company}
+<ol class="relative border-s border-primary dark:border-gray-700 ml-4 animate-fade-left lg:animate-fade-right">
+  <li class="pb-8 md:pb-0 md:mb-10 ms-6 lg:mb-0"> 
 
-      {
-        tags &&
-          tags.map((tag: any) => (
-            <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-4">
-              {tag}
-            </span>
-          ))
-      }
-    </h2>
-    <time
-      class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6"
-      >{date} • {city} - {country}
-    </time>
-    <div class="lg:flex lg:justify-between">
-      <div
-        class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5"
-      >
-        <p>{description}</p>   
-        
-        {requirements && <p class="font-semibold">Requerimientos:</p>}
-        <ol>
-          {
-          requirements &&
-            requirements.map((requirement: any) => (
-              <li>{requirement}</li>
-            ))
+    {href ? (
+    
+        <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
+            <Icon name="check" size={15} class="text-primary" />
+        </span>
+        <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
+          {job} en {company}
+
+          { tags && tags.map((tag: any) => (
+                <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-4">
+                  {tag}
+                </span>
+              ))
           }
-        </ol>  
-        
-    </div>
-      
-      <div
-        class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max"
-      >
-        <Image src={logo} height={height} width={width} alt=`Logo ${company}` />
+        </h2>
+        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
+          {date} • {city} - {country}
+        </time>
+        <div class="lg:flex lg:justify-between">
+          <div class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
+            <div class="">{description}
+            </div>
+            <a href={href} class="btn btn-link p-0 hover:scale-105">
+              Ver más detalle
+            </a>
+          </div>
+          <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
+            <Image src={logo} height={height} width={width} alt=`Logo ${company}` />
+          </div>
+        </div>
+  
+    ) : (
+    <div id={id} >
+      <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
+          <Icon name="check" size={15} class="text-primary" />
+      </span>
+      <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
+        {job} en {company}
+
+        { tags && tags.map((tag: any) => (
+              <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-4">
+                {tag}
+              </span>
+            ))
+        }
+      </h2>
+      <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
+        {date} • {city} - {country}
+      </time>
+      <div class="lg:flex lg:justify-between">
+        <div class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
+          <p>{description}</p>   
+            
+          {requirements && <p class="font-semibold">Requerimientos:</p>}
+          <ol>
+            {
+            requirements && requirements.map((requirement: any) => (
+                <li>{requirement}</li>
+              ))
+            }
+          </ol>  
+            
+        </div>
+          
+        <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
+          <Image src={logo} height={height} width={width} alt=`Logo ${company}` />
+        </div>
       </div>
     </div>
+    )}
+
+      
   </li>
 </ol>
