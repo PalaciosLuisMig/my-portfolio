@@ -189,7 +189,7 @@ export const EDUCATIONS = [
     educational_center: "Universidad Católica de Cuenca",
     specialty: "Ingeniería de Sistemas",
     date: "Febrero 12 2020",
-    image: "/education/ucacue.png",
+    image: "/education/ucacue.webp",
     certificate: "/education/ingsistemas.webp",
     country: "Ecuador",
     modality: "Presencial",
