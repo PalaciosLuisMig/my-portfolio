@@ -1,6 +1,6 @@
 ---
 title: "Increíbles extensiones para Visual Studio Code | Parte 1"
-description: "Te presento una selección de extensiones imprescindibles para Visual Studio Code que mejorarán tu experiencia de desarrollo :) "
+description: "Te presento 3 extensiones imprescindibles para Visual Studio Code que mejorarán tu experiencia de desarrollo :) "
 pubDate: "Mar 17 2024"
 updatedDate: "Mar 17 2024"
 heroImage: "/blogs/extensiones-vscode-p1.webp"
