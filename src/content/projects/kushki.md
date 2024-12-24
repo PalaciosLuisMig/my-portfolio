@@ -3,11 +3,11 @@ title: "Integración con Kushki"
 description: "Página web de prueba utilizando la API de Kushki para simular una pasarela de pagos con tarjeta de crédito."
 pubDate: "Mar 11 2022"
 important: true
-badge: ""
+badge: "Fintech"
 heroImage: "/projects/kushki.webp"
 github: "https://github.com/PalaciosLuisMig/frontend-pasarela-de-pagos-con-kushki"
-website: "https://palaciosluismig.github.io/frontend-kushki"
-tags: ["Front-end","Back-end","API"]
+# website: "https://palaciosluismig.github.io/frontend-kushki"
+tags: ["Front-end","Back-end","API","Botón de Pagos"]
 skills: [{"logo":"React","name":"React"},{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"},{"logo":"git","name":"Git"},{"logo":"github","name":"GitHub"},{"logo":"githubpages","name":"GitHub Pages"}]
 ---
 

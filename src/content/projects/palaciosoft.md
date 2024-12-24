@@ -3,7 +3,7 @@ title: "Palaciosoft"
 description: "Sitio web donde se ofrece servicios de creación de landing pages, sitios web y tiendas online según sea el requerimiento del cliente."
 pubDate: "Apr 01 2022"
 important: true
-badge: "Privado"
+badge: "Emprendimiento"
 heroImage: "/projects/palaciosoft.webp"
 github: ""
 website: "https://palaciosoft.netlify.app/"

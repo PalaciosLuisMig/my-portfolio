@@ -3,7 +3,7 @@ title: "Peliz"
 description: "Sitio web para buscar películas y series de TV. Presentando el tráiler, fecha de lanzamiento, género, tiempo de duración y la puntuación."
 pubDate: "Aug 01 2023"
 important: true
-badge: "Nuevo"
+badge: "Realizado en la Maestría"
 heroImage: "/projects/peliz.webp"
 github: "https://github.com/PalaciosLuisMig/peliz"
 website: "https://peliz.netlify.app/"

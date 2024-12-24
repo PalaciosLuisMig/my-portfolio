@@ -107,6 +107,11 @@ export const TECH_STACK = [
   },
   {
     category: "Back-end",
+    logo: "dotnet",
+    name: ".NET",
+  },
+  {
+    category: "Back-end",
     logo: "quarkus",
     name: "Quarkus",
   },
@@ -124,6 +129,11 @@ export const TECH_STACK = [
     category: "Back-end",
     logo: "jmeter",
     name: "JMeter",
+  },
+  {
+    category: "Back-end",
+    logo: "openshift",
+    name: "OpenShift",
   },
   {
     category: "Database",
@@ -258,10 +268,34 @@ export const EDUCATIONS = [
 // ---------- Experience  ----------
 export const EXPERIENCES = [
   {
+    company: "Banco del Austro",
+    job: "Ingeniero de desarrollo",
+    tags: ["Actual","Presencial"],
+    date: "Mayo 2022 - Septiembre 2022 | Junio 2024 - Actualidad ",
+    city: "Cuenca",
+    country: "Ecuador",
+    logo: "/job_logos/bancodelaustro.png",
+    description:
+      "En el área de Medios de Pago realicé requerimientos de Backend y Frontend. Integraciones de software con proveedores (TechSoft). Implementación de mandatos de Visa y Mastercard sobre ISO 8583.",
+    requirements: [
+      "Desarrollar sección de microservicio con conexión al core bancario (Fitbank) para el débito a la cuenta con el objetivo de pagar la deuda de la tarjeta de crédito.",
+      "Implementación el servicio de código de motivo de rechazo para transacciones con tarjetas de Visa y Mastercard con el objetivo de visibilizar del porqué se rechazan las transacciones y cuando un comercio puede reintentar una transacción, para validar la transaccionalidad se utilizó simuladores Visa Test System (VTS) y Mastercard Simulation Plataform.",
+      "Apoyar en el desarrollo del sistema (OutSystems) para otorgar recompensas a los tarjetahabientes que realicen su primer consumo.",
+      "Implementación del mandato de Money Send.",
+      "Ejecución de casos de pruebas transaccionales desde AMT y POS.",
+      "Desarrollo de microservicio en Quarkus para afiliación de comercios con integración a Mastercard MATCH.",
+      "En curso para implementar un nuevo Facilitador de Pagos llamado Izipay de Perú para Ecuador. Utilizando la herramienta de FIME llamada SAVVI para la certificación del POS SUNMI T6820 contra Visa y Mastercard."
+    ],
+    height: 150,
+    width: 150,
+    href: "ba2",
+    id: "ba2",
+  },
+  {
     company: "AustoRed",
     job: "Ingeniero de desarrollo",
-    tags: ["Actual", "Presencial"],
-    date: "Octubre 2022 - Actualidad",
+    tags: ["Presencial"],
+    date: "Octubre 2022 - Mayo 2024 • 1 año 7 meses ",
     city: "Cuenca",
     country: "Ecuador",
     logo: "/job_logos/austrored.svg",
@@ -279,29 +313,6 @@ export const EXPERIENCES = [
     width: 100,
     href: "autrored",
     id: "autrored",
-  },
-  {
-    company: "Banco del Austro",
-    job: "Ingeniero de desarrollo",
-    tags: ["Presencial"],
-    date: "Mayo 2022 - Septiembre 2022 • 5 meses ",
-    city: "Cuenca",
-    country: "Ecuador",
-    logo: "/job_logos/bancodelaustro.png",
-    description:
-      "En el área de Tarjetas de Crédito ejecute requerimientos de Frontend con ASP.NET y Bankend con C#. Administración de base de datos en SQL Server. Integración y/o mejoras de software de proveedores (AlexSoft & TechSoft) hacia el sistema transaccional. Implementaciones de mandatos de franquicias como Visa y MasterCard. Integración con pasarelas de pago y Reporteria utilizando ETL.",
-    requirements: [
-      "Desarrollar sección de microservicio para que se conecte a Fitbank para el débito a la cuenta con el objetivo de pagar la deuda de la tarjeta de crédito.",
-      "Implementación el servicio de código de motivo de rechazo para transacciones con tarjetas de Visa y Mastercard con el objetivo de visibilizar del porqué se rechazan las transacciones y cuando un comercio puede reintentar una transacción, para validar la transaccionalidad se utilizó simuladores Visa Test System y Mastercard Simulation Plataform.",
-      "Apoyar en el desarrollo del sistema para otorgar recompensas a los tarjetahabientes que realicen su primer consumo.",
-      "Apoyo en la implementación de transacciones de Money Send.",
-      "Cambio masivo por medio de script en base de datos para usuarios ejecutivos en SysCards.",
-      "Apoyo en la ejecución de pruebas transaccionales desde AMT y POS.",
-    ],
-    height: 150,
-    width: 150,
-    href: "ba2",
-    id: "ba2",
   },
   {
     company: "Mastermoto",
@@ -365,7 +376,7 @@ export const EXPERIENCES = [
   },
 ];
 
-// ---------- Experience  ----------
+// ---------- Recognitions And Awards  ----------
 export const RECOGNITIONSANDAWARDS = [
   {
     title:

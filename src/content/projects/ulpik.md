@@ -3,7 +3,7 @@ title: "Ulpik"
 description: "Rediseño desde cero del sitio web de ULPIK que se encarga de apoyar a los negocios que impacten positivamente dando servicio jurídico mediante plataformas online."
 pubDate: "Julio 06 2021"
 important: true
-badge: ""
+badge: "Rediseño"
 heroImage: "/projects/ulpik.webp"
 github: ""
 website: "https://www.ulpik.com"
