@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animated";
+
+@plugin "daisyui" {
+  themes:
+    fantasy --default,
+    retro,
+    corporate,
+    aqua,
+    synthwave,
+    dark --prefersdark,
+    black,
+    night,
+    dracula;
+}
+
+/*
+  Conserva el variant `dark:` de Tailwind ligado a la clase `.dark` del <html>.
+  El ThemeController agrega/quita la clase `.dark` segun el tema seleccionado,
+  asi que los estilos `dark:*` (p. ej. dark:prose-invert) siguen funcionando.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Estilo global heredado del Layout: quita el padding inferior del ultimo item del timeline. */
+#timeline ol:last-of-type li:last-of-type {
+  padding-bottom: 0px;
+}

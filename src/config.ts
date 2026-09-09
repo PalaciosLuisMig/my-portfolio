@@ -5,6 +5,22 @@
 export const CV_DOWNLOAD = "/cv/CV-Luis-Miguel-Palacios.pdf";
 export const CV_FILENAME = "CV-Luis-Miguel-Palacios.pdf";
 
+// ---------- Themes ----------
+// Debe coincidir con los temas definidos en tailwind.config.mjs.
+// "dark" indica si el tema es oscuro (aplica la clase "dark" para los estilos dark: de Tailwind).
+export const THEMES = [
+  { name: "fantasy", label: "Fantasy", dark: false },
+  { name: "retro", label: "Retro", dark: false },
+  { name: "corporate", label: "Corporate", dark: false },
+  { name: "aqua", label: "Aqua", dark: false },
+  { name: "dark", label: "Dark", dark: true },
+  { name: "synthwave", label: "Synthwave", dark: false },
+  { name: "black", label: "Black", dark: true },
+  { name: "night", label: "Night", dark: true },
+  { name: "dracula", label: "Dracula", dark: true },
+];
+export const DEFAULT_THEME = "fantasy";
+
 // ---------- Menu Items ----------
 export const MENU_ITEMS = [
   {
