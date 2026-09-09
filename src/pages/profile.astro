@@ -2,7 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import {EDUCATIONS, RECOGNITIONSANDAWARDS} from "../config";
+import {EDUCATIONS, RECOGNITIONSANDAWARDS, CV_DOWNLOAD, CV_FILENAME} from "../config";
 import MiniCard from "@components/MiniCard.astro";
 ---
 
@@ -34,7 +34,7 @@ import MiniCard from "@components/MiniCard.astro";
 
                     <span class="bg-accent-content text-accent text-base font-medium px-2.5 py-1 rounded-xl mb-6">Mg. en Ingeniería de Software y Sistemas Informáticos • Ing. en Sistemas • Desarrollador Fullstack • SDPC • SMPC</span>
                     
-                    <button id="btn-download-profile" class="btn mb-6 px-2.5 text-lg btn-accent md:hidden hover:scale-105">
+                    <button id="btn-download-profile" class="btn mb-6 px-2.5 text-lg btn-accent md:hidden hover:scale-105" data-cv-url={CV_DOWNLOAD} data-cv-name={CV_FILENAME}>
                         <Icon name="download" />Descargar CV
                     </button>
 
@@ -199,10 +199,10 @@ import MiniCard from "@components/MiniCard.astro";
     
     if (btnDownload){
       btnDownload.addEventListener("click", function() {
-        const url = "/cv/CV-Luis-Miguel-Palacios.pdf";
+        const url = btnDownload.dataset.cvUrl || "";
         var link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
+        link.setAttribute("download", btnDownload.dataset.cvName || "");
         link.click();
     });
     }    

@@ -44,7 +44,7 @@ const displayDate = dayjs(pubDate).format("LL");
         <div class="card-actions justify-end mt-4 ">
           {
             tags &&
-              tags.map((tag) => (
+              tags.map((tag: string) => (
                 <a href={`${tag_url}/${tag}`} class="badge badge-outline mr-2 no-underline text-primary font-medium p-4">
                   {tag}
                 </a>

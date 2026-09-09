@@ -2,7 +2,8 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 // ---------- CV Download Link ----------
-export const CV_DOWNLOAD = "";
+export const CV_DOWNLOAD = "/cv/CV-Luis-Miguel-Palacios.pdf";
+export const CV_FILENAME = "CV-Luis-Miguel-Palacios.pdf";
 
 // ---------- Menu Items ----------
 export const MENU_ITEMS = [

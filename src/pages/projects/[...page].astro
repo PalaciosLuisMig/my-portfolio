@@ -13,7 +13,7 @@ export async function getStaticPaths({paginate}) {
   const projects = await getCollection("projects");
   if (!projects) return paginate([], { pageSize: 6, });
 
-  let orderedProjects;
+  let orderedProjects: typeof projects;
   const importantProjects = projects.filter((project) => project.data.important);
   orderedProjects = importantProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   const otherProjects = projects.filter((project) => !project.data.important);

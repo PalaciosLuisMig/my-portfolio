@@ -2,10 +2,10 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 
-import { MYEMAIL } from "../config";
+import { MYEMAIL, CV_DOWNLOAD, CV_FILENAME } from "../config";
 
 ---
-<Layout title="Experiencia" urlMenuItem="/contact">
+<Layout title="Contacto" urlMenuItem="/contact">
 
     <div class="flex justify-center flex-col px-5 items-center">
         <div class="max-w-screen-lg w-full">
@@ -65,7 +65,7 @@ import { MYEMAIL } from "../config";
                     
                 </div>
                 <div class="md:hidden">
-                    <button id="btn-download-contact" class="btn mb-12 px-2.5 text-lg btn-accent hover:scale-105 w-full">
+                    <button id="btn-download-contact" class="btn mb-12 px-2.5 text-lg btn-accent hover:scale-105 w-full" data-cv-url={CV_DOWNLOAD} data-cv-name={CV_FILENAME}>
                         <Icon name="download" />Descargar CV
                     </button>
                 </div>
@@ -102,10 +102,10 @@ import { MYEMAIL } from "../config";
     
     if (btnDownload){
       btnDownload.addEventListener("click", function() {
-        const url = "/cv/CV-Luis-Miguel-Palacios.pdf";
+        const url = btnDownload.dataset.cvUrl || "";
         var link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
+        link.setAttribute("download", btnDownload.dataset.cvName || "");
         link.click();
     });
     }

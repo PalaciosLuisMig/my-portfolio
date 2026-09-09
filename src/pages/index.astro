@@ -8,7 +8,7 @@ import Card from "@components/Card.astro";
 import TimeLine from "@components/TimeLine.astro";
 import HorizontalCard from "@components/HorizontalCard.astro";
 
-import { TECH_STACK, EDUCATIONS, MYEMAIL, EXPERIENCES} from "../config";
+import { TECH_STACK, EDUCATIONS, MYEMAIL, EXPERIENCES, CV_DOWNLOAD, CV_FILENAME} from "../config";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.important === true)
@@ -70,7 +70,7 @@ const last_posts = posts.slice(0, 3);
           📚 Si no estoy codificando, estoy leyendo libros sobre educación financiera y emprendimiento. Me gusta trabajar en equipo, ayudar a los demás y mi personalidad es extrovertido.
           </p>
           
-          <button id="btn-download-index" class="btn text-lg btn-accent md:hidden hover:scale-105 mb-2">
+          <button id="btn-download-index" class="btn text-lg btn-accent md:hidden hover:scale-105 mb-2" data-cv-url={CV_DOWNLOAD} data-cv-name={CV_FILENAME}>
             <Icon name="download" />Descargar CV
           </button>
 
@@ -484,10 +484,10 @@ const last_posts = posts.slice(0, 3);
     
     if (btnDownload){
       btnDownload.addEventListener("click", function() {
-        const url = "/cv/CV-Luis-Miguel-Palacios.pdf";
+        const url = btnDownload.dataset.cvUrl || "";
         var link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "CV-Luis-Miguel-Palacios.pdf");
+        link.setAttribute("download", btnDownload.dataset.cvName || "");
         link.click();
     });
     }

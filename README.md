@@ -1,54 +1,71 @@
-# Astro Starter Kit: Basics
+# Portafolio de Luis Palacios
 
-```sh
-npm create astro@latest -- --template basics
-```
+Portafolio web personal construido con Astro, Tailwind CSS y DaisyUI. Presenta perfil,
+experiencia laboral, proyectos, blog, educación y datos de contacto, con modo claro/oscuro
+y navegación tipo SPA mediante View Transitions.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+Sitio en producción: https://luispalacios.dev
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🧱 Stack
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+- **Astro 4** — framework principal
+- **Tailwind CSS** + **DaisyUI** — estilos y temas (`fantasy` claro / `dark` oscuro)
+- **@tailwindcss/typography** y **tailwindcss-animated** — tipografía y animaciones
+- **astro-icon** — íconos SVG
+- **dayjs** — formato de fechas en español
+- **Content Collections** con validación **Zod** — blog y proyectos en Markdown
+- **Netlify** — despliegue (adaptador `@astrojs/netlify`)
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## 📁 Estructura del proyecto
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── assets/            # Imágenes usadas dentro del bundle
+├── components/        # Componentes reutilizables (.astro)
+├── config.ts          # Datos del sitio: menú, stack, experiencia, educación, etc.
+├── content/
+│   ├── config.ts      # Esquemas Zod de las colecciones
+│   ├── blog/          # Posts del blog (.md)
+│   └── projects/      # Proyectos (.md)
+├── icons/             # Íconos SVG para astro-icon
+├── layouts/           # Layouts (Layout, PostLayout, ProjectLayout)
+├── lib/               # Utilidades (generación de slugs)
+└── pages/             # Rutas del sitio
+public/                # Assets estáticos (CV, imágenes de proyectos, logos)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🚀 Puesta en marcha
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Requisitos: Node.js y [pnpm](https://pnpm.io/) (el repo incluye `pnpm-lock.yaml`).
 
-Any static assets, like images, can be placed in the `public/` directory.
+```sh
+pnpm install       # instalar dependencias
+pnpm dev           # servidor de desarrollo en http://localhost:4321
+pnpm build         # astro check + build de producción en ./dist/
+pnpm preview       # previsualizar el build local
+```
 
-## 🧞 Commands
+## ✍️ Personalización del contenido
 
-All commands are run from the root of the project, from a terminal:
+- **Datos generales** (menú, stack tecnológico, experiencia, educación, premios, email,
+  título/descripción del sitio y enlace del CV): editar `src/config.ts`.
+- **CV**: colocar el PDF en `public/cv/` y actualizar `CV_DOWNLOAD` / `CV_FILENAME` en `src/config.ts`.
+- **Proyectos**: agregar un archivo `.md` en `src/content/projects/` con el frontmatter definido
+  en el esquema (`title`, `description`, `pubDate`, `important`, `heroImage`, `github`, `website`,
+  `tags`, `skills`, ...).
+- **Blog**: agregar un archivo `.md` en `src/content/blog/`.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Nota sobre los logos de `skills`
 
-## 👀 Want to learn more?
+En cada proyecto, los `skills` renderizan badges de [shields.io](https://shields.io/) usando
+slugs de [simple-icons](https://simpleicons.org/). El campo `logo` debe usar el slug en
+minúscula (por ejemplo `react`, `html5`, `css3`), de lo contrario el ícono no se muestra.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 🌗 Temas
+
+El tema (claro/oscuro) se gestiona en `src/components/ThemeController.astro` y se persiste en
+`localStorage`, respetando las transiciones de página de Astro.
+
+## 📄 Licencia
+
+Portafolio open source. Siéntete libre de tomarlo como referencia.

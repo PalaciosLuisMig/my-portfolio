@@ -8,7 +8,7 @@ heroImage: "/projects/kushki.webp"
 github: "https://github.com/PalaciosLuisMig/frontend-pasarela-de-pagos-con-kushki"
 # website: "https://palaciosluismig.github.io/frontend-kushki"
 tags: ["Front-end","Back-end","API","Botón de Pagos"]
-skills: [{"logo":"React","name":"React"},{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"},{"logo":"git","name":"Git"},{"logo":"github","name":"GitHub"},{"logo":"githubpages","name":"GitHub Pages"}]
+skills: [{"logo":"react","name":"React"},{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"},{"logo":"git","name":"Git"},{"logo":"github","name":"GitHub"},{"logo":"githubpages","name":"GitHub Pages"}]
 ---
 
 Esta langing page lo realice como parte de una prueba técnica por la postulación al puesto de **Technical Support Engineer** en la empresa de **Kushki**.

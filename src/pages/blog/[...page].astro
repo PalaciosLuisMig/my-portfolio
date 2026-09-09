@@ -22,22 +22,6 @@ interface Props {
 }
 
 const { page } = Astro.props;
-
-const postTags = page.data.reduce((acc, post) => {
-  // Get the url for filtering by tag
-  const url = "/blog/" + createSlug(post.data.title, post.slug)
-  const tag_url = url.split("/").slice(0, -1).join("/") + "/tag";
-
-  // Add the tag to the list of tags
-  post.data.tags.forEach((tag) => {
-    if (!acc.includes(tag)) acc.push({
-      name: tag,
-      url: `${tag_url}/${tag}`
-    });
-  });
-  return acc;
-}, []);
-
 ---
 <Layout title="Blog" urlMenuItem="/blog">
 
