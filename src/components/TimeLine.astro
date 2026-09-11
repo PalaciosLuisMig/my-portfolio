@@ -16,32 +16,34 @@ const {
   id,
   first = false,
   last = false,
-  side = "end", // "start" (izquierda) | "end" (derecha)
+  side = "end", // "start" (izquierda) | "end" (derecha) — solo aplica en desktop
 } = Astro.props;
 
-const contentClass = side === "start" ? "timeline-start md:text-end me-4" : "timeline-end ms-4";
+// En desktop se alterna izquierda/derecha. En movil todo va a la derecha (ver <style>).
+const contentClass =
+  side === "start" ? "timeline-start md:text-end me-4" : "timeline-end ms-4";
 ---
 
-<li id={id}>
+<li id={id} class="tl-item">
   <!-- Conector superior (omitido en el primer item para que la linea no sobresalga) -->
   {!first && <hr class="bg-base-300" />}
 
   <!-- Nodo: logo de la empresa -->
   <div class="timeline-middle">
     <span
-      class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-base-100 ring-2 ring-primary shadow-sm"
+      class="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center overflow-hidden rounded-full bg-base-100 ring-2 ring-primary shadow-sm"
     >
       <Image
         src={logo}
         height={48}
         width={48}
         alt={`Logo ${company}`}
-        class="h-8 w-8 object-contain"
+        class="h-7 w-7 md:h-8 md:w-8 object-contain"
       />
     </span>
   </div>
 
-  <!-- Contenido (alterna izquierda/derecha) -->
+  <!-- Contenido (alterna izquierda/derecha en desktop; ancho completo en movil) -->
   <div class={`${contentClass} mb-10`}>
     <div class={`flex flex-wrap items-baseline gap-x-2 ${side === "start" ? "md:justify-end" : ""}`}>
       <h3 class="text-lg md:text-xl font-bold text-base-content">{job}</h3>
@@ -56,7 +58,7 @@ const contentClass = side === "start" ? "timeline-start md:text-end me-4" : "tim
       tags && tags.length > 0 && (
         <div class={`mt-2 flex flex-wrap gap-2 ${side === "start" ? "md:justify-end" : ""}`}>
           {tags.map((tag: string) => (
-            <span class="badge badge-primary badge-outline text-xs">{tag}</span>
+            <span class="badge badge-primary badge-outline text-xs h-auto whitespace-normal py-1 text-left">{tag}</span>
           ))}
         </div>
       )
@@ -91,3 +93,45 @@ const contentClass = side === "start" ? "timeline-start md:text-end me-4" : "tim
 
   {!last && <hr class="bg-base-300" />}
 </li>
+
+<style is:global>
+  /* MOVIL: reconstruimos el item del timeline como flex (logo a la izquierda,
+     contenido a la derecha), evitando el grid alternado de DaisyUI que en
+     pantallas pequenas deja el contenido angosto y desalineado. */
+  @media (max-width: 767px) {
+    ul.timeline .tl-item {
+      display: grid;
+      grid-template-columns: 2.75rem 1fr;
+      grid-template-rows: auto auto auto;
+      column-gap: 0.75rem;
+      align-items: start;
+    }
+    ul.timeline .tl-item > .timeline-middle {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      align-self: start;
+      margin-top: 0.125rem;
+    }
+    /* Cualquiera de los dos lados ocupa la columna de contenido. */
+    ul.timeline .tl-item > .timeline-start,
+    ul.timeline .tl-item > .timeline-end {
+      grid-column: 2;
+      grid-row: 2;
+      text-align: left !important;
+      margin: 0 0 2.5rem 0;
+    }
+    /* La linea conectora vertical se ubica bajo el logo (columna 1). */
+    ul.timeline .tl-item > hr {
+      grid-column: 1;
+      width: 2px;
+      justify-self: center;
+    }
+    ul.timeline .tl-item > hr:first-child {
+      grid-row: 1;
+      height: 0;
+    }
+    ul.timeline .tl-item > hr:last-child {
+      grid-row: 3;
+    }
+  }
+</style>
