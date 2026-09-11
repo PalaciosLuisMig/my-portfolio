@@ -21,6 +21,10 @@ interface Props {
 const { entry } = Astro.props;
 const post: BlogSchema = entry.data;
 const { Content } = await entry.render();
+
+// Tiempo de lectura estimado a partir del contenido (~200 palabras/min).
+const words = (entry.body ?? "").trim().split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.round(words / 200));
 ---
 
 <PostLayout
@@ -31,6 +35,7 @@ const { Content } = await entry.render();
   heroImage={post.heroImage}
   badge={post.badge}
   tags={post.tags}
+  readingMinutes={readingMinutes}
 >
   <div class="mb-10">
     <Content />

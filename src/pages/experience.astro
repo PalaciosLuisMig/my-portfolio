@@ -1,64 +1,162 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
-import { EXPERIENCES } from "../config";
+import { EXPERIENCES, CV_DOWNLOAD, CV_FILENAME } from "../config";
 import TimeLine from "@components/TimeLine.astro";
+
+// Años de experiencia calculados desde el inicio de carrera (agosto 2019).
+const CAREER_START = new Date(2019, 7, 1);
+const now = new Date();
+let yearsOfExperience = now.getFullYear() - CAREER_START.getFullYear();
+const beforeAnniversary =
+  now.getMonth() < CAREER_START.getMonth() ||
+  (now.getMonth() === CAREER_START.getMonth() && now.getDate() < CAREER_START.getDate());
+if (beforeAnniversary) yearsOfExperience -= 1;
+
+const rolesCount = EXPERIENCES.length;
+const companiesCount = new Set(EXPERIENCES.map((e) => e.company)).size;
+
+const EXP_STATS = [
+  { value: `${yearsOfExperience}+`, label: "Años de experiencia", icon: "lucide:calendar-clock" },
+  { value: `${rolesCount}`, label: "Roles", icon: "lucide:briefcase" },
+  { value: `${companiesCount}`, label: "Empresas", icon: "lucide:building-2" },
+  { value: "15+", label: "Proyectos", icon: "lucide:folder-git-2" },
+  { value: "8+", label: "Certificaciones Visa & Mastercard", icon: "lucide:credit-card" },
+];
 ---
+
 <Layout title="Experiencia" urlMenuItem="/experience">
+  <div class="max-w-screen-lg mx-auto px-5">
 
-    <div class="flex justify-center flex-col px-5 items-center">
-        <div class="max-w-screen-lg w-full">
-            
-            <!-- Experience -->
-            <section >
-            
-                <p class="font-mono text-xs uppercase tracking-widest text-primary mt-10 mb-2">Trayectoria</p>
-                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-base-content mb-10 flex flex-row items-center gap-2" >
-                    <Icon name="lucide:briefcase" size={30} class="text-primary" /> Experiencia
-                </h1>
+    <!-- ============ HERO EXPERIENCIA ============ -->
+    <section class="pt-12 pb-8 md:pt-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2 animate-fade-down">Trayectoria</p>
+      <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-3 flex items-center gap-2 animate-fade-right">
+        <Icon name="lucide:briefcase" size={28} class="text-primary" />Experiencia
+      </h1>
+      <p class="text-base-content/70 max-w-2xl mb-8 animate-fade-right animate-delay-100">
+        Más de {yearsOfExperience} años construyendo software, con foco en arquitectura
+        de aplicaciones y soluciones de medios de pago para el sector financiero.
+      </p>
 
-                <ul id="timeline" class="timeline timeline-snap-icon timeline-vertical mb-16">
-                {EXPERIENCES.map((experience, i) => {
-                    return (
-                        <TimeLine
-                        company = {experience.company}
-                        job = {experience.job}
-                        tags = {experience.tags}
-                        date = {experience.date}
-                        city = {experience.city}
-                        country = {experience.country}
-                        logo = {experience.logo}
-                        description = {experience.description}
-                        requirements = {experience.requirements}
-                        id = {experience.id}
-                        first = {i === 0}
-                        last = {i === EXPERIENCES.length - 1}
-                        side = {i % 2 === 0 ? "start" : "end"}
-                        >
-                        </TimeLine>  
-                    );
-                })
-                }
-                </ul>
+      <!-- Metricas (aparecen escalonadas) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {EXP_STATS.map((stat, i) => (
+          <div
+            class="rounded-box border border-base-300 bg-base-100 p-5 text-center transition-all hover:border-primary hover:-translate-y-1 animate-fade-up"
+            style={`animation-delay: ${i * 100}ms`}
+          >
+            <Icon name={stat.icon} size={24} class="mx-auto mb-2 text-primary" />
+            <div class="text-2xl md:text-3xl font-bold text-base-content">{stat.value}</div>
+            <div class="font-mono text-[0.65rem] md:text-xs uppercase tracking-wide text-base-content/50 mt-1">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </section>
 
-            </section>
-    </div>
+    <!-- ============ TIMELINE ============ -->
+    <section>
+      <ul id="timeline" class="timeline timeline-snap-icon timeline-vertical mb-16">
+        {EXPERIENCES.map((experience, i) => (
+          <TimeLine
+            company={experience.company}
+            job={experience.job}
+            tags={experience.tags}
+            date={experience.date}
+            city={experience.city}
+            country={experience.country}
+            logo={experience.logo}
+            description={experience.description}
+            requirements={experience.requirements}
+            id={experience.id}
+            first={i === 0}
+            last={i === EXPERIENCES.length - 1}
+            side={i % 2 === 0 ? "start" : "end"}
+          />
+        ))}
+      </ul>
+    </section>
+
+    <!-- ============ CTA FINAL ============ -->
+    <section class="mb-16">
+      <div class="rounded-box bg-base-200 border border-base-300 p-8 md:p-10 text-center animate-fade-up">
+        <h2 class="text-xl md:text-2xl font-bold text-base-content mb-2">¿Quieres conocer más sobre mi trabajo?</h2>
+        <p class="text-base-content/70 max-w-xl mx-auto mb-6">
+          Descarga mi CV o escríbeme para conversar sobre proyectos de software,
+          arquitectura o medios de pago.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <button
+            id="btn-download-experience"
+            class="btn btn-primary"
+            data-cv-url={CV_DOWNLOAD}
+            data-cv-name={CV_FILENAME}
+          >
+            <Icon name="lucide:download" size={20} />Descargar CV
+          </button>
+          <a href="/contact" class="btn btn-outline">
+            <Icon name="lucide:mail" size={20} />Contáctame
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Boton flotante: volver arriba -->
+    <button
+      id="back-to-top"
+      class="btn btn-primary btn-circle fixed bottom-6 right-6 z-30 shadow-lg opacity-0 pointer-events-none transition-opacity"
+      aria-label="Volver arriba"
+    >
+      <Icon name="lucide:arrow-up" size={20} />
+    </button>
   </div>
-</Layout >
-<script>  
-    document.addEventListener('astro:page-load', () => {
-    // Para ir a la sección especifica más la altura del menú
-    const url = new URL(window.location.href);
-    const fragment = url.hash;
+</Layout>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    // Salto a una seccion via hash respetando la altura del menu.
+    const fragment = new URL(window.location.href).hash;
     if (fragment) {
-        const element = document.querySelector(fragment);
-        if (element) {
-            const menu = document.querySelector('#menulp') as HTMLElement;
-            const menuHeight = menu.offsetHeight; 
-            const offset = menuHeight + 20; 
-            element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" }); 
-            window.scrollBy(0, -offset);
-        }
+      const element = document.querySelector(fragment);
+      const menu = document.querySelector("#menulp") as HTMLElement | null;
+      if (element && menu) {
+        const offset = menu.offsetHeight + 20;
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.scrollBy(0, -offset);
+      }
     }
-})
+
+    // Descarga del CV.
+    const btnDownload = document.getElementById("btn-download-experience");
+    if (btnDownload) {
+      btnDownload.addEventListener("click", () => {
+        const url = (btnDownload as HTMLElement).dataset.cvUrl || "";
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", (btnDownload as HTMLElement).dataset.cvName || "");
+        link.click();
+      });
+    }
+
+    // Boton "volver arriba".
+    const backToTop = document.getElementById("back-to-top");
+    if (backToTop) {
+      const toggleBtn = () => {
+        const show = window.scrollY > 500;
+        backToTop.classList.toggle("opacity-0", !show);
+        backToTop.classList.toggle("pointer-events-none", !show);
+      };
+      toggleBtn();
+      window.addEventListener("scroll", toggleBtn, { passive: true });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  });
 </script>

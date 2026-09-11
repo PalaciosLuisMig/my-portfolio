@@ -2,117 +2,141 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import Card from "@components/Card.astro";
-import {getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import createSlug from "@lib/create_slug";
 import type { Page } from "astro";
 
 export const prerender = true;
 
-export async function getStaticPaths({paginate}) {
-  
+export async function getStaticPaths({ paginate }) {
   const projects = await getCollection("projects");
-  if (!projects) return paginate([], { pageSize: 6, });
+  if (!projects) return paginate([], { pageSize: 6 });
 
-  let orderedProjects: typeof projects;
-  const importantProjects = projects.filter((project) => project.data.important);
-  orderedProjects = importantProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  const otherProjects = projects.filter((project) => !project.data.important);
-  orderedProjects = orderedProjects.concat(otherProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()));
-  projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  return paginate(orderedProjects, { pageSize: 6 });
-};
+  const importantProjects = projects
+    .filter((project) => project.data.important)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const otherProjects = projects
+    .filter((project) => !project.data.important)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const orderedProjects = importantProjects.concat(otherProjects);
 
-interface Props{
-  page:Page;
+  return paginate(orderedProjects, {
+    pageSize: 6,
+    props: { total: orderedProjects.length },
+  });
 }
 
-const { page } = Astro.props;
+interface Props {
+  page: Page;
+  total: number;
+}
 
+const { page, total } = Astro.props;
+const totalPages = Math.max(1, page.lastPage);
 ---
+
 <Layout title="Proyectos" urlMenuItem="/projects">
+  <div class="max-w-screen-lg mx-auto px-5">
 
-  <div class="flex justify-center flex-col px-5 items-center">
-    <div class="max-w-screen-lg w-full">
-            
-      <!-- Projects -->
-      <section class="mb-12">
-            
-        <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
-            <Icon name="lucide:folder-git-2" class="mr-2" /> Proyectos
-        </h1>
+    <!-- ============ HERO PROYECTOS ============ -->
+    <section class="pt-12 pb-8 md:pt-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2 animate-fade-down">Portafolio</p>
+      <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-3 flex items-center gap-2 animate-fade-right">
+        <Icon name="lucide:folder-git-2" size={28} class="text-primary" />Proyectos
+      </h1>
+      <p class="text-base-content/70 max-w-2xl animate-fade-right animate-delay-100">
+        Una selección de proyectos en los que he trabajado: desarrollo web, integraciones
+        y soluciones a medida.
+        {total > 0 && (
+          <span class="font-medium text-base-content"> {total} en total.</span>
+        )}
+      </p>
+    </section>
 
-        {
-        page.data.length === 0 ? (
-          <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
-            <p class="font-bold">Lo siento!</p>
-            <p>No hay posts para mostrar en este momento. Vuelve más tarde!</p>
+    <!-- ============ GRID DE PROYECTOS ============ -->
+    <section class="mb-12">
+      {page.data.length === 0 ? (
+        <div role="alert" class="alert alert-warning">
+          <Icon name="lucide:info" size={20} />
+          <div>
+            <h3 class="font-bold">No hay proyectos por ahora</h3>
+            <p class="text-sm">Vuelve más tarde para ver nuevos trabajos.</p>
           </div>
-        ) : (
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {page.data.map((project) => (
-              <>
-                <Card
-                  title={project.data.title}
-                  desc={project.data.description}
-                  pubDate={project.data.pubDate}
-                  img={project.data.heroImage}
-                  badge={project.data.badge}
-                  url={
-                  "/projects/" + createSlug(project.data.title, project.slug)
-                  }
-                  target="_self"
-                  github={project.data.github}
-                  website={project.data.website}
-                  skills={project.data.skills}
-                />
-              </>
-            ))}
-          </div>
-            )
-        } 
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          {page.data.map((project, i) => (
+            <div class="animate-fade-up" style={`animation-delay: ${(i % 6) * 80}ms`}>
+              <Card
+                title={project.data.title}
+                desc={project.data.description}
+                pubDate={project.data.pubDate}
+                img={project.data.heroImage}
+                badge={project.data.badge}
+                url={"/projects/" + createSlug(project.data.title, project.slug)}
+                target="_self"
+                github={project.data.github}
+                website={project.data.website}
+                skills={project.data.skills}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
-      <div class="flex justify-between">
-        {
-          page.url.prev ? (
-            <a href={page.url.prev} class="btn btn-primary my-10">
-              {" "}
-              <svg
-                class="h-6 w-6 fill-current md:h-8 md:w-8"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-              </svg>{" "}
-              Proyectos Recientes
+      <!-- Paginacion -->
+      {totalPages > 1 && (
+        <div class="flex items-center justify-between gap-4">
+          {page.url.prev ? (
+            <a href={page.url.prev} class="btn btn-outline btn-sm md:btn-md gap-1">
+              <Icon name="lucide:arrow-left" size={18} />
+              <span class="hidden sm:inline">Recientes</span>
             </a>
           ) : (
-            <div />
-          )
-        }
-        {
-          page.url.next ? (
-            <a href={page.url.next} class="btn btn-primary my-10">
-              Proyectos Anteriores{" "}
-              <svg
-                class="h-6 w-6 fill-current md:h-8 md:w-8"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                {" "}
-                <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-              </svg>
+            <span />
+          )}
+
+          <span class="font-mono text-sm text-base-content/60">
+            Página {page.currentPage} de {totalPages}
+          </span>
+
+          {page.url.next ? (
+            <a href={page.url.next} class="btn btn-outline btn-sm md:btn-md gap-1">
+              <span class="hidden sm:inline">Anteriores</span>
+              <Icon name="lucide:arrow-right" size={18} />
             </a>
           ) : (
-            <div />
-          )
-        }
-      </div>
+            <span />
+          )}
+        </div>
+      )}
+    </section>
 
-      </section>
-    </div>
+    <!-- Boton flotante: volver arriba -->
+    <button
+      id="back-to-top"
+      class="btn btn-primary btn-circle fixed bottom-6 right-6 z-30 shadow-lg opacity-0 pointer-events-none transition-opacity"
+      aria-label="Volver arriba"
+    >
+      <Icon name="lucide:arrow-up" size={20} />
+    </button>
   </div>
-</Layout >
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const backToTop = document.getElementById("back-to-top");
+    if (backToTop) {
+      const toggleBtn = () => {
+        const show = window.scrollY > 500;
+        backToTop.classList.toggle("opacity-0", !show);
+        backToTop.classList.toggle("pointer-events-none", !show);
+      };
+      toggleBtn();
+      window.addEventListener("scroll", toggleBtn, { passive: true });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  });
+</script>

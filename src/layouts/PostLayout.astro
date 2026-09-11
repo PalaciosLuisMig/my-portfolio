@@ -2,68 +2,104 @@
 import { type BlogSchema } from "@content/config";
 import Layout from "@layouts/Layout.astro";
 import dayjs from "dayjs";
-import es from "dayjs/locale/es";
+import "dayjs/locale/es";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-export interface Props extends BlogSchema {}
+interface Props extends BlogSchema {
+  readingMinutes?: number;
+}
 
-const { title, description, pubDate, heroImage, badge, tags } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, badge, tags, readingMinutes } =
+  Astro.props;
 
 dayjs.extend(localizedFormat);
-dayjs.locale(es);
+dayjs.locale("es");
 const displayDate = dayjs(pubDate).format("LL");
-
+const updated = updatedDate ? dayjs(updatedDate).format("LL") : null;
 ---
-<Layout
-  title={title}
-  description={description}
-  image={heroImage}
-  ogType="article"
->
-  <main class="flex justify-center flex-col px-5 items-center">
-    <article class="prose max-w-screen-lg w-full">
-      
-      <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center ">
-        {title}
-      </h1>
-      <div class="flex justify-start items-start">
-        {
-          heroImage && (
-            <Image
-              width={960}
-              height={640}
-              src={heroImage}
-              alt={title}
-              class="w-full lg:w-2/3 mb-4 mt-0 border-2 rounded-t-2x rounded-lg border-primary"
-            />
-          )
-        }
-      </div>
-      
-      <!-- Date -->
-      {pubDate && <time class="block mb-4">{displayDate}</time>}
 
-      <!-- Badge -->
-      {badge && 
-        <div class="badge badge-primary font-medium mr-2 p-4 mb-2">
-          {badge}
+<Layout title={title} description={description} image={heroImage} ogType="article">
+  <div class="max-w-screen-lg mx-auto px-5">
+
+    <!-- ============ HERO DEL POST ============ -->
+    <section class="pt-10 md:pt-14">
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-1 text-sm text-base-content/60 hover:text-primary transition-colors mb-6 animate-fade-down"
+      >
+        <Icon name="lucide:arrow-left" size={16} />Volver al blog
+      </a>
+
+      <div class="animate-fade-up">
+        {badge && <span class="badge badge-accent badge-md font-medium mb-3">{badge}</span>}
+
+        <h1 class="text-2xl md:text-4xl font-extrabold text-base-content leading-tight mb-4">
+          {title}
+        </h1>
+
+        <p class="text-base-content/70 mb-4">{description}</p>
+
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-base-content/50">
+          {pubDate && (
+            <span class="flex items-center gap-1">
+              <Icon name="lucide:calendar" size={15} />{displayDate}
+            </span>
+          )}
+          {readingMinutes && (
+            <span class="flex items-center gap-1">
+              <Icon name="lucide:clock" size={15} />{readingMinutes} min de lectura
+            </span>
+          )}
+          {updated && (
+            <span class="flex items-center gap-1">
+              <Icon name="lucide:refresh-cw" size={15} />Actualizado: {updated}
+            </span>
+          )}
         </div>
-      }
-      
-      <!-- Tags -->
-      {
-        tags &&
-          tags.map((tag) => (
-            <div
-              class="badge badge-outline mr-2 no-underline text-primary font-medium p-4 mb-2"
-            >
-              {tag}
-            </div>
-          ))
-      }
-      
+      </div>
+    </section>
+
+    <!-- ============ IMAGEN DESTACADA ============ -->
+    {heroImage && (
+      <figure class="mt-8 overflow-hidden rounded-box border border-base-300 shadow-md animate-fade-up">
+        <Image width={1280} height={720} src={heroImage} alt={title} class="w-full object-cover" />
+      </figure>
+    )}
+
+    <!-- ============ TAGS (enlazan a la etiqueta) ============ -->
+    {tags && tags.length > 0 && (
+      <div class="mt-8 flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <a href={`/blog/tag/${tag}`} class="badge badge-soft badge-primary hover:badge-primary transition-colors">
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )}
+
+    <!-- ============ CONTENIDO ============ -->
+    <article class="prose dark:prose-invert max-w-none mt-8">
       <slot />
     </article>
-  </main>
+
+    <!-- ============ CTA FINAL ============ -->
+    <section class="my-14">
+      <div class="rounded-box bg-base-200 border border-base-300 p-8 text-center">
+        <h2 class="text-lg md:text-xl font-bold text-base-content mb-2">¿Te gustó este artículo?</h2>
+        <p class="text-base-content/70 max-w-xl mx-auto mb-6">
+          Explora más publicaciones o escríbeme si quieres conversar sobre el tema.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/blog" class="btn btn-primary btn-sm md:btn-md gap-2">
+            <Icon name="lucide:newspaper" size={18} />Ver más artículos
+          </a>
+          <a href="/contact" class="btn btn-outline btn-sm md:btn-md gap-2">
+            <Icon name="lucide:mail" size={18} />Contáctame
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>

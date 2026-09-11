@@ -1,112 +1,194 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
-
 import { MYEMAIL, CV_DOWNLOAD, CV_FILENAME } from "../config";
 
+const SOCIALS = [
+  { name: "LinkedIn", handle: "in/palaciosluismig", icon: "simple-icons:linkedin", url: "https://www.linkedin.com/in/palaciosluismig/" },
+  { name: "GitHub", handle: "palaciosluismig", icon: "simple-icons:github", url: "https://github.com/palaciosluismig" },
+  { name: "Instagram", handle: "@palaciosluismig", icon: "simple-icons:instagram", url: "https://www.instagram.com/palaciosluismig/" },
+];
 ---
+
 <Layout title="Contacto" urlMenuItem="/contact">
+  <div class="max-w-screen-lg mx-auto px-5">
 
-    <div class="flex justify-center flex-col px-5 items-center">
-        <div class="max-w-screen-lg w-full">
-            
-            <!-- Contact -->
-            <section >
-            
-                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
-                    <Icon name="lucide:mail" class="mr-2" /> Contáctame
-                </h1>
+    <!-- ============ HERO ============ -->
+    <section class="pt-12 pb-8 md:pt-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2 animate-fade-down">Hablemos</p>
+      <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-3 flex items-center gap-2 animate-fade-right">
+        <Icon name="lucide:mail" size={28} class="text-primary" />Contáctame
+      </h1>
+      <p class="text-base-content/70 max-w-2xl animate-fade-right animate-delay-100">
+        ¿Tienes un proyecto en mente o quieres conversar sobre software, arquitectura o
+        medios de pago? Escríbeme y te respondo pronto.
+      </p>
+    </section>
 
-                <h2 class="flex items-center mb-6 text-lg md:text-xl lg:text-2xl font-semibold ">
-                    Correo electrónico
-                </h2>
+    <div class="grid gap-6 lg:grid-cols-2 mb-16 items-start">
 
-                <div class="flex flex-wrap gap-4 justify-between mb-10">
-                    <label id="lblEmail" class="input input-primary flex items-center gap-2 w-full md:w-[60%]">
-                        <Icon name="lucide:at-sign" size={20} />
-                        {MYEMAIL}
-                    </label>
-                    <div class="flex w-full md:w-[37%] gap-4 justify-between">
-                        <div class="w-1/2">
-                        <a href={`mailto:${MYEMAIL}`} class="btn btn-primary w-full">
-                            <Icon name="lucide:send" class="inline-block ml-2" />
-                            Enviar
-                        </a>
-                        </div>
-                        <div class="w-1/2">
-                        <button id="btnEmailCopy" class="btn btn-primary w-full">
-                            <Icon name="lucide:copy" class="inline-block ml-2" />
-                            Copiar
-                        </button>
-                        </div>
-                        <div id="altEmailCopy" class="toast toast-center hidden">
-                        <div class="alert alert-info bg-accent">
-                            <span>Copiado</span>
-                            <Icon name="lucide:check" class="inline-block ml-2" />
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <h2 class="flex items-center mb-6 text-lg md:text-xl lg:text-2xl font-semibold">
-                    Redes sociales
-                </h2>
-                <div
-                    class="flex flex-row gap-12 justify-start mb-12">
-                    <a class="hover:text-primary" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank">
-                        <Icon name="simple-icons:linkedin" size={30} />
-                    </a>
-                    <a  class="hover:text-primary" href="https://github.com/palaciosluismig" target="_blank">
-                        <Icon name="simple-icons:github" size={30} />
-                    </a>
-                    <a class="hover:text-primary" href="https://www.instagram.com/palaciosluismig/" target="_blank">
-                        <Icon name="simple-icons:instagram" size={30} />
-                    </a>
-                    
-                </div>
-                <div class="md:hidden">
-                    <button id="btn-download-contact" class="btn mb-12 px-2.5 text-lg btn-accent hover:scale-105 w-full" data-cv-url={CV_DOWNLOAD} data-cv-name={CV_FILENAME}>
-                        <Icon name="lucide:download" />Descargar CV
-                    </button>
-                </div>
+      <!-- ============ FORMULARIO (Netlify Forms) ============ -->
+      <div class="card bg-base-100 border border-base-300 shadow-md animate-fade-up">
+        <div class="card-body">
+          <h2 class="card-title text-lg">
+            <Icon name="lucide:send" size={20} class="text-primary" />Envíame un mensaje
+          </h2>
 
-            </section>
+          <div id="form-success" role="alert" class="alert alert-success hidden mt-2">
+            <Icon name="lucide:circle-check" size={18} />
+            <span>¡Gracias! Tu mensaje fue enviado. Te responderé pronto.</span>
+          </div>
+
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/contact?success=true"
+            class="mt-2 flex flex-col gap-4"
+          >
+            <!-- Requeridos por Netlify Forms -->
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden">
+              <label>No llenar si eres humano: <input name="bot-field" /></label>
+            </p>
+
+            <label class="form-control w-full">
+              <span class="label-text mb-1 text-sm font-medium">Nombre</span>
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="Tu nombre"
+                class="input input-bordered w-full"
+              />
+            </label>
+
+            <label class="form-control w-full">
+              <span class="label-text mb-1 text-sm font-medium">Correo electrónico</span>
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="tucorreo@ejemplo.com"
+                class="input input-bordered w-full"
+              />
+            </label>
+
+            <label class="form-control w-full">
+              <span class="label-text mb-1 text-sm font-medium">Mensaje</span>
+              <textarea
+                name="message"
+                required
+                rows="5"
+                placeholder="Cuéntame en qué puedo ayudarte…"
+                class="textarea textarea-bordered w-full"
+              ></textarea>
+            </label>
+
+            <button type="submit" class="btn btn-primary gap-2">
+              <Icon name="lucide:send" size={18} />Enviar mensaje
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ============ DATOS DE CONTACTO ============ -->
+      <div class="flex flex-col gap-6">
+
+        <!-- Email -->
+        <div class="card bg-base-100 border border-base-300 shadow-md animate-fade-up animate-delay-100">
+          <div class="card-body">
+            <h2 class="card-title text-lg">
+              <Icon name="lucide:at-sign" size={20} class="text-primary" />Correo electrónico
+            </h2>
+            <p id="lblEmail" class="font-mono text-sm md:text-base text-base-content/80 break-all">{MYEMAIL}</p>
+            <div class="card-actions mt-2">
+              <a href={`mailto:${MYEMAIL}`} class="btn btn-primary btn-sm gap-2">
+                <Icon name="lucide:send" size={16} />Enviar
+              </a>
+              <button id="btnEmailCopy" class="btn btn-outline btn-sm gap-2">
+                <Icon name="lucide:copy" size={16} />Copiar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="card bg-base-100 border border-base-300 shadow-md animate-fade-up animate-delay-200">
+          <div class="card-body">
+            <h2 class="card-title text-lg">
+              <Icon name="lucide:share-2" size={20} class="text-primary" />Redes sociales
+            </h2>
+            <div class="flex flex-col gap-2 mt-1">
+              {SOCIALS.map((s) => (
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center gap-3 rounded-box border border-base-300 bg-base-200 px-4 py-3 transition-colors hover:border-primary"
+                >
+                  <Icon name={s.icon} size={22} class="text-base-content/70 group-hover:text-primary transition-colors" />
+                  <div class="flex-1 min-w-0">
+                    <div class="font-medium text-base-content">{s.name}</div>
+                    <div class="text-xs text-base-content/50 truncate">{s.handle}</div>
+                  </div>
+                  <Icon name="lucide:external-link" size={16} class="text-base-content/30 group-hover:text-primary transition-colors" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Descargar CV -->
+        <button
+          id="btn-download-contact"
+          class="btn btn-accent gap-2 hover:scale-[1.02] animate-fade-up animate-delay-300"
+          data-cv-url={CV_DOWNLOAD}
+          data-cv-name={CV_FILENAME}
+        >
+          <Icon name="lucide:download" size={20} />Descargar CV
+        </button>
+      </div>
+    </div>
+
+    <!-- Toast de "copiado" -->
+    <div id="altEmailCopy" class="toast toast-center hidden">
+      <div class="alert alert-success">
+        <Icon name="lucide:check" size={18} />
+        <span>Correo copiado</span>
+      </div>
     </div>
   </div>
-</Layout >
+</Layout>
+
 <script>
-  document.addEventListener('astro:page-load', () => {
-    const toastEmailCopy = document.getElementById("altEmailCopy");
-    
-    function emailCopy(text:string) {
-        const labelEmail = document.getElementById(text);
-        if (labelEmail){
-
-        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
-        navigator.clipboard.writeText(textEmail);
-        toastEmailCopy?.classList.remove("hidden");
-        setTimeout(()=> {
-            toastEmailCopy?.classList.add("hidden");
-        },2000);
-        }
-    }
-
-    const btnEmailCopy = document.querySelector("#btnEmailCopy");
-
-    if (btnEmailCopy){
-        btnEmailCopy.addEventListener("click", () => {emailCopy("lblEmail")});
-    }
-    })
-
-    const btnDownload =  document.getElementById("btn-download-contact");
-    
-    if (btnDownload){
-      btnDownload.addEventListener("click", function() {
-        const url = btnDownload.dataset.cvUrl || "";
-        var link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", btnDownload.dataset.cvName || "");
-        link.click();
+  document.addEventListener("astro:page-load", () => {
+    // Copiar correo al portapapeles con feedback (toast).
+    const toast = document.getElementById("altEmailCopy");
+    const btnCopy = document.getElementById("btnEmailCopy");
+    btnCopy?.addEventListener("click", () => {
+      const email = document.getElementById("lblEmail")?.textContent?.trim() || "";
+      navigator.clipboard.writeText(email);
+      toast?.classList.remove("hidden");
+      setTimeout(() => toast?.classList.add("hidden"), 2000);
     });
+
+    // Descargar CV.
+    const btnDownload = document.getElementById("btn-download-contact");
+    btnDownload?.addEventListener("click", () => {
+      const url = (btnDownload as HTMLElement).dataset.cvUrl || "";
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", (btnDownload as HTMLElement).dataset.cvName || "");
+      link.click();
+    });
+
+    // Mensaje de exito tras enviar el formulario (?success=true).
+    if (new URLSearchParams(window.location.search).get("success") === "true") {
+      const ok = document.getElementById("form-success");
+      ok?.classList.remove("hidden");
+      ok?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
+  });
 </script>
