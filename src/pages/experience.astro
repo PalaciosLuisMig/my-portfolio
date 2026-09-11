@@ -12,13 +12,13 @@ import TimeLine from "@components/TimeLine.astro";
             <!-- Experience -->
             <section >
             
-                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
-                    <Icon name="experience" class="mr-2" /> Experiencia
+                <p class="font-mono text-xs uppercase tracking-widest text-primary mt-10 mb-2">Trayectoria</p>
+                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-base-content mb-10 flex flex-row items-center gap-2" >
+                    <Icon name="lucide:briefcase" size={30} class="text-primary" /> Experiencia
                 </h1>
 
-                <div id="timeline" class="mb-16">
-                
-                {EXPERIENCES.map((experience) => {
+                <ul id="timeline" class="timeline timeline-snap-icon timeline-vertical mb-16">
+                {EXPERIENCES.map((experience, i) => {
                     return (
                         <TimeLine
                         company = {experience.company}
@@ -30,15 +30,16 @@ import TimeLine from "@components/TimeLine.astro";
                         logo = {experience.logo}
                         description = {experience.description}
                         requirements = {experience.requirements}
-                        height = {experience.height}
-                        width = {experience.width}
                         id = {experience.id}
+                        first = {i === 0}
+                        last = {i === EXPERIENCES.length - 1}
+                        side = {i % 2 === 0 ? "start" : "end"}
                         >
                         </TimeLine>  
                     );
                 })
                 }
-                </div>
+                </ul>
 
             </section>
     </div>

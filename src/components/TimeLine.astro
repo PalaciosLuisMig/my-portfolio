@@ -2,83 +2,92 @@
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-const { company, job, tags, date, city, country, logo, description, requirements, height, width, href, id} = Astro.props;
+const {
+  company,
+  job,
+  tags,
+  date,
+  city,
+  country,
+  logo,
+  description,
+  requirements,
+  href,
+  id,
+  first = false,
+  last = false,
+  side = "end", // "start" (izquierda) | "end" (derecha)
+} = Astro.props;
+
+const contentClass = side === "start" ? "timeline-start md:text-end me-4" : "timeline-end ms-4";
 ---
 
-<ol class="relative border-s border-primary dark:border-gray-700 ml-4 animate-fade-left lg:animate-fade-right">
-  <li class="pb-8 md:pb-0 md:mb-10 ms-6 lg:mb-0"> 
+<li id={id}>
+  <!-- Conector superior (omitido en el primer item para que la linea no sobresalga) -->
+  {!first && <hr class="bg-base-300" />}
 
-    {href ? (
-    
-        <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
-            <Icon name="check" size={15} class="text-primary" />
-        </span>
-        <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
-          {job} en {company}
+  <!-- Nodo: logo de la empresa -->
+  <div class="timeline-middle">
+    <span
+      class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-base-100 ring-2 ring-primary shadow-sm"
+    >
+      <Image
+        src={logo}
+        height={48}
+        width={48}
+        alt={`Logo ${company}`}
+        class="h-8 w-8 object-contain"
+      />
+    </span>
+  </div>
 
-          { tags && tags.map((tag: any) => (
-                <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-4">
-                  {tag}
-                </span>
-              ))
-          }
-        </h2>
-        <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
-          {date} • {city} - {country}
-        </time>
-        <div class="lg:flex lg:justify-between">
-          <div class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
-            <div class="">{description}
-            </div>
-            <a href={href} class="btn btn-link p-0 hover:scale-105">
-              Ver más detalle
-            </a>
-          </div>
-          <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-            <Image src={logo} height={height} width={width} alt=`Logo ${company}` />
-          </div>
-        </div>
-  
-    ) : (
-    <div id={id} >
-      <span class="absolute flex items-center justify-center w-4 h-4 md:w-6 md:h-6 bg-primary-content rounded-full -start-2 md:-start-3 ring-2 ring-primary mt-1">
-          <Icon name="check" size={15} class="text-primary" />
-      </span>
-      <h2 class="flex items-center mb-1 text-lg md:text-xl lg:text-2xl font-semibold text-accent">
-        {job} en {company}
-
-        { tags && tags.map((tag: any) => (
-              <span class="bg-primary-content text-primary text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-4">
-                {tag}
-              </span>
-            ))
-        }
-      </h2>
-      <time class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-2 leading-none text-gray-400 pb-6">
-        {date} • {city} - {country}
-      </time>
-      <div class="lg:flex lg:justify-between">
-        <div class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg pb-4 lg:pb-8 lg:max-w-none lg:w-4/5">
-          <p>{description}</p>   
-            
-          {requirements && <p class="font-semibold">Requerimientos:</p>}
-          <ol>
-            {
-            requirements && requirements.map((requirement: any) => (
-                <li>{requirement}</li>
-              ))
-            }
-          </ol>  
-            
-        </div>
-          
-        <div class="dark:bg-white dark:inline-block dark:p-2 dark:rounded-md dark:h-max">
-          <Image src={logo} height={height} width={width} alt=`Logo ${company}` />
-        </div>
-      </div>
+  <!-- Contenido (alterna izquierda/derecha) -->
+  <div class={`${contentClass} mb-10`}>
+    <div class={`flex flex-wrap items-baseline gap-x-2 ${side === "start" ? "md:justify-end" : ""}`}>
+      <h3 class="text-lg md:text-xl font-bold text-base-content">{job}</h3>
+      <span class="text-lg md:text-xl font-semibold text-accent">· {company}</span>
     </div>
-    )}
 
-      
-  </li>
-</ol>
+    <p class="font-mono text-xs md:text-sm text-base-content/50 mt-1">
+      {date} · {city}, {country}
+    </p>
+
+    {
+      tags && tags.length > 0 && (
+        <div class={`mt-2 flex flex-wrap gap-2 ${side === "start" ? "md:justify-end" : ""}`}>
+          {tags.map((tag: string) => (
+            <span class="badge badge-primary badge-outline text-xs">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <p class="mt-3 text-sm md:text-base text-base-content/80 leading-relaxed">
+      {description}
+    </p>
+
+    {
+      requirements && requirements.length > 0 && (
+        <ul class="mt-3 space-y-1.5 text-start">
+          {requirements.map((requirement: string) => (
+            <li class="flex gap-2 text-sm text-base-content/70">
+              <Icon name="lucide:check" size={16} class="mt-1 shrink-0 text-primary" />
+              <span>{requirement}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      href && (
+        <a href={href} class={`btn btn-link btn-sm px-0 mt-2 no-underline hover:underline ${side === "start" ? "md:float-right" : ""}`}>
+          Ver más detalle
+          <Icon name="lucide:arrow-right" size={16} />
+        </a>
+      )
+    }
+  </div>
+
+  {!last && <hr class="bg-base-300" />}
+</li>
