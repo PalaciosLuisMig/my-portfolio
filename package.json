@@ -16,18 +16,22 @@
     "@astrojs/mdx": "^3.1.9",
     "@astrojs/netlify": "^5.5.4",
     "@astrojs/sitemap": "^3.0.5",
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^4.16.19",
-    "astro-icon": "^1.1.0",
-    "dayjs": "^1.11.10",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^5.3.3"
-  },
-  "devDependencies": {
     "@iconify-json/lucide": "^1.2.130",
     "@iconify-json/simple-icons": "^1.2.95",
     "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^4.16.19",
+    "astro-icon": "^1.1.0",
     "daisyui": "^5.7.32",
-    "tailwindcss-animated": "^2.1.0"
+    "dayjs": "^1.11.10",
+    "tailwindcss": "^4.3.3",
+    "tailwindcss-animated": "^2.1.0",
+    "typescript": "^5.3.3"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": ["current", "linux"],
+      "cpu": ["current", "x64"]
+    }
   }
 }
