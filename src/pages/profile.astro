@@ -2,209 +2,457 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import {EDUCATIONS, RECOGNITIONSANDAWARDS, CV_DOWNLOAD, CV_FILENAME} from "../config";
-import MiniCard from "@components/MiniCard.astro";
+import { EDUCATIONS, RECOGNITIONSANDAWARDS, CV_DOWNLOAD, CV_FILENAME } from "../config";
+import EduCard from "@components/EduCard.astro";
+
+// Chips de titulacion resumidos para el hero.
+const CREDENTIALS = [
+  "Mg. Ingeniería de Software",
+  "Ing. en Sistemas",
+  "Desarrollador Fullstack",
+  "Scrum (SDPC · SMPC)",
+];
+
+// Metadatos por tipo de formación (badge + icono), coherentes con la home.
+const EDU_TYPE_META = {
+  university: { label: "Título", icon: "lucide:graduation-cap", badge: "badge-primary" },
+  certification: { label: "Certificación", icon: "lucide:badge-check", badge: "badge-secondary" },
+  course: { label: "Curso", icon: "lucide:book-open", badge: "badge-accent" },
+  participate: { label: "Participación", icon: "lucide:users", badge: "badge-info" },
+};
+const eduMeta = (type: string) =>
+  EDU_TYPE_META[type as keyof typeof EDU_TYPE_META] ?? EDU_TYPE_META.course;
+
+// Normalizamos cada item con id estable y comportamiento derivado del dato:
+//   url no vacia -> enlace externo | certificate -> modal | ninguno -> informativo.
+type EduRaw = (typeof EDUCATIONS)[number];
+const eduItems = EDUCATIONS.map((e, index) => {
+  const url = "url" in e && e.url ? (e.url as string) : "";
+  const certificate = "certificate" in e && e.certificate ? (e.certificate as string) : "";
+  return {
+    data: e as EduRaw & { url?: string; country?: string },
+    meta: eduMeta(e.type),
+    externalUrl: url || null,
+    certificate: !url && certificate ? certificate : null,
+    modalId: `profile-cert-${index}`,
+  };
+});
+
+const eduUniversity = eduItems.filter((i) => i.data.type === "university");
+const eduCertifications = eduItems.filter((i) => i.data.type === "certification");
+const eduCourses = eduItems.filter((i) => i.data.type === "course");
+const eduParticipations = eduItems.filter((i) => i.data.type === "participate");
+const eduModals = eduItems.filter((i) => i.certificate);
+
+// Cursos: mostramos los primeros 6 y el resto se revela con un toggle (como en la home).
+const COURSES_VISIBLE = 6;
+const eduCoursesVisible = eduCourses.slice(0, COURSES_VISIBLE);
+const eduCoursesHidden = eduCourses.slice(COURSES_VISIBLE);
+
+// Secciones navegables (solo las que tienen contenido). Conteos automaticos.
+const SECTIONS = [
+  { id: "universidad", label: "Universidad", icon: "lucide:graduation-cap", count: eduUniversity.length },
+  { id: "certificaciones", label: "Certificaciones", icon: "lucide:badge-check", count: eduCertifications.length },
+  { id: "cursos", label: "Cursos", icon: "lucide:code-xml", count: eduCourses.length },
+  { id: "participaciones", label: "Participaciones", icon: "lucide:users", count: eduParticipations.length },
+  { id: "reconocimientos", label: "Reconocimientos", icon: "lucide:award", count: RECOGNITIONSANDAWARDS.length },
+].filter((s) => s.count > 0);
 ---
 
 <Layout title="Perfil" urlMenuItem="/profile">
-    <div class="flex justify-center flex-col px-5 items-center">
-        <div class="max-w-screen-lg w-full">
-            
-            <!-- Profile -->
-            <section>
-            
-            <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
-                <Icon name="lucide:user-round" class="mr-2" /> Perfil
-            </h1>
+  <div class="max-w-screen-lg mx-auto px-5">
 
-            <div class="md:flex md:justify-between gap-10">
-                <div
-                    class="flex md:grid md:order-last justify-center items-center md:justify-end md:items-center animate-fade-left md:content-start max-sm:animate-fade-right mb-10"
-                >
-                    <Image
-                    src="/yo.webp"
-                    height="175"
-                    width="175"
-                    alt="Logo Luis Palacios"
-                    class="rounded-full"
-                    />
-                </div>
-                
-                <div class="flex flex-col md:w-3/4">
+    <!-- ============ HERO PERFIL ============ -->
+    <section class="py-14 md:py-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Sobre mí</p>
+      <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-10 flex items-center gap-2">
+        <Icon name="lucide:user-round" size={28} class="text-primary" />Perfil
+      </h1>
 
-                    <span class="bg-accent-content text-accent text-base font-medium px-2.5 py-1 rounded-xl mb-6">Mg. en Ingeniería de Software y Sistemas Informáticos • Ing. en Sistemas • Desarrollador Fullstack • SDPC • SMPC</span>
-                    
-                    <button id="btn-download-profile" class="btn mb-6 px-2.5 text-lg btn-accent md:hidden hover:scale-105" data-cv-url={CV_DOWNLOAD} data-cv-name={CV_FILENAME}>
-                        <Icon name="lucide:download" />Descargar CV
-                    </button>
-
-                    <p class="prose dark:prose-invert mb-4 max-w-none">
-                    Bienvenido a mi perfil. 👋 Soy Luis Palacios, un apasionado de la
-                    tecnología de origen ecuatoriano y una crianza en el entorno rural de la
-                    provincia del Azuay, rodeado de naturaleza y animales.
-                    </p>
-                    <p class="prose dark:prose-invert mb-4 max-w-none">
-                    Desde mis primeros años escolares, la informática 🖥️ capturó mi interés de
-                    manera innegable. Recuerdo con emoción la sensación de asombro al
-                    descubrir que mi computadora podía conectarse a internet, abriendo un
-                    mundo de posibilidades para investigar y aprender sobre mis intereses.
-                    </p>
-                    <p class="prose dark:prose-invert mb-4 max-w-none">
-                    Este descubrimiento marcó mi ingreso al mundo de la programación 👨‍💻, donde
-                    encontré una vía para materializar ideas que alguna vez consideré
-                    imposibles. A lo largo de mi trayectoria, he adquirido habilidades y
-                    conocimientos que me permiten abordar proyectos de software complejos
-                    con confianza y determinación.
-                    </p>
-                    <p class="prose dark:prose-invert mb-4 max-w-none">
-                    Mi experiencia 💼 me ha llevado a desarrollar competencias en áreas tan
-                    diversas como arquitectura de software, infraestructura tecnológica,
-                    seguridad de la información, gestión de operaciones y cumplimiento
-                    normativo. Estoy comprometido a enfrentar desafíos con creatividad,
-                    rigor y una mentalidad orientada a resultados.
-                    </p>
-                </div>
+      <div class="grid gap-8 md:grid-cols-[auto_1fr] md:items-start">
+        <!-- Avatar + redes sociales (centradas respecto a la foto) -->
+        <div class="flex flex-col items-center gap-4 animate-fade-right">
+          <div class="avatar">
+            <div class="w-40 md:w-44 rounded-full ring-4 ring-primary ring-offset-2 ring-offset-base-100">
+              <Image src="/yo.webp" height={176} width={176} alt="Luis Palacios" />
             </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a
+              class="text-base-content/60 hover:text-primary transition-colors"
+              href="https://www.linkedin.com/in/palaciosluismig/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <Icon name="simple-icons:linkedin" size={24} />
+            </a>
+            <a
+              class="text-base-content/60 hover:text-primary transition-colors"
+              href="https://github.com/palaciosluismig"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
+              <Icon name="simple-icons:github" size={24} />
+            </a>
+            <a
+              class="text-base-content/60 hover:text-primary transition-colors"
+              href="https://www.instagram.com/palaciosluismig/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <Icon name="simple-icons:instagram" size={24} />
+            </a>
+          </div>
+        </div>
 
-            </section>
-            
-            <!-- University -->
-            <section>
-            <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
-                <Icon name="lucide:graduation-cap" class="mr-2" /> Universidad
-            </h1>
+        <!-- Presentacion -->
+        <div class="animate-fade-left">
+          <h2 class="text-xl md:text-2xl font-bold text-base-content">Luis Palacios</h2>
+          <p class="text-accent font-medium mb-4">Arquitecto de Software · Medios de Pago</p>
 
-            <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16 animate-fade-left lg:animate-fade-right ">
+          <div class="flex flex-wrap gap-2 mb-6">
+            {CREDENTIALS.map((c) => (
+              <span class="badge badge-soft badge-primary">{c}</span>
+            ))}
+          </div>
 
-            {
-            EDUCATIONS.map((education) => {
-                if (education.type === "university") {
-                return (
-                    <>
-                    <MiniCard
-                        title={education.educational_center}
-                        date={education.date}
-                        subtitle={education.modality}
-                        subtitle2={education.country}
-                        description={education.specialty}
-                        logo={education.image}
-                        imagen={education.certificate}
-                    />
-                    </>
-                );
-            }})
-            }
-            </ol>
-            </section>
+          <div class="space-y-3 text-base-content/80 leading-relaxed">
+            <p>
+              Soy Luis Palacios, ingeniero de software ecuatoriano con raíces en el entorno
+              rural del Azuay. Desde los primeros años escolares, la informática despertó mi
+              curiosidad y me abrió la puerta a un mundo de posibilidades para investigar,
+              construir y aprender.
+            </p>
+            <p>
+              Esa curiosidad se convirtió en profesión: encontré en la programación la forma
+              de materializar ideas que antes parecían imposibles. A lo largo de mi trayectoria
+              he desarrollado soluciones de software con foco en calidad, seguridad y resultados.
+            </p>
+            <p>
+              Hoy me especializo en arquitectura de software e infraestructura tecnológica,
+              seguridad de la información, gestión de operaciones y cumplimiento normativo,
+              principalmente en el sector de medios de pago y banca.
+            </p>
+          </div>
 
-            <!-- Certifications -->
-            <section>
-            <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
-                <Icon name="lucide:badge-check" class="mr-2" />Certificaciones
-            </h1>
+          <button
+            id="btn-download-profile"
+            class="btn btn-accent mt-6 hover:scale-105"
+            data-cv-url={CV_DOWNLOAD}
+            data-cv-name={CV_FILENAME}
+          >
+            <Icon name="lucide:download" size={20} />Descargar CV
+          </button>
+        </div>
+      </div>
+    </section>
 
-            <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16  animate-fade-left lg:animate-fade-right">
-            
-            {
-            EDUCATIONS.map((education) => {
-                if (education.type === "certification") {
-                return (
-                    <>
-                    <MiniCard
-                        title={education.educational_center}
-                        date={education.date}
-                        subtitle={education.modality}
-                        description={education.specialty}
-                        logo={education.image}
-                        imagen={education.certificate}
-                    />
-                    </>
-                );
-            }})
-            }
-            </ol>
+    <!-- ============ NAV STICKY DE SECCIONES ============ -->
+    <nav
+      id="profile-nav"
+      class="sticky z-20 mb-6 flex justify-center"
+      style="top: var(--navbar-h, 5rem);"
+    >
+      <ul class="flex flex-wrap justify-center gap-1 rounded-full border border-base-300 bg-base-100/95 backdrop-blur px-2 py-1.5 shadow-md max-md:flex-nowrap max-md:justify-start max-md:overflow-x-auto max-md:w-full">
+        {SECTIONS.map((s) => (
+          <li>
+            <a
+              href={`#${s.id}`}
+              data-nav={s.id}
+              class="nav-link flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium text-base-content/70 transition-colors hover:bg-base-200 hover:text-primary"
+            >
+              <Icon name={s.icon} size={15} />
+              {s.label}
+              <span class="nav-count badge badge-sm badge-ghost">{s.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
 
-            </section>
+    <!-- ============ TITULOS UNIVERSITARIOS ============ -->
+    {eduUniversity.length > 0 && (
+      <section id="universidad" class="pt-4 pb-10">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Formación académica</p>
+        <h2 class="text-xl md:text-2xl font-bold text-base-content mb-8 flex items-center gap-2">
+          <Icon name="lucide:graduation-cap" size={26} class="text-primary" />Universidad
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {eduUniversity.map((item) => (
+            <EduCard
+              education={item.data}
+              meta={item.meta}
+              externalUrl={item.externalUrl}
+              certificate={item.certificate}
+              modalId={item.modalId}
+            />
+          ))}
+        </div>
+      </section>
+    )}
 
-            <!-- Courses -->
-            <section>
-                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
-                    <Icon name="lucide:code-xml" class="mr-2" />Cursos
-                </h1>
+    <!-- ============ CERTIFICACIONES ============ -->
+    {eduCertifications.length > 0 && (
+      <section id="certificaciones" class="py-10 border-t border-base-300">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Credenciales</p>
+        <h2 class="text-xl md:text-2xl font-bold text-base-content mb-8 flex items-center gap-2">
+          <Icon name="lucide:badge-check" size={26} class="text-primary" />Certificaciones
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {eduCertifications.map((item) => (
+            <EduCard
+              education={item.data}
+              meta={item.meta}
+              externalUrl={item.externalUrl}
+              certificate={item.certificate}
+              modalId={item.modalId}
+            />
+          ))}
+        </div>
+      </section>
+    )}
 
-            
-                <ol class="relative border-s border-primary dark:border-gray-700 ml-4 mb-16 animate-fade-left lg:animate-fade-right">
+    <!-- ============ CURSOS (6 visibles + toggle) ============ -->
+    {eduCourses.length > 0 && (
+      <section id="cursos" class="py-10 border-t border-base-300">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Aprendizaje continuo</p>
+        <h2 class="text-xl md:text-2xl font-bold text-base-content mb-8 flex items-center gap-2">
+          <Icon name="lucide:code-xml" size={26} class="text-primary" />Cursos
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {eduCoursesVisible.map((item) => (
+            <EduCard
+              education={item.data}
+              meta={item.meta}
+              externalUrl={item.externalUrl}
+              certificate={item.certificate}
+              modalId={item.modalId}
+            />
+          ))}
+        </div>
+        {eduCoursesHidden.length > 0 && (
+          <>
+            <input type="checkbox" id="profile-courses-toggle" class="peer hidden" />
+            <div class="hidden peer-checked:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+              {eduCoursesHidden.map((item) => (
+                <EduCard
+                  education={item.data}
+                  meta={item.meta}
+                  externalUrl={item.externalUrl}
+                  certificate={item.certificate}
+                  modalId={item.modalId}
+                />
+              ))}
+            </div>
+            <label
+              for="profile-courses-toggle"
+              class="profile-courses-label btn btn-sm btn-outline mt-6 mx-auto flex w-fit items-center gap-2"
+            >
+              <span class="label-more">Ver todos los cursos ({eduCourses.length})</span>
+              <span class="label-less hidden">Ver menos</span>
+              <Icon name="lucide:chevron-down" size={16} class="label-chevron transition-transform" />
+            </label>
+          </>
+        )}
+      </section>
+    )}
 
-                {
-                    EDUCATIONS.map((education) => {
-                        if (education.type === "course") {
-                        return (
-                            <>
-                                <MiniCard
-                                    title={education.educational_center}
-                                    date={education.date}
-                                    subtitle={education.modality}
-                                    description={education.specialty}
-                                    logo={education.image}
-                                    imagen={education.certificate}
-                                />
-                            </>
-                            );
-                        }})
-                }
-                </ol>
+    <!-- ============ PARTICIPACIONES ============ -->
+    {eduParticipations.length > 0 && (
+      <section id="participaciones" class="py-10 border-t border-base-300">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Comunidad</p>
+        <h2 class="text-xl md:text-2xl font-bold text-base-content mb-8 flex items-center gap-2">
+          <Icon name="lucide:users" size={26} class="text-primary" />Participaciones
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {eduParticipations.map((item) => (
+            <EduCard
+              education={item.data}
+              meta={item.meta}
+              externalUrl={item.externalUrl}
+              certificate={item.certificate}
+              modalId={item.modalId}
+            />
+          ))}
+        </div>
+      </section>
+    )}
 
-            </section>
-            
-            <!-- Recognitions and Awards -->
-            <section>
-                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center" >
-                    <Icon name="lucide:award" class="mr-2" />Reconocimientos & Premios
-                </h1>
-                <div class="flex flex-col md:flex-row gap-6 mb-12">
-                    {
-                        RECOGNITIONSANDAWARDS.map((award) =>{
-                            return(
-                                <>
-                                <div>
-                                    
-                                <div>
-                                    <img
-                                    src=`${award.image}`
-                                    alt=`Logo de ${award.title}`
-                                    class="rounded-md w-full"
-                                    />                                    
-                                </div>
-                                <div>
-                                    <h2 class="font-semibold prose-sm md:prose-base lg:prose-lg  my-2">{award.title}
-                                    </h2>
-                                    <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg block mb-5 leading-none text-gray-400">
-                                    {award.center} • {award.expedition_date}
-                                    </p>                                    
-                                </div>
-                                </div>
-                                </>
-                            )
-                        })
-                    }
-                </div>
-            </section>
-    </div>
+    <!-- ============ RECONOCIMIENTOS & PREMIOS ============ -->
+    {RECOGNITIONSANDAWARDS.length > 0 && (
+      <section id="reconocimientos" class="py-10 border-t border-base-300 mb-8">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Logros destacados</p>
+        <h2 class="text-xl md:text-2xl font-bold text-base-content mb-8 flex items-center gap-2">
+          <Icon name="lucide:award" size={26} class="text-primary" />Reconocimientos & Premios
+        </h2>
+        <div class="grid gap-6 md:grid-cols-2">
+          {RECOGNITIONSANDAWARDS.map((award) => (
+            <div class="card bg-base-100 border border-base-300 shadow-md overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl">
+              <figure class="bg-base-200">
+                <img src={award.image} alt={`Reconocimiento: ${award.title}`} class="w-full object-contain max-h-64" />
+              </figure>
+              <div class="card-body gap-2">
+                <span class="badge badge-soft badge-warning w-fit gap-1">
+                  <Icon name="lucide:trophy" size={12} />Reconocimiento
+                </span>
+                <h3 class="card-title text-base md:text-lg leading-snug">{award.title}</h3>
+                <p class="flex items-center gap-1 text-sm text-base-content/60">
+                  <Icon name="lucide:map-pin" size={14} />{award.center} · {award.expedition_date}
+                </p>
+                <p class="text-sm text-base-content/70 leading-relaxed">{award.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Boton flotante: volver arriba -->
+    <button
+      id="back-to-top"
+      class="btn btn-primary btn-circle fixed bottom-6 right-6 z-30 shadow-lg opacity-0 pointer-events-none transition-opacity"
+      aria-label="Volver arriba"
+    >
+      <Icon name="lucide:arrow-up" size={20} />
+    </button>
+
+    <!-- Modales de diplomas -->
+    {eduModals.map(({ data: education, certificate, modalId }) => (
+      <dialog id={modalId} class="modal">
+        <div class="modal-box max-w-3xl p-0 overflow-hidden">
+          <div class="flex items-center justify-between gap-4 px-5 py-3 border-b border-base-300">
+            <div class="min-w-0">
+              <h4 class="font-semibold text-base-content truncate">{education.specialty}</h4>
+              <p class="text-xs text-base-content/60">{education.educational_center} · {education.date}</p>
+            </div>
+            <form method="dialog">
+              <button class="btn btn-sm btn-circle btn-ghost" aria-label="Cerrar">✕</button>
+            </form>
+          </div>
+          <div class="bg-base-200 p-4 flex items-center justify-center">
+            <img src={certificate} alt={`Diploma ${education.specialty}`} class="max-h-[70vh] w-auto object-contain rounded" />
+          </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+          <button aria-label="Cerrar">close</button>
+        </form>
+      </dialog>
+    ))}
   </div>
 </Layout>
-<script>
-  document.addEventListener('astro:page-load', () => {
 
-    const btnDownload =  document.getElementById("btn-download-profile");
-    
-    if (btnDownload){
-      btnDownload.addEventListener("click", function() {
-        const url = btnDownload.dataset.cvUrl || "";
-        var link = document.createElement("a");
+<style>
+  /* Scroll suave al navegar por anclas. */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Desplazamiento al saltar a una seccion: deja espacio para el navbar + barra sticky. */
+  section[id] {
+    scroll-margin-top: var(--scroll-offset, 8rem);
+  }
+
+  /* Toggle de cursos: alterna textos y rota el chevron segun el checkbox. */
+  #profile-courses-toggle:checked ~ .profile-courses-label .label-more {
+    display: none;
+  }
+  #profile-courses-toggle:checked ~ .profile-courses-label .label-less {
+    display: inline;
+  }
+  #profile-courses-toggle:checked ~ .profile-courses-label .label-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Estado activo del nav de secciones (pildora). */
+  .nav-link.is-active {
+    background-color: var(--color-primary, oklch(var(--p)));
+    color: var(--color-primary-content, oklch(var(--pc)));
+  }
+  /* El conteo se adapta al fondo activo. */
+  .nav-link.is-active .nav-count {
+    background-color: color-mix(in oklab, currentColor 20%, transparent);
+    color: inherit;
+    border-color: transparent;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    // Descarga del CV
+    const btnDownload = document.getElementById("btn-download-profile");
+    if (btnDownload) {
+      btnDownload.addEventListener("click", () => {
+        const url = (btnDownload as HTMLElement).dataset.cvUrl || "";
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", btnDownload.dataset.cvName || "");
+        link.setAttribute("download", (btnDownload as HTMLElement).dataset.cvName || "");
         link.click();
+      });
+    }
+
+    // Abrir modal del diploma
+    document.querySelectorAll<HTMLElement>("[data-modal]").forEach((el) => {
+      el.addEventListener("click", () => {
+        const id = el.getAttribute("data-modal");
+        if (!id) return;
+        const dialog = document.getElementById(id) as HTMLDialogElement | null;
+        dialog?.showModal();
+      });
     });
-    }    
+
+    // Resaltar la seccion activa en el nav sticky segun el scroll.
+    const navLinks = Array.from(document.querySelectorAll<HTMLElement>(".nav-link"));
+    const sections = navLinks
+      .map((l) => document.getElementById(l.dataset.nav || ""))
+      .filter((s): s is HTMLElement => Boolean(s));
+
+    if (sections.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              navLinks.forEach((l) =>
+                l.classList.toggle("is-active", l.dataset.nav === id)
+              );
+            }
+          });
+        },
+        { rootMargin: "-30% 0px -60% 0px" }
+      );
+      sections.forEach((s) => observer.observe(s));
+    }
+
+    // Medir la altura real del navbar para posicionar la barra sticky justo debajo.
+    const navbar = document.getElementById("menulp");
+    const profileNav = document.getElementById("profile-nav");
+    const syncOffsets = () => {
+      const navH = navbar?.offsetHeight ?? 80;
+      // Dejamos una holgura para que la barra no quede pegada al navbar.
+      document.documentElement.style.setProperty("--navbar-h", `${navH + 12}px`);
+      // scroll-margin de las secciones = navbar + barra sticky + holgura
+      const barH = profileNav?.offsetHeight ?? 44;
+      document.documentElement.style.setProperty("--scroll-offset", `${navH + barH + 28}px`);
+    };
+    syncOffsets();
+    window.addEventListener("resize", syncOffsets, { passive: true });
+
+    // Boton "volver arriba": aparece al bajar.
+    const backToTop = document.getElementById("back-to-top");
+    if (backToTop) {
+      const toggleBtn = () => {
+        const show = window.scrollY > 500;
+        backToTop.classList.toggle("opacity-0", !show);
+        backToTop.classList.toggle("pointer-events-none", !show);
+      };
+      toggleBtn();
+      window.addEventListener("scroll", toggleBtn, { passive: true });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
   });
 </script>

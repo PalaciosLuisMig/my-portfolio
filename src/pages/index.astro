@@ -149,7 +149,7 @@ const eduModals = eduItems.filter((i) => i.certificate);
         <!-- Chips de especialidad -->
         <div class="mt-5 flex flex-wrap gap-2">
           {["ISO 8583", "EMV", "Tokenización", "3DS", "HSM", "Microservicios", "Emisor & Adquirente"].map((tag) => (
-            <span class="badge badge-outline font-mono text-xs">{tag}</span>
+            <span class="badge badge-soft badge-primary">{tag}</span>
           ))}
         </div>
 
@@ -180,23 +180,15 @@ const eduModals = eduItems.filter((i) => i.certificate);
             <Icon name="lucide:download" size={20} />
             Descargar CV
           </button>
-
-          <div class="flex items-center gap-4 sm:ml-2">
-            <a class="text-base-content/60 hover:text-primary transition-colors" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank" aria-label="LinkedIn">
-              <Icon name="simple-icons:linkedin" size={24} />
-            </a>
-            <a class="text-base-content/60 hover:text-primary transition-colors" href="https://github.com/palaciosluismig" target="_blank" aria-label="GitHub">
-              <Icon name="simple-icons:github" size={24} />
-            </a>
-            <a class="text-base-content/60 hover:text-primary transition-colors" href="https://www.instagram.com/palaciosluismig/" target="_blank" aria-label="Instagram">
-              <Icon name="simple-icons:instagram" size={24} />
-            </a>
-          </div>
+          <a href="/profile" class="btn btn-ghost">
+            <Icon name="lucide:user-round" size={20} />
+            Conóceme mejor
+          </a>
         </div>
       </div>
 
-      <!-- Foto -->
-      <div class="md:col-span-2 order-1 md:order-2 flex justify-center md:justify-end animate-fade-left">
+      <!-- Foto + redes sociales -->
+      <div class="md:col-span-2 order-1 md:order-2 flex flex-col items-center gap-5 animate-fade-left">
         <div class="relative">
           <div class="absolute -inset-2 rounded-full bg-primary/20 blur-2xl"></div>
           <Image
@@ -206,6 +198,17 @@ const eduModals = eduItems.filter((i) => i.certificate);
             alt="Foto de Luis Palacios"
             class="relative rounded-full ring-4 ring-primary/60 ring-offset-4 ring-offset-base-100 w-44 h-44 md:w-64 md:h-64 object-cover"
           />
+        </div>
+        <div class="flex items-center gap-4">
+          <a class="text-base-content/60 hover:text-primary transition-colors" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <Icon name="simple-icons:linkedin" size={24} />
+          </a>
+          <a class="text-base-content/60 hover:text-primary transition-colors" href="https://github.com/palaciosluismig" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <Icon name="simple-icons:github" size={24} />
+          </a>
+          <a class="text-base-content/60 hover:text-primary transition-colors" href="https://www.instagram.com/palaciosluismig/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <Icon name="simple-icons:instagram" size={24} />
+          </a>
         </div>
       </div>
     </div>
