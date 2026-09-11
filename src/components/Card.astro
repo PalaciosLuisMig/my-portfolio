@@ -2,66 +2,102 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-const { title, desc, pubDate, img,  badge, url, target = "_blank", github,website, skills} = Astro.props;
+const {
+  title,
+  desc,
+  pubDate,
+  img,
+  badge,
+  url,
+  target = "_blank",
+  github,
+  website,
+  skills,
+} = Astro.props;
 
-var month = pubDate.toLocaleString('default', { month: 'short' }).charAt(0).toUpperCase() + pubDate.toLocaleString('default', { month: 'short' }).slice(1); // Get the month with the first letter capitalized
-var year = pubDate.getFullYear(); //Get the year
+const month =
+  pubDate.toLocaleString("es", { month: "short" }).charAt(0).toUpperCase() +
+  pubDate.toLocaleString("es", { month: "short" }).slice(1);
+const year = pubDate.getFullYear();
 
-
+// Recorte de la descripcion en el servidor para garantizar longitud uniforme,
+// independientemente del comportamiento de line-clamp en el navegador.
+const MAX_DESC = 120;
+const shortDesc =
+  desc && desc.length > MAX_DESC ? desc.slice(0, MAX_DESC).trimEnd() + "…" : desc;
 ---
 
-<div>
-  <a href={url} target={target}>
-    <div
-      class="card border-2 rounded-t-2x transition ease-in-out shadow hover:shadow-md hover:shadow-primary hover:scale-[102%] h-full"
-    >
-      <!-- Image -->
-      <div class="min-h-50 max-h-60">
-        <Image width={960} height={640} src={img} alt={title} class="w-full h-60 object-cover rounded-t-xl"/>
-      </div>
+<article
+  class="group card relative h-full overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-lg hover:shadow-primary/20"
+>
+  <!-- Imagen -->
+  <figure class="relative h-52 overflow-hidden">
+    <Image
+      width={960}
+      height={640}
+      src={img}
+      alt={title}
+      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+  </figure>
 
-      <div class="card-body p-4">
-        <h3 class="card-title prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-normal text-accent mb-0">
-          {title}
-          {badge && <span class="bg-accent-content text-accent text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl ms-2 md:ms-6">{badge} </span>}
-        </h3>
+  <div class="card-body gap-2 p-5">
+    <p class="font-mono text-xs uppercase tracking-widest text-base-content/50">
+      {month} {year}
+    </p>
 
-        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{month} {year}</p>
+    <h3 class="flex flex-wrap items-center gap-2 text-lg md:text-xl font-bold text-base-content leading-snug">
+      <!-- Stretched link: hace clicable toda la card sin anidar <a> -->
+      <a href={url} target={target} class="line-clamp-2 after:absolute after:inset-0 hover:text-primary transition-colors">
+        {title}
+      </a>
+      {badge && <span class="badge badge-accent badge-sm font-medium shrink-0">{badge}</span>}
+    </h3>
 
-        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 lg:max-w-none font-normal line-clamp-3 md:line-clamp-4">{desc}</p>
+    <p class="text-sm leading-5 text-base-content/70">{shortDesc}</p>
 
-      </div>
-      <div class="bg-gray-200 rounded-b-xl px-4 py-2 flex justify-between	mt-auto">
-        <div class="flex flex-wrap gap-2">
-        {
-          skills &&
-            skills.map((skill:any) => 
-            <img alt="Static Badge" src={`https://img.shields.io/badge/${skill.name}-black?logo=${skill.logo}`}>
-            )
-        } 
+    <!-- Skills -->
+    {
+      skills && skills.length > 0 && (
+        <div class="mt-2 flex flex-wrap gap-1.5">
+          {skills.map((skill: any) => (
+            <span class="inline-flex items-center gap-1 rounded-md bg-base-200 px-2 py-1 text-xs font-medium text-base-content/80">
+              {skill.logo && (
+                <Icon name={`simple-icons:${skill.logo}`} size={13} class="text-base-content/60" />
+              )}
+              {skill.name}
+            </span>
+          ))}
         </div>
-        <div id="github-link" class="flex flex-wrap justify-end gap-2 dark:text-primary-content">
-          { website &&
-            <a
-            class="hover:text-primary"
+      )
+    }
+  </div>
+
+  <!-- Enlaces externos (por encima del stretched link) -->
+  {
+    (website || github) && (
+      <div class="relative z-10 flex justify-end gap-3 border-t border-base-300 px-5 py-3">
+        {website && (
+          <a
+            class="text-base-content/60 transition-colors hover:text-primary"
             href={website}
             target="_blank"
-            >
-            <Icon name="link" size={20} />
-            </a>
-          }
-          {
-            github &&
-            <a
-              class="hover:text-primary"
-              href={github}
-              target="_blank"
-            >
-              <Icon name="social_networks/github" size={20} />
-            </a>
-          }
-        </div>
+            aria-label="Sitio web del proyecto"
+          >
+            <Icon name="lucide:external-link" size={20} />
+          </a>
+        )}
+        {github && (
+          <a
+            class="text-base-content/60 transition-colors hover:text-primary"
+            href={github}
+            target="_blank"
+            aria-label="Repositorio en GitHub"
+          >
+            <Icon name="simple-icons:github" size={20} />
+          </a>
+        )}
       </div>
-    </div>
-  </a>
-</div>
+    )
+  }
+</article>

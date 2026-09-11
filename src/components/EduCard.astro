@@ -1,0 +1,57 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Tarjeta compacta reutilizable para certificaciones, cursos y participaciones.
+interface Props {
+  education: {
+    image: string;
+    specialty: string;
+    educational_center: string;
+    date?: string;
+  };
+  meta: { label: string; icon: string; badge: string };
+  externalUrl: string | null;
+  certificate: string | null;
+  modalId: string;
+}
+
+const { education, meta, externalUrl, certificate, modalId } = Astro.props;
+const clickable = Boolean(externalUrl || certificate);
+const cardClass =
+  "group flex items-center gap-3 rounded-box bg-base-200 border border-base-300 p-4 text-left w-full transition-all" +
+  (clickable ? " hover:border-primary hover:shadow-md" : "");
+const Tag = externalUrl ? "a" : certificate ? "button" : "div";
+const tagAttrs: Record<string, string> = externalUrl
+  ? { href: externalUrl, target: "_blank", rel: "noopener noreferrer" }
+  : certificate
+    ? { "data-modal": modalId }
+    : {};
+if (Tag === "button") tagAttrs.type = "button";
+---
+
+<Tag class={cardClass} {...tagAttrs}>
+  <div class="flex items-center justify-center w-14 h-14 shrink-0 rounded-box bg-white p-1.5">
+    <img src={education.image} alt={education.educational_center} class="w-full h-full object-contain" />
+  </div>
+  <div class="min-w-0 flex-1">
+    <span class={`badge badge-xs gap-1 mb-1 ${meta.badge}`}>
+      <Icon name={meta.icon} size={10} />{meta.label}
+    </span>
+    <h4 class="text-sm font-medium text-base-content leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+      {education.specialty}
+    </h4>
+    <p class="text-xs text-base-content/50 mt-0.5">{education.educational_center}</p>
+    {education.date && (
+      <p class="flex items-center gap-1 text-xs text-base-content/40 mt-0.5">
+        <Icon name="lucide:calendar" size={12} />{education.date}
+      </p>
+    )}
+  </div>
+  {clickable && (
+    <Icon
+      name={externalUrl ? "lucide:external-link" : "lucide:eye"}
+      size={16}
+      class="shrink-0 text-base-content/30 group-hover:text-primary transition-colors"
+    />
+  )}
+</Tag>

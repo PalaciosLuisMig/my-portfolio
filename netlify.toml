@@ -1,0 +1,9 @@
+[build]
+  # Instala dependencias permitiendo que pnpm resuelva los binarios nativos
+  # de la plataforma de build (Linux). El lockfile generado en Windows no
+  # incluye @tailwindcss/oxide-linux-x64-gnu, por eso usamos --no-frozen-lockfile.
+  command = "pnpm install --no-frozen-lockfile && pnpm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

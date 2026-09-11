@@ -4,493 +4,682 @@ import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import createSlug from "@lib/create_slug";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import Card from "@components/Card.astro";
 import TimeLine from "@components/TimeLine.astro";
-import HorizontalCard from "@components/HorizontalCard.astro";
+import EduCard from "@components/EduCard.astro";
+import PostCard from "@components/PostCard.astro";
 
-import { TECH_STACK, EDUCATIONS, MYEMAIL, EXPERIENCES, CV_DOWNLOAD, CV_FILENAME} from "../config";
+import { TECH_STACK, EDUCATIONS, MYEMAIL, EXPERIENCES, CV_DOWNLOAD, CV_FILENAME } from "../config";
 
-const projects = (await getCollection("projects"))
+const allProjects = await getCollection("projects");
+const projectsCount = allProjects.length;
+
+const projects = allProjects
   .filter((p) => p.data.important === true)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const experienceCount = EXPERIENCES.length;
 
-const last_posts = posts.slice(0, 3);
+dayjs.extend(localizedFormat);
+dayjs.locale("es");
+const formatPostDate = (d: Date) => dayjs(d).format("LL");
+
+// Tiempo de lectura estimado a partir del contenido del post (~200 palabras/min).
+const readingTime = (body: string) => {
+  const words = (body ?? "").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+};
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map((p) => ({ ...p, readingMinutes: readingTime(p.body) }));
+
+// Layout adaptativo segun cantidad de posts:
+//   - <= 2 posts -> tarjetas destacadas lado a lado (evita hueco de la lista)
+//   - >= 3 posts -> destacado + lista compacta (formato editorial)
+const homePosts = posts.slice(0, 4);
+const useFeaturedLayout = homePosts.length >= 3;
+const featuredPost = homePosts[0];
+const restPosts = homePosts.slice(1, 4);
+
+// Categorias del stack, en orden, para renderizar sin repetir markup.
+// Cada categoria es un acordeon independiente (checkbox) para permitir
+// varios abiertos a la vez. `open` define el estado por defecto.
+const TECH_CATEGORIES = [
+  { key: "Medios de pago", label: "Medios de pago", open: true },
+  { key: "Lenguajes", label: "Lenguajes", open: true },
+  { key: "Back-end & Frameworks", label: "Back-end & Frameworks", open: false },
+  { key: "Bases de datos", label: "Bases de datos", open: false },
+  { key: "DevOps & Testing", label: "DevOps & Testing", open: false },
+  { key: "Front-end", label: "Front-end", open: false },
+  { key: "IA & Herramientas", label: "IA & Herramientas", open: false },
+  { key: "Low-Code", label: "Low-Code", open: false },
+];
+// Datos duros del hero (fuente: perfil real / LinkedIn).
+// Años de experiencia calculados desde el inicio de carrera (agosto 2019).
+const CAREER_START = new Date(2019, 7, 1); // mes 7 = agosto (0-indexado)
+const now = new Date();
+let yearsOfExperience = now.getFullYear() - CAREER_START.getFullYear();
+const beforeAnniversary =
+  now.getMonth() < CAREER_START.getMonth() ||
+  (now.getMonth() === CAREER_START.getMonth() && now.getDate() < CAREER_START.getDate());
+if (beforeAnniversary) yearsOfExperience -= 1;
+
+const HERO_STATS = [
+  { value: `${yearsOfExperience}+`, label: "Años de experiencia" },
+  { value: "15+", label: "Proyectos" },
+  { value: "8+", label: "Certificaciones Visa & Mastercard" },
+];
+
+// Metadatos por tipo de formación (badge + icono).
+const EDU_TYPE_META = {
+  university: { label: "Título", icon: "lucide:graduation-cap", badge: "badge-primary" },
+  certification: { label: "Certificación", icon: "lucide:badge-check", badge: "badge-secondary" },
+  course: { label: "Curso", icon: "lucide:book-open", badge: "badge-accent" },
+  participate: { label: "Participación", icon: "lucide:users", badge: "badge-info" },
+};
+const eduMeta = (type: string) =>
+  EDU_TYPE_META[type as keyof typeof EDU_TYPE_META] ?? EDU_TYPE_META.course;
+
+// Icono contextual segun la modalidad (presencial vs online).
+const modalityIcon = (modality?: string) =>
+  modality && /presencial/i.test(modality) ? "lucide:building-2" : "lucide:monitor";
+
+// Normalizamos cada item con su id estable (basado en el indice global del array,
+// que es unico y no cambia entre grupos) y su comportamiento derivado del dato:
+//   - url no vacia   -> enlace externo (verificar credencial)
+//   - certificate    -> modal con imagen del diploma
+//   - ninguno        -> tarjeta informativa (no clickeable)
+type EduRaw = (typeof EDUCATIONS)[number];
+const eduItems = EDUCATIONS.map((e, index) => {
+  const url = "url" in e && e.url ? (e.url as string) : "";
+  const certificate = "certificate" in e && e.certificate ? (e.certificate as string) : "";
+  return {
+    data: e as EduRaw & { url?: string; country?: string },
+    meta: eduMeta(e.type),
+    externalUrl: url || null,
+    certificate: !url && certificate ? certificate : null,
+    modalId: `edu-cert-${index}`,
+  };
+});
+
+// Formación agrupada por peso: títulos, certificaciones, cursos y participaciones.
+const eduDegrees = eduItems.filter((i) => i.data.type === "university");
+const eduCertifications = eduItems.filter((i) => i.data.type === "certification");
+const eduCourses = eduItems.filter((i) => i.data.type === "course");
+const eduParticipations = eduItems.filter((i) => i.data.type === "participate");
+
+// Cursos: mostramos los primeros 6 y el resto se revela con un toggle.
+const COURSES_VISIBLE = 6;
+const eduCoursesVisible = eduCourses.slice(0, COURSES_VISIBLE);
+const eduCoursesHidden = eduCourses.slice(COURSES_VISIBLE);
+
+// Solo estos items abren modal (tienen imagen de diploma y no url externa).
+const eduModals = eduItems.filter((i) => i.certificate);
 ---
 
 <Layout urlMenuItem="/home">
-  <div class="flex justify-center flex-col px-5  items-center">
-    <!-- Presentation -->
-    <section class="max-w-screen-lg w-full my-10 flex flex-col gap-4 md:grid md:grid-cols-4 mb-16">
-      <div
-        class="flex md:grid md:order-last md:justify-end md:items-center animate-fade-left max-sm:animate-fade-right"
-      >
-        <Image
-          src="/yo.webp"
-          height="175"
-          width="175"
-          alt="Logo Luis Palacios"
-          class="rounded-full"
-        />
-      </div>
-      <div
-        class="md:flex md:flex-col md:grid-cols-subgrid md:col-span-3 lg:items-start"
-      >
-        <h1
-          class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold mb-3 animate-fade-left lg:animate-fade-right"
-        >
-          Hola, mi nombre es
-          <span class="text-3xl md:text-4xl lg:text-5xl text-primary block"
-            >Luis Palacios</span
-          >
+  <!-- ============ HERO ============ -->
+  <section class="bg-base-100">
+    <div class="max-w-screen-lg mx-auto px-5 py-14 md:py-20 grid gap-10 md:grid-cols-5 items-center">
+      <!-- Texto -->
+      <div class="md:col-span-3 order-2 md:order-1 animate-fade-right">
+        <p class="font-mono text-sm md:text-base text-primary mb-3 tracking-wide">
+          Arquitecto de Aplicaciones · Cuenca, Ecuador
+          <Icon name="ecu" class="inline-block align-[-0.2em]" size={18} />
+        </p>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.05] text-base-content">
+          Luis Palacios
         </h1>
 
-        <div
-          class="mb-6 flex gap-4 items-center animate-fade-left lg:animate-fade-right"
-        >
-          <p
-            class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-bold inline text-accent"
-          >
-            Mg. en Ingeniería de Software y Sistemas Informáticos
-          </p>
-          <Icon name="ecu" size={25} />
+        <p class="mt-4 text-lg md:text-xl text-base-content/80 max-w-xl">
+          Arquitecto de Aplicaciones y desarrollador Full Stack especializado en
+          <span class="text-accent font-semibold">medios de pago</span>. Diseño e
+          integro soluciones emisor y adquirente con
+          <span class="text-accent font-semibold">Visa y Mastercard</span> sobre
+          ISO 8583, EMV, tokenización y 3DS en
+          <span class="text-accent font-semibold">Banco del Austro</span>.
+        </p>
+
+        <!-- Chips de especialidad -->
+        <div class="mt-5 flex flex-wrap gap-2">
+          {["ISO 8583", "EMV", "Tokenización", "3DS", "HSM", "Microservicios", "Emisor & Adquirente"].map((tag) => (
+            <span class="badge badge-outline font-mono text-xs">{tag}</span>
+          ))}
         </div>
 
-        <article
-          class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 animate-fade lg:animate-fade-right lg:max-w-none"
-        >
-          <p>
-            👋 Soy un Ingeniero de Sistemas de Ecuador, apasionado con el desarrollo de software 💻, tanto del Backend como Frontend (Full Stack). Trabajo en Banco del Austro 💼, que pertenece al sector financiero. Además, trabajo en la industria tecnológica desde 2019, ocupando puestos de ingeniería de desarrollo en grandes empresas como AustroRed y Mastermoto. También realizo proyectos como Freelancer.
-          </p>
-          <p>
-          📚 Si no estoy codificando, estoy leyendo libros sobre educación financiera y emprendimiento. Me gusta trabajar en equipo, ayudar a los demás y mi personalidad es extrovertido.
-          </p>
-          
-          <button id="btn-download-index" class="btn text-lg btn-accent md:hidden hover:scale-105 mb-2" data-cv-url={CV_DOWNLOAD} data-cv-name={CV_FILENAME}>
-            <Icon name="download" />Descargar CV
+        <!-- Stats -->
+        <dl class="mt-8 flex flex-wrap gap-x-8 gap-y-4">
+          {HERO_STATS.map((stat) => (
+            <div>
+              <dt class="font-mono text-xs uppercase tracking-widest text-base-content/50">
+                {stat.label}
+              </dt>
+              <dd class="text-lg md:text-xl font-bold text-base-content">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <!-- CTAs -->
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="/contact" class="btn btn-primary">
+            <Icon name="lucide:mail" size={20} />
+            Contáctame
+          </a>
+          <button
+            id="btn-download-index"
+            class="btn btn-outline"
+            data-cv-url={CV_DOWNLOAD}
+            data-cv-name={CV_FILENAME}
+          >
+            <Icon name="lucide:download" size={20} />
+            Descargar CV
           </button>
 
-        </article>
-
-        <div
-          class="flex flex-row gap-10  animate-fade lg:animate-fade-right"
-        >
-          <a
-            class="hover:text-primary"
-            href="https://www.linkedin.com/in/palaciosluismig/"
-            target="_blank"
-          >
-            <Icon name="social_networks/linkedin" size={30} />
-          </a>
-          <a
-            class="hover:text-primary"
-            href="https://github.com/palaciosluismig"
-            target="_blank"
-          >
-            <Icon name="social_networks/github" size={30} />
-          </a>
-          <a
-            class="hover:text-primary"
-            href="https://www.instagram.com/palaciosluismig/"
-            target="_blank"
-          >
-            <Icon name="social_networks/instagram" size={30} />
-          </a>
+          <div class="flex items-center gap-4 sm:ml-2">
+            <a class="text-base-content/60 hover:text-primary transition-colors" href="https://www.linkedin.com/in/palaciosluismig/" target="_blank" aria-label="LinkedIn">
+              <Icon name="simple-icons:linkedin" size={24} />
+            </a>
+            <a class="text-base-content/60 hover:text-primary transition-colors" href="https://github.com/palaciosluismig" target="_blank" aria-label="GitHub">
+              <Icon name="simple-icons:github" size={24} />
+            </a>
+            <a class="text-base-content/60 hover:text-primary transition-colors" href="https://www.instagram.com/palaciosluismig/" target="_blank" aria-label="Instagram">
+              <Icon name="simple-icons:instagram" size={24} />
+            </a>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- Experience -->
-    <section class="max-w-screen-lg w-full mb-16">
-      <div class="md:flex md:flex-col lg:items-start">
-        <h2
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
-        >
-          <Icon name="experience" class="mr-2" />Experiencia
-        </h2>
-        <div id="timeline" class="mb-10">
-          {EXPERIENCES.slice(0, 4).map((experience) => {
-            return (
-                <TimeLine
-                company = {experience.company}
-                job = {experience.job}
-                tags = {experience.tags}
-                date = {experience.date}
-                city = {experience.city}
-                country = {experience.country}
-                logo = {experience.logo}
-                description = {experience.description}
-                height = {experience.height}
-                width = {experience.width}
-                href = `/experience#${experience.href}`
-                >
-                </TimeLine>  
-            );
-            })
-          }
+      <!-- Foto -->
+      <div class="md:col-span-2 order-1 md:order-2 flex justify-center md:justify-end animate-fade-left">
+        <div class="relative">
+          <div class="absolute -inset-2 rounded-full bg-primary/20 blur-2xl"></div>
+          <Image
+            src="/yo.webp"
+            height="260"
+            width="260"
+            alt="Foto de Luis Palacios"
+            class="relative rounded-full ring-4 ring-primary/60 ring-offset-4 ring-offset-base-100 w-44 h-44 md:w-64 md:h-64 object-cover"
+          />
         </div>
-
       </div>
-      <!-- Button: show more experience -->
-      <div class="col-span-full md:flex md:justify-start lg:justify-center">
-        <a
-          href="/experience"
-          class="btn btn-primary w-full md:w-auto  "
-        >
-          <Icon name="more" class="inline-block ml-2" size={22} />
-          Conocer más
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCIA ============ -->
+  <section class="bg-base-200">
+    <div class="max-w-screen-lg mx-auto px-5 py-14 md:py-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Trayectoria</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-10 flex items-center gap-2">
+        <Icon name="lucide:briefcase" size={28} class="text-primary" />Experiencia
+        <span class="font-mono text-lg font-normal text-base-content/40">{experienceCount}</span>
+      </h2>
+
+      <ul id="timeline" class="timeline timeline-snap-icon timeline-vertical mb-10">
+        {EXPERIENCES.slice(0, 4).map((experience, i) => (
+          <TimeLine
+            company={experience.company}
+            job={experience.job}
+            tags={experience.tags}
+            date={experience.date}
+            city={experience.city}
+            country={experience.country}
+            logo={experience.logo}
+            description={experience.description}
+            href={`/experience#${experience.href}`}
+            first={i === 0}
+            last={i === 3}
+            side={i % 2 === 0 ? "start" : "end"}
+          />
+        ))}
+      </ul>
+
+      <div class="flex justify-center">
+        <a href="/experience" class="btn btn-primary btn-outline w-full md:w-auto">
+          Ver toda mi experiencia
+          <Icon name="lucide:arrow-right" size={20} />
         </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Projects -->
-    <section class="max-w-screen-lg w-full mb-16">
-      <div class="text-3xl w-full font-bold mb-2">
-        <h2
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
-        >
-          <Icon name="projects" class="mr-2" />Proyectos
-        </h2>
+  <!-- ============ PROYECTOS ============ -->
+  <section class="bg-base-100">
+    <div class="max-w-screen-lg mx-auto px-5 py-14 md:py-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Trabajo seleccionado</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-10 flex items-center gap-2">
+        <Icon name="lucide:folder-git-2" size={28} class="text-primary" />Proyectos
+        <span class="font-mono text-lg font-normal text-base-content/40">{projectsCount}</span>
+      </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {
-            projects.map((project) => (
-              <Card
-                title={project.data.title}
-                desc={project.data.description}
-                pubDate={project.data.pubDate}
-                img={project.data.heroImage}
-                badge={project.data.badge}
-                url={
-                  "/projects/" + createSlug(project.data.title, project.slug)
-                }
-                target="_self"
-                github={project.data.github}
-                website={project.data.website}
-                skills={project.data.skills}
-              />
-            ))
-          }
-        </div>
-
-        <!-- Button: show all projects -->
-        <div class="col-span-full md:flex md:justify-start lg:justify-center">
-          <a
-            href="/projects"
-            class="btn btn-primary w-full md:w-auto  "
-          >
-            <Icon name="more" class="inline-block ml-2" size={22} />
-            Más proyectos
-          </a>
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {projects.map((project) => (
+          <Card
+            title={project.data.title}
+            desc={project.data.description}
+            pubDate={project.data.pubDate}
+            img={project.data.heroImage}
+            badge={project.data.badge}
+            url={"/projects/" + createSlug(project.data.title, project.slug)}
+            target="_self"
+            github={project.data.github}
+            website={project.data.website}
+            skills={project.data.skills}
+          />
+        ))}
       </div>
-    </section>
 
-    <!-- Tech Stack -->
-    <section class="max-w-screen-lg w-full mb-16">
-      <div class="2text-3xl w-full font-bold">
-        <h2
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
-        >
-          <Icon name="bug" class="mr-2" />Tecnologías
-        </h2>
-
-        <div class="flex flex-wrap flex-col sm:flex-row">
-          <!-- Front-end -->
-          <div class="w-full md:w-1/2">
-            <h3
-              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
-            >
-              Front-end
-            </h3>
-
-            <div class="flex flex-wrap justify-start gap-4 mb-12">
-              {
-                TECH_STACK.map((skill) => {
-                  if (skill.category === "Front-end") {
-                    return (
-                      <div class="flex flex-col items-center gap-2">
-                        <Icon
-                          name={`tech_skills/${skill.logo}`}
-                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
-                          size={100}
-                        />
-                        <p class="prose text-sm font-normal">{skill.name}</p>
-                      </div>
-                    );
-                  }
-                })
-              }
-            </div>
-          </div>
-
-          <!-- Back-end -->
-          <div class="w-full md:w-1/2">
-            <h3
-              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
-            >
-              Back-end
-            </h3>
-
-            <div class="flex flex-wrap justify-start gap-4 mb-12">
-              {
-                TECH_STACK.map((skill) => {
-                  if (skill.category === "Back-end") {
-                    return (
-                      <div class="flex flex-col items-center gap-2">
-                        <Icon
-                          name={`tech_skills/${skill.logo}`}
-                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
-                          size={100}
-                        />
-                        <p class="prose text-sm font-normal">{skill.name}</p>
-                      </div>
-                    );
-                  }
-                })
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap flex-col sm:flex-row">
-          <!-- Data base -->
-          <div class="w-full md:w-1/2">
-            <h3
-              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
-            >
-              Base de Datos
-            </h3>
-
-            <div class="flex flex-wrap justify-start gap-4 mb-12">
-              {
-                TECH_STACK.map((skill) => {
-                  if (skill.category === "Database") {
-                    return (
-                      <div class="flex flex-col items-center gap-2">
-                        <Icon
-                          name={`tech_skills/${skill.logo}`}
-                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
-                          size={100}
-                        />
-                        <p class="prose text-sm font-normal">{skill.name}</p>
-                      </div>
-                    );
-                  }
-                })
-              }
-            </div>
-          </div>
-
-          <!-- Version Control -->
-          <div class="w-full md:w-1/2">
-            <h3
-              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center justify-start max-w-none"
-            >
-              Control de Versiones
-            </h3>
-
-            <div class="flex flex-wrap justify-start gap-4 mb-12">
-              {
-                TECH_STACK.map((skill) => {
-                  if (skill.category === "Version-Control") {
-                    return (
-                      <div class="flex flex-col items-center gap-2">
-                        <Icon
-                          name={`tech_skills/${skill.logo}`}
-                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
-                          size={100}
-                        />
-                        <p class="prose text-sm font-normal">{skill.name}</p>
-                      </div>
-                    );
-                  }
-                })
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap flex-col sm:flex-row">
-          <!-- Low Code -->
-          <div class="w-full md:w-1/2">
-            <h3
-              class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-10 flex flex-row content-center sm:justify-start sm:content-start max-w-none"
-            >
-              Low-Code
-            </h3>
-
-            <div class="flex flex-wrap gap-4">
-              {
-                TECH_STACK.map((skill) => {
-                  if (skill.category === "Low-Code") {
-                    return (
-                      <div class="flex flex-col items-center gap-2">
-                        <Icon
-                          name={`tech_skills/${skill.logo}`}
-                          class="h-8 md:h-10 lg:h-16 animate-wiggle animate-infinite animate-duration-[1000ms] animate-ease-in-out"
-                          size={150}
-                        />
-                        <p class="prose text-sm font-normal">{skill.name}</p>
-                      </div>
-                    );
-                  }
-                })
-              }
-            </div>
-          </div>
-        </div>
+      <div class="flex justify-center">
+        <a href="/projects" class="btn btn-primary btn-outline w-full md:w-auto">
+          Ver más proyectos
+          <Icon name="lucide:arrow-right" size={20} />
+        </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Education -->
-    <section class="max-w-screen-lg w-full mb-12">
-      <div class="w-full">
-        <h2
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center"
-        >
-          <Icon name="education" class="mr-2" />Educación
-        </h2>
+  <!-- ============ TECNOLOGIAS ============ -->
+  <section class="bg-base-200">
+    <div class="max-w-screen-lg mx-auto px-5 py-14 md:py-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Herramientas</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-10 flex items-center gap-2">
+        <Icon name="lucide:layers" size={28} class="text-primary" />Tecnologías
+      </h2>
 
-        <div class="flex flex-wrap flex-col">
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-            {
-              EDUCATIONS.map((education) => {
-                if (education.priority === 1) {
-                return (
-                    <div class="flex flex-row">
-                      <div class="min-w-40">
-                        <img src=`${education.image}` alt={education.specialty} class="w-40 mb-6 pr-6" />
-                      </div>
-                      <div>
-                        <h3 class="prose dark:prose-invert text-lg md:text-xl lg:text-2xl font-semibold text-accent mb-3 flex flex-row content-center justify-start max-w-none" >
-                        {education.educational_center}
-                        </h3>
-                        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-4 lg:max-w-none font-light">{education.date}</p>
-                        <p class="prose dark:prose-invert prose-sm md:prose-base lg:prose-lg mb-2 lg:max-w-none font-normal line-clamp-3 md:line-clamp-4">{education.specialty}</p>
-                      </div>
-                    </div>
-
-                );
-              }})
-            }
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="max-w-screen-lg w-full mb-12">
-      <div class="w-full">
-        <h2
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center">
-          <Icon name="contact" class="mr-2" />Contacto
-        </h2>
-
-        <div class="flex flex-wrap gap-4 justify-between mb-6">
-          <label id="lblEmail" class="input input-primary flex items-center gap-2 w-full md:w-[60%]">
-            <Icon name="email" size={20} />
-            {MYEMAIL}
-          </label>
-          <div class="flex w-full md:w-[37%] gap-4 justify-between">
-            <div class="w-1/2">
-              <a href={`mailto:${MYEMAIL}`} class="btn btn-primary w-full">
-                <Icon name="send" class="inline-block ml-2" />
-                Enviar
-              </a>
+      <!-- Acordeon por categoria (checkbox = varios pueden estar abiertos) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
+        {TECH_CATEGORIES.map((cat) => (
+          <div class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+            <input type="checkbox" checked={cat.open} aria-label={cat.label} />
+            <div class="collapse-title font-mono text-sm uppercase tracking-wide text-base-content/70">
+              {cat.label}
             </div>
-            <div class="w-1/2">
-              <button id="btnEmailCopy" class="btn btn-primary w-full">
-                <Icon name="copy" class="inline-block ml-2" />
-                Copiar
-              </button>
-            </div>
-            <div id="altEmailCopy" class="toast toast-center hidden">
-              <div class="alert alert-info bg-accent">
-                <span>Copiado</span>
-                <Icon name="copy" class="inline-block ml-2" />
+            <div class="collapse-content">
+              <div class="flex flex-wrap gap-3 pt-1">
+                {TECH_STACK
+                  .filter((s) => s.category === cat.key)
+                  .sort((a, b) => Number(Boolean(b.icon)) - Number(Boolean(a.icon)))
+                  .map((skill) => (
+                  <div class="group flex items-center gap-2 rounded-box border border-base-300 bg-base-200 px-3 py-2 transition-colors hover:border-primary">
+                    {skill.icon && (
+                      <Icon
+                        name={skill.icon}
+                        size={22}
+                        class="text-base-content/70 transition-colors group-hover:text-primary"
+                      />
+                    )}
+                    <span class="text-sm font-medium text-base-content">{skill.name}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCACION ============ -->
+  <section class="bg-base-100">
+    <div class="max-w-screen-lg mx-auto px-5 py-14 md:py-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Aprendizaje continuo</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-3 flex items-center gap-2">
+        <Icon name="lucide:graduation-cap" size={28} class="text-primary" />Formación y certificaciones
+      </h2>
+      <p class="text-base-content/70 max-w-2xl mb-10">
+        Base académica en ingeniería de software, reforzada con certificaciones en seguridad de la
+        información y metodologías ágiles.
+      </p>
+
+      <!-- Titulos universitarios -->
+      <h3 class="font-mono text-xs uppercase tracking-widest text-base-content/50 mb-4">
+        Títulos universitarios
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        {eduDegrees.map(({ data: education, meta, externalUrl, certificate, modalId }) => {
+          const cardClass =
+            "group card card-side bg-base-200 border border-base-300 p-5 gap-4 text-left w-full transition-all hover:border-primary hover:shadow-md";
+          const inner = (
+            <>
+              <div class="flex items-center justify-center w-20 h-20 shrink-0 rounded-box bg-white p-2 shadow-sm">
+                <img src={education.image} alt={education.educational_center} class="w-full h-full object-contain" />
+              </div>
+              <div class="card-body p-0 gap-1.5">
+                <div class="flex items-center gap-2">
+                  <span class={`badge badge-sm gap-1 ${meta.badge}`}>
+                    <Icon name={meta.icon} size={12} />{meta.label}
+                  </span>
+                </div>
+                <h4 class="text-base font-semibold text-base-content leading-snug group-hover:text-primary transition-colors">
+                  {education.specialty}
+                </h4>
+                <p class="text-sm text-base-content/70">{education.educational_center}</p>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-base-content/50">
+                  <span class="flex items-center gap-1"><Icon name="lucide:calendar" size={13} />{education.date}</span>
+                  {education.modality && (
+                    <span class="flex items-center gap-1"><Icon name={modalityIcon(education.modality)} size={13} />{education.modality}</span>
+                  )}
+                  {education.country && (
+                    <span class="flex items-center gap-1"><Icon name="lucide:map-pin" size={13} />{education.country}</span>
+                  )}
+                </div>
+                {(externalUrl || certificate) && (
+                  <span class="flex items-center gap-1 mt-1 text-xs font-medium text-primary/80 opacity-0 group-hover:opacity-100 transition-opacity">
+                    {externalUrl ? (
+                      <><Icon name="lucide:external-link" size={13} />Verificar credencial</>
+                    ) : (
+                      <><Icon name="lucide:eye" size={13} />Ver diploma</>
+                    )}
+                  </span>
+                )}
+              </div>
+            </>
+          );
+          if (externalUrl) {
+            return <a href={externalUrl} target="_blank" rel="noopener noreferrer" class={cardClass}>{inner}</a>;
+          }
+          if (certificate) {
+            return <button type="button" data-modal={modalId} class={cardClass}>{inner}</button>;
+          }
+          return <div class={cardClass.replace("hover:border-primary hover:shadow-md", "")}>{inner}</div>;
+        })}
+      </div>
+
+      <!-- Certificaciones y cursos -->
+      <!-- Certificaciones -->
+      {eduCertifications.length > 0 && (
+        <>
+          <h3 class="font-mono text-xs uppercase tracking-widest text-base-content/50 mb-4">
+            Certificaciones
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+            {eduCertifications.map((item) => (
+              <EduCard
+                education={item.data}
+                meta={item.meta}
+                externalUrl={item.externalUrl}
+                certificate={item.certificate}
+                modalId={item.modalId}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      <!-- Cursos (6 visibles + toggle para el resto) -->
+      {eduCourses.length > 0 && (
+        <>
+          <h3 class="font-mono text-xs uppercase tracking-widest text-base-content/50 mb-4">
+            Cursos
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {eduCoursesVisible.map((item) => (
+              <EduCard
+                education={item.data}
+                meta={item.meta}
+                externalUrl={item.externalUrl}
+                certificate={item.certificate}
+                modalId={item.modalId}
+              />
+            ))}
+          </div>
+          {eduCoursesHidden.length > 0 && (
+            <>
+              <input type="checkbox" id="edu-courses-toggle" class="peer hidden" />
+              <div class="hidden peer-checked:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                {eduCoursesHidden.map((item) => (
+                  <EduCard
+                    education={item.data}
+                    meta={item.meta}
+                    externalUrl={item.externalUrl}
+                    certificate={item.certificate}
+                    modalId={item.modalId}
+                  />
+                ))}
+              </div>
+              <label
+                for="edu-courses-toggle"
+                class="edu-courses-label btn btn-sm btn-outline mt-6 mx-auto flex w-fit items-center gap-2"
+              >
+                <span class="label-more">Ver todos los cursos ({eduCourses.length})</span>
+                <span class="label-less hidden">Ver menos</span>
+                <Icon name="lucide:chevron-down" size={16} class="label-chevron transition-transform" />
+              </label>
+            </>
+          )}
+        </>
+      )}
+
+      <!-- Participaciones -->
+      {eduParticipations.length > 0 && (
+        <>
+          <h3 class="font-mono text-xs uppercase tracking-widest text-base-content/50 mt-12 mb-4">
+            Participaciones
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {eduParticipations.map((item) => (
+              <EduCard
+                education={item.data}
+                meta={item.meta}
+                externalUrl={item.externalUrl}
+                certificate={item.certificate}
+                modalId={item.modalId}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      <!-- Modales de diplomas (solo items con imagen de diploma y sin verificación externa) -->
+      {eduModals.map(({ data: education, certificate, modalId }) => (
+        <dialog id={modalId} class="modal">
+          <div class="modal-box max-w-3xl p-0 overflow-hidden">
+            <div class="flex items-center justify-between gap-4 px-5 py-3 border-b border-base-300">
+              <div class="min-w-0">
+                <h4 class="font-semibold text-base-content truncate">{education.specialty}</h4>
+                <p class="text-xs text-base-content/60">{education.educational_center} · {education.date}</p>
+              </div>
+              <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost" aria-label="Cerrar">✕</button>
+              </form>
+            </div>
+            <div class="bg-base-200 p-4 flex items-center justify-center">
+              <img src={certificate} alt={`Diploma ${education.specialty}`} class="max-h-[70vh] w-auto object-contain rounded" />
+            </div>
+          </div>
+          <form method="dialog" class="modal-backdrop">
+            <button aria-label="Cerrar">close</button>
+          </form>
+        </dialog>
+      ))}
+    </div>
+  </section>
+
+  <style>
+    /* Toggle de cursos: alterna textos y rota el chevron segun el checkbox. */
+    #edu-courses-toggle:checked ~ .edu-courses-label .label-more {
+      display: none;
+    }
+    #edu-courses-toggle:checked ~ .edu-courses-label .label-less {
+      display: inline;
+    }
+    #edu-courses-toggle:checked ~ .edu-courses-label .label-chevron {
+      transform: rotate(180deg);
+    }
+  </style>
+
+  <script>
+    // Abre el modal del diploma correspondiente al hacer clic en una tarjeta sin URL externa.
+    document.querySelectorAll<HTMLElement>("[data-modal]").forEach((el) => {
+      el.addEventListener("click", () => {
+        const id = el.getAttribute("data-modal");
+        if (!id) return;
+        const dialog = document.getElementById(id) as HTMLDialogElement | null;
+        dialog?.showModal();
+      });
+    });
+  </script>
+
+  <!-- ============ ULTIMOS POSTS ============ -->
+  <section class="bg-base-200">
+    <div class="max-w-screen-lg mx-auto px-5 py-14 md:py-16">
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Escribo sobre lo que aprendo</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-10 flex items-center gap-2">
+        <Icon name="lucide:newspaper" size={28} class="text-primary" />Últimos posts
+      </h2>
+
+      {useFeaturedLayout ? (
+        <!-- >= 3 posts: destacado (image-full con degradado) + lista compacta -->
+        <div class="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+          {featuredPost && (
+            <a
+              href={"/blog/" + createSlug(featuredPost.data.title, featuredPost.slug)}
+              class="group card image-full min-h-80 h-full shadow-md overflow-hidden transition-transform hover:-translate-y-1"
+            >
+              {featuredPost.data.heroImage && (
+                <figure>
+                  <Image
+                    src={featuredPost.data.heroImage}
+                    width={750}
+                    height={480}
+                    format="webp"
+                    alt={featuredPost.data.title}
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </figure>
+              )}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent"></div>
+              <div class="card-body justify-end z-10">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="badge badge-primary badge-sm gap-1">
+                    <Icon name="lucide:star" size={12} />Destacado
+                  </span>
+                  {featuredPost.data.badge && (
+                    <span class="badge badge-soft badge-sm">{featuredPost.data.badge}</span>
+                  )}
+                </div>
+                <h3 class="card-title text-xl md:text-2xl text-white line-clamp-2">
+                  {featuredPost.data.title}
+                </h3>
+                <p class="text-white/85 line-clamp-2">{featuredPost.data.description}</p>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/75">
+                  <span class="flex items-center gap-1">
+                    <Icon name="lucide:calendar" size={14} />{formatPostDate(featuredPost.data.pubDate)}
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <Icon name="lucide:clock" size={14} />{featuredPost.readingMinutes} min de lectura
+                  </span>
+                </div>
+              </div>
+            </a>
+          )}
+
+          <ul class="list bg-base-100 rounded-box shadow-md h-full">
+            {restPosts.map((post) => (
+              <li class="list-row items-center hover:bg-base-200 transition-colors">
+                {post.data.heroImage && (
+                  <Image
+                    src={post.data.heroImage}
+                    width={160}
+                    height={160}
+                    format="webp"
+                    alt={post.data.title}
+                    class="size-16 rounded-box object-cover"
+                  />
+                )}
+                <div>
+                  <a
+                    href={"/blog/" + createSlug(post.data.title, post.slug)}
+                    class="font-medium text-base-content hover:text-primary transition-colors line-clamp-2"
+                  >
+                    {post.data.title}
+                  </a>
+                  <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1 text-xs text-base-content/60">
+                    <span class="flex items-center gap-1">
+                      <Icon name="lucide:calendar" size={12} />{formatPostDate(post.data.pubDate)}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <Icon name="lucide:clock" size={12} />{post.readingMinutes} min
+                    </span>
+                  </div>
+                </div>
+                <a
+                  href={"/blog/" + createSlug(post.data.title, post.slug)}
+                  class="btn btn-ghost btn-sm btn-circle"
+                  aria-label={`Leer ${post.data.title}`}
+                >
+                  <Icon name="lucide:arrow-right" size={18} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <!-- <= 2 posts: tarjetas verticales lado a lado (sin hueco) -->
+        <div class="grid gap-6 sm:grid-cols-2">
+          {homePosts.map((post, i) => (
+            <PostCard
+              href={"/blog/" + createSlug(post.data.title, post.slug)}
+              title={post.data.title}
+              description={post.data.description}
+              heroImage={post.data.heroImage}
+              badge={post.data.badge}
+              date={formatPostDate(post.data.pubDate)}
+              readingMinutes={post.readingMinutes}
+              featured={i === 0}
+            />
+          ))}
+        </div>
+      )}
+
+      <a href="/blog" class="btn btn-primary btn-outline w-full md:w-auto mt-8">
+        Ver el blog
+        <Icon name="lucide:arrow-right" size={20} />
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="bg-base-100">
+    <div class="max-w-screen-lg mx-auto px-5 py-16 md:py-24">
+      <div class="rounded-box bg-primary text-primary-content px-6 py-12 md:px-12 md:py-16 text-center">
+        <h2 class="text-2xl md:text-4xl font-extrabold mb-3">¿Construimos algo juntos?</h2>
+        <p class="text-primary-content/80 max-w-2xl mx-auto mb-8">
+          Puedo ayudarte a desarrollar tu software, diseñar la arquitectura de tu
+          plataforma o llevar tus soluciones de medios de pago y banca al siguiente
+          nivel. Cuéntame tu idea y la hacemos realidad.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/contact" class="btn btn-accent">
+            <Icon name="lucide:mail" size={20} />
+            Contáctame
+          </a>
+          <a href={`mailto:${MYEMAIL}`} class="btn btn-outline border-primary-content text-primary-content hover:bg-primary-content hover:text-primary">
+            <Icon name="lucide:at-sign" size={20} />
+            {MYEMAIL}
+          </a>
         </div>
       </div>
-    </section>
-
-    <!-- Last Posts -->
-    <section class="max-w-screen-lg w-full mb-12">
-      <div class="w-full">
-        <h2
-          class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-10 flex flex-row items-center">
-          <Icon name="blog" class="mr-2" />Últimos posts
-        </h2>
-
-        <div class="flex flex-wrap gap-4 justify-between">
-          <ul>
-          {last_posts.map((project) => (
-              <>
-                <HorizontalCard
-                  title={project.data.title}
-                  description={project.data.description}
-                  pubDate={project.data.pubDate}
-                  heroImage={project.data.heroImage}
-                  badge={project.data.badge}
-                  tags={project.data.tags}
-                  url={
-                  "/blog/" + createSlug(project.data.title, project.slug)
-                  }
-                  target="_self"
-                />
-                <div class="divider my-0"></div>
-              </>
-            ))}
-        </ul>
-      </div>
-    </section>
-  
-  </div>
+    </div>
+  </section>
 </Layout>
+
 <script>
-  document.addEventListener('astro:page-load', () => {
-    
-    // Email Copy
-    const toastEmailCopy = document.getElementById("altEmailCopy");
-    
-    function emailCopy(text:string) {
-      const labelEmail = document.getElementById(text);
-      if (labelEmail){
-
-        const textEmail = labelEmail?.innerText || labelEmail?.textContent || ""
-        navigator.clipboard.writeText(textEmail);
-        toastEmailCopy?.classList.remove("hidden");
-        setTimeout(()=> {
-          toastEmailCopy?.classList.add("hidden");
-        },2000);
-      }
-    }
-
-    const btnEmailCopy = document.querySelector("#btnEmailCopy");
-
-    if (btnEmailCopy){
-      btnEmailCopy.addEventListener("click", () => {emailCopy("lblEmail")});
-    }
-
-    // Download button 
-    const btnDownload =  document.getElementById("btn-download-index");
-    
-    if (btnDownload){
-      btnDownload.addEventListener("click", function() {
+  document.addEventListener("astro:page-load", () => {
+    const btnDownload = document.getElementById("btn-download-index");
+    if (btnDownload) {
+      btnDownload.addEventListener("click", function () {
         const url = btnDownload.dataset.cvUrl || "";
-        var link = document.createElement("a");
+        const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", btnDownload.dataset.cvName || "");
         link.click();
-    });
+      });
     }
-
-  })
+  });
 </script>

@@ -1,0 +1,56 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+// Tarjeta vertical de post (imagen arriba, contenido abajo).
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  heroImage?: string;
+  badge?: string;
+  date: string;
+  readingMinutes: number;
+  featured?: boolean;
+}
+
+const { href, title, description, heroImage, badge, date, readingMinutes, featured } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group card bg-base-100 shadow-md overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl"
+>
+  {heroImage && (
+    <figure class="relative aspect-video overflow-hidden">
+      <Image
+        src={heroImage}
+        width={750}
+        height={422}
+        format="webp"
+        alt={title}
+        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+      {featured && (
+        <span class="badge badge-primary badge-sm gap-1 absolute top-3 left-3">
+          <Icon name="lucide:star" size={12} />Destacado
+        </span>
+      )}
+    </figure>
+  )}
+  <div class="card-body gap-2">
+    {badge && <span class="badge badge-soft badge-sm w-fit">{badge}</span>}
+    <h3 class="card-title text-lg md:text-xl text-base-content line-clamp-2 group-hover:text-primary transition-colors">
+      {title}
+    </h3>
+    <p class="text-sm text-base-content/70 line-clamp-2">{description}</p>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-base-content/60">
+      <span class="flex items-center gap-1">
+        <Icon name="lucide:calendar" size={13} />{date}
+      </span>
+      <span class="flex items-center gap-1">
+        <Icon name="lucide:clock" size={13} />{readingMinutes} min de lectura
+      </span>
+    </div>
+  </div>
+</a>

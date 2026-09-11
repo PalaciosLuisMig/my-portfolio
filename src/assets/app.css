@@ -23,7 +23,4 @@
 */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Estilo global heredado del Layout: quita el padding inferior del ultimo item del timeline. */
-#timeline ol:last-of-type li:last-of-type {
-  padding-bottom: 0px;
-}
+

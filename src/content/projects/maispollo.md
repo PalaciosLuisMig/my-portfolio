@@ -8,7 +8,7 @@ heroImage: "/projects/maispollo.webp"
 github: ""
 website: ""
 tags: ["Front-end","Back-end","Base de Datos","IoT"]
-skills: [{"logo":"android","name":"Android"},{"logo":"java","name":"Java"},{"logo":"sqlite","name":"SQLite"},{"logo":"git","name":"Git"},{"logo":"googleplay","name":"Google Play"}]
+skills: [{"logo":"android","name":"Android"},{"logo":"openjdk","name":"Java"},{"logo":"sqlite","name":"SQLite"},{"logo":"git","name":"Git"},{"logo":"googleplay","name":"Google Play"}]
 ---
 
 # ⚙ Mi primera applicación móvil para Android
