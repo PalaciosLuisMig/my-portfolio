@@ -1,120 +1,160 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
-import HorizontalCard from "@components/HorizontalCard.astro";
-import {getCollection } from "astro:content";
+import PostCard from "@components/PostCard.astro";
+import { getCollection } from "astro:content";
 import createSlug from "@lib/create_slug";
 import type { Page } from "astro";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 
 export const prerender = true;
 
 export async function getStaticPaths({ paginate }) {
+  // Tiempo de lectura estimado a partir del contenido del post (~200 palabras/min).
+  // Debe vivir dentro de getStaticPaths: Astro la ejecuta en un scope aislado.
+  const readingTime = (body: string) => {
+    const words = (body ?? "").trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round(words / 200));
+  };
+
   const all_posts = await getCollection("blog");
-  const all_tags = all_posts.flatMap((post) => {
-    return post.data.tags || [];
-  });
+  const all_tags = [
+    ...new Set(all_posts.flatMap((post) => post.data.tags || [])),
+  ];
 
   return all_tags.flatMap((tag) => {
-    const filtred_posts = all_posts.filter((post) => {
-      return post.data.tags?.includes(tag);
-    });
-    return paginate(filtred_posts, {
+    const filtered = all_posts
+      .filter((post) => post.data.tags?.includes(tag))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+      .map((p) => ({ ...p, readingMinutes: readingTime(p.body) }));
+
+    return paginate(filtered, {
       params: { tag },
-      pageSize: 10,
+      pageSize: 6,
+      props: { total: filtered.length },
     });
   });
 }
+
 interface Props {
-    page:Page;
+  page: Page;
+  total: number;
 }
 
-const { page } = Astro.props;
+const { page, total } = Astro.props;
 const params = Astro.params;
+const totalPages = Math.max(1, page.lastPage);
 
+dayjs.extend(localizedFormat);
+dayjs.locale("es");
+const formatDate = (d: Date) => dayjs(d).format("LL");
 ---
+
 <Layout title={"Blog - " + params.tag} urlMenuItem="/blog">
+  <div id="blog" class="max-w-screen-lg mx-auto px-5">
 
-  <div id="blog" class="flex justify-center flex-col px-5 items-center">
-    <div class="max-w-screen-lg w-full">
-            
-      <!-- Posts -->
-      <section >
-            
-        <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center " >
-            <Icon name="lucide:newspaper" class="mr-2" /> Blog - {params.tag}
-        </h1>
-
-        {
-        page.data.length === 0 ? (
-          <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
-            <p class="font-bold">Lo sientimos!</p>
-            <p>No hay posts para mostrar en este momento. Regresa más tarde.</p>
-          </div>
+    <!-- ============ HERO TAG ============ -->
+    <section class="pt-12 pb-8 md:pt-16">
+      <a href="/blog" class="inline-flex items-center gap-1 text-sm text-base-content/60 hover:text-primary transition-colors mb-4 animate-fade-down">
+        <Icon name="lucide:arrow-left" size={16} />Volver al blog
+      </a>
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2 animate-fade-down">Etiqueta</p>
+      <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-3 flex flex-wrap items-center gap-2 animate-fade-right">
+        <Icon name="lucide:tag" size={26} class="text-primary" />
+        <span class="badge badge-primary badge-lg">{params.tag}</span>
+      </h1>
+      <p class="text-base-content/70 max-w-2xl animate-fade-right animate-delay-100">
+        {total > 0 ? (
+          <>Se {total === 1 ? "encontró" : "encontraron"} <span class="font-medium text-base-content">{total} {total === 1 ? "publicación" : "publicaciones"}</span> con esta etiqueta.</>
         ) : (
-          <ul>
-            {page.data.map((project) => (
-              <>
-                <HorizontalCard
-                  title={project.data.title}
-                  description={project.data.description}
-                  pubDate={project.data.pubDate}
-                  heroImage={project.data.heroImage}
-                  badge={project.data.badge}
-                  tags={project.data.tags}
-                  url={
-                  "/blog/" + createSlug(project.data.title, project.slug)
-                  }
-                  target="_self"
-                />
-                <div class="divider my-0" />
-              </>
-            ))}
-          </ul>
-            )
-        } 
+          <>No hay publicaciones con esta etiqueta.</>
+        )}
+      </p>
+    </section>
 
-      <div class="flex justify-between">
-        {
-          page.url.prev ? (
-            <a href={page.url.prev} class="btn btn-ghost text-primary my-10 mx-5">
-              {" "}
-              <svg
-                class="h-6 w-6 fill-current md:h-8 md:w-8"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-              </svg>{" "}
-              Posts Recientes
+    <!-- ============ GRID DE POSTS ============ -->
+    <section class="mb-12">
+      {page.data.length === 0 ? (
+        <div role="alert" class="alert alert-warning">
+          <Icon name="lucide:info" size={20} />
+          <div>
+            <h3 class="font-bold">No hay publicaciones por ahora</h3>
+            <p class="text-sm">Vuelve más tarde para leer nuevos artículos.</p>
+          </div>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          {page.data.map((post, i) => (
+            <div class="animate-fade-up" style={`animation-delay: ${(i % 6) * 80}ms`}>
+              <PostCard
+                href={"/blog/" + createSlug(post.data.title, post.slug)}
+                title={post.data.title}
+                description={post.data.description}
+                heroImage={post.data.heroImage}
+                badge={post.data.badge}
+                date={formatDate(post.data.pubDate)}
+                readingMinutes={post.readingMinutes}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- Paginacion -->
+      {totalPages > 1 && (
+        <div class="flex items-center justify-between gap-4">
+          {page.url.prev ? (
+            <a href={page.url.prev} class="btn btn-outline btn-sm md:btn-md gap-1">
+              <Icon name="lucide:arrow-left" size={18} />
+              <span class="hidden sm:inline">Recientes</span>
             </a>
           ) : (
-            <div />
-          )
-        }
-        {
-          page.url.next ? (
-            <a href={page.url.next} class="btn btn-ghost text-primary my-10 mx-5">
-              Posts Anteriores{" "}
-              <svg
-                class="h-6 w-6 fill-current md:h-8 md:w-8"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                {" "}
-                <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-              </svg>
+            <span />
+          )}
+
+          <span class="font-mono text-sm text-base-content/60">
+            Página {page.currentPage} de {totalPages}
+          </span>
+
+          {page.url.next ? (
+            <a href={page.url.next} class="btn btn-outline btn-sm md:btn-md gap-1">
+              <span class="hidden sm:inline">Anteriores</span>
+              <Icon name="lucide:arrow-right" size={18} />
             </a>
           ) : (
-            <div />
-          )
-        }
-      </div>
+            <span />
+          )}
+        </div>
+      )}
+    </section>
 
-      </section>
-    </div>
+    <!-- Boton flotante: volver arriba -->
+    <button
+      id="back-to-top"
+      class="btn btn-primary btn-circle fixed bottom-6 right-6 z-30 shadow-lg opacity-0 pointer-events-none transition-opacity"
+      aria-label="Volver arriba"
+    >
+      <Icon name="lucide:arrow-up" size={20} />
+    </button>
   </div>
-</Layout >
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const backToTop = document.getElementById("back-to-top");
+    if (backToTop) {
+      const toggleBtn = () => {
+        const show = window.scrollY > 500;
+        backToTop.classList.toggle("opacity-0", !show);
+        backToTop.classList.toggle("pointer-events-none", !show);
+      };
+      toggleBtn();
+      window.addEventListener("scroll", toggleBtn, { passive: true });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  });
+</script>

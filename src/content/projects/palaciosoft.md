@@ -6,7 +6,7 @@ important: true
 badge: "Emprendimiento"
 heroImage: "/projects/palaciosoft.webp"
 github: ""
-website: "https://palaciosoft.netlify.app/"
+website: "https://palaciosoft.luispalacios.dev/"
 tags: ["Front-end"]
 skills: [{"logo":"angular","name":"Angular"},{"logo":"html5","name":"HTML"},{"logo":"css3","name":"CSS"},{"logo":"javascript","name":"JavaScript"},{"logo":"git","name":"Git"},{"logo":"github","name":"GitHub"},{"logo":"netlify","name":"Netlify"},{"logo":"figma","name":"Figma"}]
 ---

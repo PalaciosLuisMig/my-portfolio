@@ -2,103 +2,129 @@
 import { type ProjectSchema } from "@content/config";
 import Layout from "@layouts/Layout.astro";
 import dayjs from "dayjs";
-import es from "dayjs/locale/es";
+import "dayjs/locale/es";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
 export interface Props extends ProjectSchema {}
 
-const { title, description, pubDate, badge, heroImage, github, website, tags, skills} = Astro.props;
+const { title, description, pubDate, badge, heroImage, github, website, tags, skills } =
+  Astro.props;
 
 dayjs.extend(localizedFormat);
-dayjs.locale(es);
+dayjs.locale("es");
 const displayDate = dayjs(pubDate).format("LL");
-
 ---
 
-<Layout
-  title={title}
-  description={description}
-  image={heroImage}
-  ogType="article"
->
-  <main class="flex justify-center flex-col px-5 items-center">
-    <article class="prose max-w-screen-lg w-full">
-      
-      <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center ">
-        {title}
-      </h1>
-      <div class="flex justify-start items-start">
-        {
-          heroImage && (
-            <Image
-              width={960}
-              height={640}
-              src={heroImage}
-              alt={title}
-              class="w-full lg:w-2/3 mb-4 mt-0 border-2 rounded-t-2x rounded-lg border-primary"
-            />
-          )
-        }
-      </div>
-      
-      <!-- Date -->
-      {pubDate && <time class="block mb-4">{displayDate}</time>}
+<Layout title={title} description={description} image={heroImage} ogType="article">
+  <div class="max-w-screen-lg mx-auto px-5">
 
-      <!-- Badge -->
-      {badge && 
-        <div class="badge badge-primary font-medium mr-2 p-4">
-          {badge}
+    <!-- ============ HERO DEL PROYECTO ============ -->
+    <section class="pt-10 md:pt-14">
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-1 text-sm text-base-content/60 hover:text-primary transition-colors mb-6 animate-fade-down"
+      >
+        <Icon name="lucide:arrow-left" size={16} />Volver a proyectos
+      </a>
+
+      <div class="animate-fade-up">
+        <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Proyecto</p>
+        <div class="flex flex-wrap items-center gap-3 mb-3">
+          <h1 class="text-2xl md:text-4xl font-extrabold text-base-content leading-tight">
+            {title}
+          </h1>
+          {badge && <span class="badge badge-accent badge-lg font-medium">{badge}</span>}
         </div>
-      }
-      
-      <!-- Tags -->
-      {
-        tags &&
-          tags.map((tag) => (
-            <div
-              class="badge badge-outline mr-2 no-underline text-primary font-medium p-4 mb-2"
-            >
-              {tag}
-            </div>
-          ))
-      }
-      
-      <!-- Skills -->
-      <div class="divider my-2"></div>
-      <div class=" py-2 flex justify-between	mt-auto w-full">
-        <div class="flex flex-wrap gap-2">
-          {
-            skills &&
-              skills.map((skill:any) => 
-              <img alt="Static Badge" class="m-0" src={`https://img.shields.io/badge/${skill.name}-black?logo=${skill.logo}`}>
-              )
-          } 
+
+        <p class="text-base-content/70 mb-4">{description}</p>
+
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-base-content/50">
+          {pubDate && (
+            <span class="flex items-center gap-1">
+              <Icon name="lucide:calendar" size={15} />{displayDate}
+            </span>
+          )}
         </div>
-        <div id="github-link" class="flex flex-wrap justify-end gap-2 dark:text-primary-content">
-            { website &&
-              <a
-              class="hover:text-primary"
-              href={website}
-              target="_blank"
-              >
-              <Icon name="lucide:external-link" size={20} />
+
+        <!-- Acciones: sitio web / repositorio -->
+        {(website || github) && (
+          <div class="mt-6 flex flex-wrap gap-3">
+            {website && (
+              <a href={website} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm md:btn-md gap-2">
+                <Icon name="lucide:external-link" size={18} />Ver sitio web
               </a>
-            }
-            {
-              github &&
-              <a
-                class="hover:text-primary"
-                href={github}
-                target="_blank"
-              >
-                <Icon name="simple-icons:github" size={20} />
+            )}
+            {github && (
+              <a href={github} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm md:btn-md gap-2">
+                <Icon name="simple-icons:github" size={18} />Código fuente
               </a>
-            }
-        </div>
+            )}
+          </div>
+        )}
       </div>
+    </section>
+
+    <!-- ============ IMAGEN DESTACADA ============ -->
+    {heroImage && (
+      <figure class="mt-8 overflow-hidden rounded-box border border-base-300 shadow-md animate-fade-up">
+        <Image
+          width={1280}
+          height={720}
+          src={heroImage}
+          alt={title}
+          class="w-full object-cover"
+        />
+      </figure>
+    )}
+
+    <!-- ============ TAGS + SKILLS ============ -->
+    {((tags && tags.length > 0) || (skills && skills.length > 0)) && (
+      <section class="mt-8 flex flex-col gap-4">
+        {tags && tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span class="badge badge-soft badge-primary">{tag}</span>
+            ))}
+          </div>
+        )}
+        {skills && skills.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {skills.map((skill: any) => (
+              <span class="inline-flex items-center gap-1.5 rounded-md bg-base-200 border border-base-300 px-2.5 py-1 text-xs font-medium text-base-content/80">
+                {skill.logo && (
+                  <Icon name={`simple-icons:${skill.logo}`} size={14} class="text-base-content/60" />
+                )}
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        )}
+      </section>
+    )}
+
+    <!-- ============ CONTENIDO ============ -->
+    <article class="prose dark:prose-invert max-w-none mt-8">
       <slot />
     </article>
-  </main>
+
+    <!-- ============ CTA FINAL ============ -->
+    <section class="my-14">
+      <div class="rounded-box bg-base-200 border border-base-300 p-8 text-center">
+        <h2 class="text-lg md:text-xl font-bold text-base-content mb-2">¿Te interesa un proyecto así?</h2>
+        <p class="text-base-content/70 max-w-xl mx-auto mb-6">
+          Explora más de mi trabajo o escríbeme para conversar sobre tu idea.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/projects" class="btn btn-primary btn-sm md:btn-md gap-2">
+            <Icon name="lucide:folder-git-2" size={18} />Ver más proyectos
+          </a>
+          <a href="/contact" class="btn btn-outline btn-sm md:btn-md gap-2">
+            <Icon name="lucide:mail" size={18} />Contáctame
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
