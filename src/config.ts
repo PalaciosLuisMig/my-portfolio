@@ -602,6 +602,15 @@ export const EXPERIENCES = [
 export const RECOGNITIONSANDAWARDS = [
   {
     title:
+      "Agente ágil del equipo Medios de Pago - Procesamiento",
+    center: "Banco del Austro",
+    expedition_date: "14 de abril de 2026",
+    description:
+      "Por haber sido elegido como AGENTE ÁGIL del equipo Medios de Pago - Procesamiento, en reconocimiento a su comunicación efectiva, actitud proactiva y apoyo constante al equipo. Su participación activa, recomendaciones para la mejora continua y confiabilidad fortalecen el desarrollo del trabajo colaborativo y la calidad de las entregas.",
+    image: "/awards/reconocimiento-agente-agil.webp",
+  },
+  {
+    title:
       "Mejor graduado de la Carrera de Ingeniería de Sistemas de la promosión 2020",
     center: "Universidad Católica de Cuenca",
     expedition_date: "12 de febrero de 2020",
