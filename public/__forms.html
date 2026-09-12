@@ -1,0 +1,23 @@
+<!--
+  Formulario "fantasma" para que Netlify Forms detecte el form en sitios SSR.
+  El bot de Netlify escanea este HTML estatico en build-time y registra el
+  formulario "contact". Los envios reales se hacen desde /contact (SSR).
+  Debe contener los MISMOS name de campos que el formulario real.
+-->
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Netlify Forms</title>
+  </head>
+  <body>
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="hidden" name="subject" data-remove-prefix value="Nuevo mensaje de contacto desde tu portafolio" />
+      <input name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>

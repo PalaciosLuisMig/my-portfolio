@@ -40,15 +40,23 @@ const SOCIALS = [
           </div>
 
           <form
+            id="contact-form"
             name="contact"
             method="POST"
             data-netlify="true"
             netlify-honeypot="bot-field"
-            action="/contact?success=true"
+            action="/"
             class="mt-2 flex flex-col gap-4"
           >
             <!-- Requeridos por Netlify Forms -->
             <input type="hidden" name="form-name" value="contact" />
+            <!-- Asunto del correo de notificacion (sin prefijo [Netlify]) -->
+            <input
+              type="hidden"
+              name="subject"
+              data-remove-prefix
+              value="Nuevo mensaje de contacto desde tu portafolio"
+            />
             <p class="hidden">
               <label>No llenar si eres humano: <input name="bot-field" /></label>
             </p>
@@ -184,11 +192,34 @@ const SOCIALS = [
       link.click();
     });
 
-    // Mensaje de exito tras enviar el formulario (?success=true).
-    if (new URLSearchParams(window.location.search).get("success") === "true") {
-      const ok = document.getElementById("form-success");
-      ok?.classList.remove("hidden");
-      ok?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    // Envio del formulario a Netlify Forms.
+    // En sitios SSR el POST se hace a /__forms.html (form estatico que Netlify
+    // detecta) via fetch, mostrando el exito sin recargar la pagina.
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const ok = document.getElementById("form-success");
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        // Netlify Forms (SSR): POST URL-encoded a cualquier ruta del sitio.
+        // La raiz "/" es la convencion oficial de la documentacion de Netlify.
+        const data = new FormData(form);
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(data as any).toString(),
+        });
+        form.reset();
+        ok?.classList.remove("hidden");
+        ok?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (err) {
+        console.error("Error al enviar el formulario:", err);
+        alert("No se pudo enviar el mensaje. Intenta de nuevo o escríbeme por correo.");
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
   });
 </script>
