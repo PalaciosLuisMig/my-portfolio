@@ -45,7 +45,7 @@ const SOCIALS = [
             method="POST"
             data-netlify="true"
             netlify-honeypot="bot-field"
-            action="/"
+            action="/__forms.html"
             class="mt-2 flex flex-col gap-4"
           >
             <!-- Requeridos por Netlify Forms -->
@@ -203,14 +203,16 @@ const SOCIALS = [
       if (submitBtn) submitBtn.disabled = true;
 
       try {
-        // Netlify Forms (SSR): POST URL-encoded a cualquier ruta del sitio.
-        // La raiz "/" es la convencion oficial de la documentacion de Netlify.
+        // Netlify Forms en SSR: el POST debe ir al asset estatico /__forms.html,
+        // que Netlify sirve directamente y cuyo POST captura el handler de Forms.
+        // Un POST a "/" seria interceptado por la funcion SSR y NO se registraria.
         const data = new FormData(form);
-        await fetch("/", {
+        const res = await fetch("/__forms.html", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams(data as any).toString(),
         });
+        if (!res.ok) throw new Error(`Netlify Forms respondio ${res.status}`);
         form.reset();
         ok?.classList.remove("hidden");
         ok?.scrollIntoView({ behavior: "smooth", block: "center" });
