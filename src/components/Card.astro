@@ -25,6 +25,9 @@ const year = pubDate.getFullYear();
 const MAX_DESC = 120;
 const shortDesc =
   desc && desc.length > MAX_DESC ? desc.slice(0, MAX_DESC).trimEnd() + "…" : desc;
+
+// URLs externas (http/https) usan <img> nativo; las locales, <Image> optimizado.
+const isRemote = typeof img === "string" && /^https?:\/\//.test(img);
 ---
 
 <article
@@ -32,13 +35,24 @@ const shortDesc =
 >
   <!-- Imagen -->
   <figure class="relative h-52 overflow-hidden">
-    <Image
-      width={960}
-      height={640}
-      src={img}
-      alt={title}
-      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-    />
+    {isRemote ? (
+      <img
+        width={960}
+        height={640}
+        src={img}
+        loading="lazy"
+        alt={title}
+        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+    ) : (
+      <Image
+        width={960}
+        height={640}
+        src={img}
+        alt={title}
+        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+    )}
   </figure>
 
   <div class="card-body gap-2 p-5">

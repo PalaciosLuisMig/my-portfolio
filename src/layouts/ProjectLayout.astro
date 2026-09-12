@@ -15,6 +15,9 @@ const { title, description, pubDate, badge, heroImage, github, website, tags, sk
 dayjs.extend(localizedFormat);
 dayjs.locale("es");
 const displayDate = dayjs(pubDate).format("LL");
+
+// URLs externas (http/https) usan <img> nativo; las locales, <Image> optimizado.
+const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage);
 ---
 
 <Layout title={title} description={description} image={heroImage} ogType="article">
@@ -69,13 +72,11 @@ const displayDate = dayjs(pubDate).format("LL");
     <!-- ============ IMAGEN DESTACADA ============ -->
     {heroImage && (
       <figure class="mt-8 overflow-hidden rounded-box border border-base-300 shadow-md animate-fade-up">
-        <Image
-          width={1280}
-          height={720}
-          src={heroImage}
-          alt={title}
-          class="w-full object-cover"
-        />
+        {isRemote ? (
+          <img width={1280} height={720} src={heroImage} loading="lazy" alt={title} class="w-full object-cover" />
+        ) : (
+          <Image width={1280} height={720} src={heroImage} alt={title} class="w-full object-cover" />
+        )}
       </figure>
     )}
 

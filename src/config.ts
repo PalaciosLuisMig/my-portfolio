@@ -486,7 +486,7 @@ export const EXPERIENCES = [
     date: "Octubre 2025 - Actualidad",
     city: "Cuenca",
     country: "Ecuador",
-    logo: "/job_logos/bdafavicon.ico",
+    logo: "/job_logos/bda.png",
     description:
       "Definición de arquitectura y modelado técnico de soluciones para el área de Medios de Pago, orientadas a la emisión de tarjetas, prevención de fraude y continuidad operativa, con foco en seguridad y buenas prácticas de desarrollo.",
     requirements: [
@@ -507,7 +507,7 @@ export const EXPERIENCES = [
     date: "Junio 2024 - Septiembre 2025 · 1 año 4 meses",
     city: "Cuenca",
     country: "Ecuador",
-    logo: "/job_logos/bdafavicon.ico",
+    logo: "/job_logos/bda.png",
     description:
       "Desarrollo y certificación de soluciones de Medios de Pago con Visa y Mastercard: tokenización, EMV, 3DS y gestión criptográfica con HSM. Liderazgo técnico de la célula de Medios de Pago Adquirente.",
     requirements: [
@@ -569,7 +569,7 @@ export const EXPERIENCES = [
     date: "Agosto 2019 - Enero 2022 · 2 años 6 meses",
     city: "Cuenca",
     country: "Ecuador",
-    logo: "/job_logos/bdafavicon.ico",
+    logo: "/job_logos/bda.png",
     description:
       "Desarrollo Back-end y Front-end de soluciones de tarjetas de crédito y banca virtual en sistemas transaccionales de alta criticidad, con integración a Visa y Mastercard bajo ISO 8583.",
     requirements: [

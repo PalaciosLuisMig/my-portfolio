@@ -15,6 +15,9 @@ interface Props {
 }
 
 const { href, title, description, heroImage, badge, date, readingMinutes, featured } = Astro.props;
+
+// URLs externas (http/https) usan <img> nativo; las locales, <Image> optimizado.
+const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage);
 ---
 
 <a
@@ -23,14 +26,25 @@ const { href, title, description, heroImage, badge, date, readingMinutes, featur
 >
   {heroImage && (
     <figure class="relative aspect-video overflow-hidden">
-      <Image
-        src={heroImage}
-        width={750}
-        height={422}
-        format="webp"
-        alt={title}
-        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-      />
+      {isRemote ? (
+        <img
+          src={heroImage}
+          width={750}
+          height={422}
+          loading="lazy"
+          alt={title}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <Image
+          src={heroImage}
+          width={750}
+          height={422}
+          format="webp"
+          alt={title}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      )}
       {featured && (
         <span class="badge badge-primary badge-sm gap-1 absolute top-3 left-3">
           <Icon name="lucide:star" size={12} />Destacado
