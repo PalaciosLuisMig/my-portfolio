@@ -1,0 +1,37 @@
+---
+# Título del post (obligatorio). Aparece como <h1> y en el listado.
+title: "Título de ejemplo del post"
+# Resumen breve (obligatorio). Se muestra en las tarjetas y en meta description.
+description: "Descripción corta y atractiva de lo que trata el artículo."
+# Fecha de publicación (obligatorio). Formato: "Mmm DD YYYY" (ej. "Feb 08 2026").
+pubDate: "Feb 08 2026"
+# Fecha de actualización (opcional). Mismo formato que pubDate.
+updatedDate: "Feb 08 2026"
+# Imagen destacada (opcional). Colócala en /public/blogs/ y referencia la ruta.
+heroImage: "/blogs/mi-post.webp"
+# Etiqueta destacada (opcional). Se muestra como badge.
+badge: "Categoría"
+# Etiquetas (opcional). Deben ser únicas. Generan las páginas /blog/tag/<tag>.
+tags: ["Etiqueta1", "Etiqueta2"]
+# Slug amigable para la URL (opcional). Si se omite, se genera desde el título.
+url: "titulo-de-ejemplo-del-post"
+---
+
+Escribe aquí el contenido del post en Markdown.
+
+## Un subtítulo
+
+Párrafo de ejemplo. Puedes usar **negritas**, _cursivas_, listas, código y más.
+
+- Punto uno
+- Punto dos
+
+```ts
+// Bloque de código de ejemplo
+console.log("Hola mundo");
+```
+
+> Nota: este archivo `.example` es solo una plantilla de referencia y NO se
+> publica (la colección solo procesa archivos `.md`). Para crear un post nuevo
+> usa `npm run new:post "Título de mi post"` o copia este contenido en un
+> archivo `.md` dentro de `src/content/blog/`.
