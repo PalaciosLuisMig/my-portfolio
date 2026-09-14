@@ -625,7 +625,7 @@ const eduModals = eduItems.filter((i) => i.certificate);
         </div>
       ) : (
         <!-- <= 2 posts: tarjetas verticales lado a lado (sin hueco) -->
-        <div class="grid gap-6 sm:grid-cols-2">
+        <div class="grid gap-6 sm:grid-cols-2 items-stretch">
           {homePosts.map((post, i) => (
             <PostCard
               href={"/blog/" + createSlug(post.data.title, post.slug)}

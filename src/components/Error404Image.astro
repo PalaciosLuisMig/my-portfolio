@@ -1,0 +1,16 @@
+---
+// Ilustración 404 inline. Sus colores usan variables del tema (DaisyUI),
+// por lo que se adapta automaticamente al tema activo (claro/oscuro).
+import svg from "./error404.svg?raw";
+---
+
+<div class="error404-illustration w-full max-w-sm" set:html={svg}></div>
+
+<style>
+  /* El SVG llena el contenedor; el color se hereda de las variables del tema. */
+  .error404-illustration :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

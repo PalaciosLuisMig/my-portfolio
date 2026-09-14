@@ -21,6 +21,33 @@ const updated = updatedDate ? dayjs(updatedDate).format("LL") : null;
 
 // URLs externas (http/https) usan <img> nativo; las locales, <Image> optimizado.
 const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage);
+
+// URL canonica del post para compartir (usa el `site` de astro.config).
+const shareUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href;
+const shareText = `${title} — Blog de Luis Palacios`;
+const enc = encodeURIComponent;
+const SHARE_LINKS = [
+  {
+    name: "LinkedIn",
+    icon: "simple-icons:linkedin",
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(shareUrl)}`,
+  },
+  {
+    name: "X",
+    icon: "simple-icons:x",
+    href: `https://twitter.com/intent/tweet?url=${enc(shareUrl)}&text=${enc(shareText)}`,
+  },
+  {
+    name: "WhatsApp",
+    icon: "simple-icons:whatsapp",
+    href: `https://wa.me/?text=${enc(shareText + " " + shareUrl)}`,
+  },
+  {
+    name: "Facebook",
+    icon: "simple-icons:facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${enc(shareUrl)}`,
+  },
+];
 ---
 
 <Layout title={title} description={description} image={heroImage} ogType="article">
@@ -42,7 +69,7 @@ const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage)
           {title}
         </h1>
 
-        <p class="text-base-content/70 mb-4">{description}</p>
+        <!-- <p class="text-base-content/70 mb-4">{description}</p> -->
 
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-base-content/50">
           {pubDate && (
@@ -91,6 +118,33 @@ const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage)
       <slot />
     </article>
 
+    <!-- ============ COMPARTIR ============ -->
+    <section class="mt-10 flex flex-wrap items-center gap-3 border-t border-base-300 pt-6">
+      <span class="flex items-center gap-1.5 text-sm font-medium text-base-content/70">
+        <Icon name="lucide:share-2" size={16} class="text-primary" />Compartir:
+      </span>
+      {SHARE_LINKS.map((s) => (
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Compartir en ${s.name}`}
+          class="btn btn-circle btn-sm btn-ghost text-base-content/60 hover:text-primary"
+        >
+          <Icon name={s.icon} size={18} />
+        </a>
+      ))}
+      <button
+        id="share-copy"
+        type="button"
+        aria-label="Copiar enlace"
+        class="btn btn-circle btn-sm btn-ghost text-base-content/60 hover:text-primary"
+        data-share-url={shareUrl}
+      >
+        <Icon name="lucide:link" size={18} />
+      </button>
+    </section>
+
     <!-- ============ CTA FINAL ============ -->
     <section class="my-14">
       <div class="rounded-box bg-base-200 border border-base-300 p-8 text-center">
@@ -109,4 +163,34 @@ const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage)
       </div>
     </section>
   </div>
+
+  <!-- Toast: enlace copiado -->
+  <div id="share-toast" class="toast toast-center hidden">
+    <div class="alert alert-success">
+      <Icon name="lucide:check" size={16} />
+      <span>Enlace copiado</span>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const btn = document.getElementById("share-copy");
+    const toast = document.getElementById("share-toast");
+    btn?.addEventListener("click", async () => {
+      const url = (btn as HTMLElement).dataset.shareUrl || window.location.href;
+      // En movil, usa el menu nativo de compartir si esta disponible.
+      if (navigator.share) {
+        try {
+          await navigator.share({ url });
+          return;
+        } catch {
+          /* el usuario cancelo; continuamos con copiar */
+        }
+      }
+      await navigator.clipboard.writeText(url);
+      toast?.classList.remove("hidden");
+      setTimeout(() => toast?.classList.add("hidden"), 2000);
+    });
+  });
+</script>

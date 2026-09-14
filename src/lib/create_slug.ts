@@ -10,10 +10,15 @@ export default function (title: string, staticSlug: string) {
         .trim()
         // output lowercase
         .toLowerCase()
+        // normalizar acentos/diacriticos: á->a, é->e, ñ->n, etc.
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
         // replace spaces
         .replace(/\s+/g, "-")
-        // remove special characters
+        // remove special characters (emojis, signos, etc.)
         .replace(/[^\w-]/g, "")
+        // colapsar guiones repetidos
+        .replace(/-+/g, "-")
         // remove leading & trailing separtors
         .replace(/(^-+)|(-+$)/g, "");
 
