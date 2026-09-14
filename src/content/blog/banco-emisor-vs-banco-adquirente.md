@@ -1,11 +1,11 @@
 ---
 title: "💳 BANCO EMISOR 🆚 BANCO ADQUIRENTE 🏪"
-description: "Cada vez que haces una compra con tu tarjeta o haces un pago online dos tipos de entendidas bancarias trabajan silenciosamente en segundo plano."
+description: "Cada vez que haces una compra con tu tarjeta o haces un pago online dos tipos de entidades bancarias trabajan silenciosamente en segundo plano."
 pubDate: "Sep 11 2026"
 updatedDate: "Sep 11 2026"
 heroImage: "/blogs/banco-emisor-vs-adquirente.webp"
 badge: "Medios de Pago"
-tags: ["Banca","Fintech","Payment Processing","Card Payments","Visa","Mastercard","Adquirencia","POS","Infografía"]
+tags: ["Medios de Pago","Banca","Fintech","Payment Processing","Card Payments","Visa","Mastercard","Adquirencia","POS","Infografía"]
 url: "banco-emisor-vs-banco-adquirente"
 ---
 

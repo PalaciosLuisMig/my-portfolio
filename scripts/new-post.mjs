@@ -17,8 +17,14 @@ function slugify(title) {
   return title
     .trim()
     .toLowerCase()
+    // normalizar acentos/diacriticos: á->a, é->e, ñ->n, etc.
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/\s+/g, "-")
+    // quitar caracteres especiales (emojis, signos, etc.)
     .replace(/[^\w-]/g, "")
+    // colapsar guiones repetidos
+    .replace(/-+/g, "-")
     .replace(/(^-+)|(-+$)/g, "");
 }
 

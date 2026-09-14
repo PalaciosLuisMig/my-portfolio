@@ -22,11 +22,12 @@ const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage)
 
 <a
   href={href}
-  class="group card bg-base-100 shadow-md overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl"
+  class="group card h-full flex flex-col bg-base-100 shadow-md overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl"
 >
-  {heroImage && (
-    <figure class="relative aspect-video overflow-hidden">
-      {isRemote ? (
+  <!-- Imagen: siempre presente y con proporcion fija para altura uniforme -->
+  <figure class="relative aspect-video shrink-0 overflow-hidden bg-base-200">
+    {heroImage ? (
+      isRemote ? (
         <img
           src={heroImage}
           width={750}
@@ -44,21 +45,26 @@ const isRemote = typeof heroImage === "string" && /^https?:\/\//.test(heroImage)
           alt={title}
           class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
-      )}
-      {featured && (
-        <span class="badge badge-primary badge-sm gap-1 absolute top-3 left-3">
-          <Icon name="lucide:star" size={12} />Destacado
-        </span>
-      )}
-    </figure>
-  )}
-  <div class="card-body gap-2">
+      )
+    ) : (
+      <div class="flex h-full w-full items-center justify-center text-base-content/20">
+        <Icon name="lucide:image" size={48} />
+      </div>
+    )}
+    {featured && (
+      <span class="badge badge-primary badge-sm gap-1 absolute top-3 left-3">
+        <Icon name="lucide:star" size={12} />Destacado
+      </span>
+    )}
+  </figure>
+
+  <div class="card-body flex flex-1 flex-col gap-2">
     {badge && <span class="badge badge-soft badge-sm w-fit">{badge}</span>}
-    <h3 class="card-title text-lg md:text-xl text-base-content line-clamp-2 group-hover:text-primary transition-colors">
+    <h3 class="card-title text-lg md:text-xl text-base-content line-clamp-2 min-h-[3.5rem] group-hover:text-primary transition-colors">
       {title}
     </h3>
-    <p class="text-sm text-base-content/70 line-clamp-2">{description}</p>
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-base-content/60">
+    <p class="text-sm text-base-content/70 line-clamp-2 min-h-[2.5rem]">{description}</p>
+    <div class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-base-content/60">
       <span class="flex items-center gap-1">
         <Icon name="lucide:calendar" size={13} />{date}
       </span>

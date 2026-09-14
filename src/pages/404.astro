@@ -1,52 +1,51 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
+import Error404Image from "@components/Error404Image.astro";
 ---
-<Layout title="404 - Not Found" urlMenuItem="/">
 
-    <div class="flex justify-center flex-col px-5 items-center">
-        <div class="max-w-screen-lg w-full ">
-            
-            <!-- 404 -->
-            <section >
-            
-                <h1 class="prose dark:prose-invert text-xl md:text-2xl lg:text-3xl font-bold text-primary my-10 flex flex-row items-center  justify-center " >
-                    <Icon name="lucide:search-x" class="mr-2" /> Error 404 - Página no encontrada
-                </h1>
+<Layout title="404 - Página no encontrada" urlMenuItem="/">
+  <div class="max-w-screen-lg mx-auto px-5">
+    <section class="min-h-[70vh] flex flex-col items-center justify-center text-center py-16">
 
-                <div class="flex flex-col flex-wrap gap-6  items-center  justify-center">
-                    <div class="flex justify-center items-center">
-                        <img
-                        src="/404.webp"
-                        alt="logo luis palacios"
-                        class="rounded-2xl max-w-xl"
-                        />
-                    </div>
-                    <div class="max-w-xl mb-8">
-                        <p class="mb-8">
-                            "¡Oops! Parece que te has aventurado a un lugar desconocido en el ciberespacio. Nuestros ingenieros están buscando bajo las alfombras y detrás de los monitores para encontrar la página que buscas. Mil disculpas por las molestias ocasionadas. Recuerda, el botón 'Regresar' es tu mejor amigo en esta travesía digital. ¡Ánimo, no estás solo en esta aventura!"
-                        </p>
+      <!-- Ilustracion (se tine con el tema activo) -->
+      <div class="mb-8 animate-fade-up">
+        <Error404Image />
+      </div>
 
-                        <button  id="btnReturnPage" class="btn btn-primary w-full">
-                            <Icon name="lucide:arrow-left" class="mr-2" /> Regresar
-                        </button>
-                    </div>
-                </div>
-            </section>
+      <!-- 404 -->
+      <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2 animate-fade-down">Error 404</p>
+      <h1 class="text-4xl md:text-6xl font-extrabold text-base-content mb-3 animate-fade-up">
+        Página no encontrada
+      </h1>
+      <p class="text-base-content/70 max-w-lg mb-8 animate-fade-up animate-delay-100">
+        La página que buscas no existe o fue movida. Puedes volver atrás o explorar
+        alguna de estas secciones.
+      </p>
 
-        </div>
-    </div>
-</Layout >
+      <!-- Acciones -->
+      <div class="flex flex-wrap justify-center gap-3 animate-fade-up animate-delay-200">
+        <a href="/" class="btn btn-primary gap-2">
+          <Icon name="lucide:house" size={18} />Ir al inicio
+        </a>
+        <button id="btnReturnPage" type="button" class="btn btn-outline gap-2">
+          <Icon name="lucide:arrow-left" size={18} />Regresar
+        </button>
+      </div>
+    </section>
+  </div>
+</Layout>
+
 <script>
-    document.addEventListener('astro:page-load', () => {
-
-        function goBack() {
-            window.history.back();
-        }
-
-        const btnReturnPage = document.querySelector("#btnReturnPage");
-        if(btnReturnPage){
-            btnReturnPage.addEventListener("click", goBack);
-        }
-    })
+  document.addEventListener("astro:page-load", () => {
+    const btn = document.querySelector("#btnReturnPage");
+    btn?.addEventListener("click", () => {
+      // Si hay historial previo en el sitio, vuelve; si no, va al inicio.
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "/";
+      }
+    });
+  });
 </script>

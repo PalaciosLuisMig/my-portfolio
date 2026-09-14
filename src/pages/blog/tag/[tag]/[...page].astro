@@ -20,8 +20,15 @@ export async function getStaticPaths({ paginate }) {
   };
 
   const all_posts = await getCollection("blog");
+  // Ignorar tags vacios o en blanco: un tag "" genera una ruta invalida
+  // (/blog/tag/) y rompe el paginado con "Missing parameter: tag".
   const all_tags = [
-    ...new Set(all_posts.flatMap((post) => post.data.tags || [])),
+    ...new Set(
+      all_posts
+        .flatMap((post) => post.data.tags || [])
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0)
+    ),
   ];
 
   return all_tags.flatMap((tag) => {
@@ -85,9 +92,9 @@ const formatDate = (d: Date) => dayjs(d).format("LL");
           </div>
         </div>
       ) : (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10 items-stretch">
           {page.data.map((post, i) => (
-            <div class="animate-fade-up" style={`animation-delay: ${(i % 6) * 80}ms`}>
+            <div class="h-full animate-fade-up" style={`animation-delay: ${(i % 6) * 80}ms`}>
               <PostCard
                 href={"/blog/" + createSlug(post.data.title, post.slug)}
                 title={post.data.title}
