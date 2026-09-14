@@ -9,7 +9,7 @@ tags: ["Aplicaciones","Productividad", "Notion","Focus Plant","Bitwarden"]
 url: "aplicaciones-productividad-parte-1"
 ---
 
-A continuación se presentan tres aplicaciones para que puedas mejorar la productivadad en cualquier ámbito. Estas son Notion, Focus Plant y Bitwarden.
+A continuación se presentan tres aplicaciones para que puedas mejorar la productividad en cualquier ámbito. Estas son Notion, Focus Plant y Bitwarden.
 
 # 1. Notion
 
