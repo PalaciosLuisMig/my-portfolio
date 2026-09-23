@@ -29,3 +29,9 @@ Personal portfolio site (Spanish content) built with Astro 4. Deployed to Netlif
 - **Skills badges**: project `skills[].logo` are lowercase simple-icons slugs rendered as shields.io badges; wrong case = missing icon.
 - New blog posts expect `heroImage: "/blogs/<slug>.webp"` in `public/blogs/` (or point it at a remote image).
 - Content and commit messages are in Spanish; commits use conventional prefixes (`feat:`, `fix:`, `chore:`, ...) on feature branches merged via PRs to `master`.
+
+## Git & PRs (regla de oro)
+- **NUNCA** hacer `git commit`, `git push` ni crear/mergear PRs por iniciativa propia. Solo hacerlo cuando el usuario lo pida **explícitamente** (p. ej. "haz commit", "sube los cambios", "crea el MR/PR").
+- Al terminar una tarea, dejar los cambios listos en el working tree y avisar al usuario qué se hizo y qué falta (commit/branch/PR) en lugar de ejecutarlo.
+- Si el usuario pide commit/PR, confirmar el alcance exacto antes: solo los archivos de esta tarea o todo el working tree.
+- Recordar que el entorno puede carecer de identidad git (`user.name`/`user.email`) y de sesión de `gh`; avisarlo si falta algo para poder operar.
