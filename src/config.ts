@@ -134,6 +134,18 @@ export const TECH_STACK = [
 // ---------- Education  ----------
 export const EDUCATIONS = [
   {
+    educational_center: "OpenAI Academy",
+    specialty: "Scope AI Solutions",
+    date: "Septiembre 2026",
+    image: "/education/openailogo.svg",
+    certificate: "",
+    country: "",
+    modality: "Online",
+    type: "course",
+    url: "https://www.credential.net/eaed3a1e-dd31-4a74-9586-3e86d8d37192",
+    priority: 2,
+  },
+  {
     educational_center: "AWS Community Day Ecuador",
     specialty: "Certificado de Participación AWS Community Day Ecuador 2026",
     date: "Septiembre 2026",
