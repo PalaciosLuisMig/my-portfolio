@@ -218,6 +218,18 @@ export const EDUCATIONS = [
     priority: 2,
   },
   {
+    educational_center: "CertiProf",
+    specialty: "Remote Work Learner 2025",
+    date: "Enero 2025",
+    image: "/education/certiprof.webp",
+    certificate: "",
+    country: "",
+    modality: "Online",
+    type: "certification",
+    url: "https://www.credly.com/earner/earned/badge/e179c117-5d45-451a-8974-e85d5a490818",
+    priority: 2,
+  },
+  {
     educational_center: "Dev/Talles",
     specialty: "Patrones de Diseño: Soluciones prácticas y eficientes",
     date: "Noviembre 2025",
