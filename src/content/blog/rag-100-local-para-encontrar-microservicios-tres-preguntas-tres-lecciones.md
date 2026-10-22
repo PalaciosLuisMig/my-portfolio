@@ -1,6 +1,6 @@
 ---
-title: "RAG 100% local para encontrar microservicios: tres preguntas, tres lecciones"
-description: "Demo de RAG con modelos locales para encontrar microservicios en contratos OpenAPI, con permisos, enmascarado de datos y auditoría. Tres preguntas que muestran dónde brilla y dónde falla."
+title: "🧠 RAG 100% local para encontrar microservicios: tres preguntas, tres lecciones"
+description: "RAG con modelos locales para encontrar microservicios en contratos OpenAPI, con permisos y auditoría."
 pubDate: "Oct 21 2026"
 updatedDate: "Oct 21 2026"
 heroImage: "/blogs/rag-100-local-para-encontrar-microservicios-tres-preguntas-tres-lecciones.webp"
@@ -8,8 +8,6 @@ badge: "IA"
 tags: ["IA","RAG","Embeddings","Chunking","LLM Local","Ollama","Chroma","Microservicios","OpenAPI","Arquitectura"]
 url: "rag-100-local-para-encontrar-microservicios-tres-preguntas-tres-lecciones"
 ---
-
-# RAG 100% local para encontrar microservicios: tres preguntas, tres lecciones
 
 Si trabajas con microservicios, seguro te has hecho esta pregunta: **"¿qué servicio ya hace esto?"**. La respuesta existe, escrita en los contratos OpenAPI, pero nadie la encuentra a tiempo. Se termina preguntando por chat a quien "sabe", esperando, y a veces creando un endpoint que ya existía.
 
