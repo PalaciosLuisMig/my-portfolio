@@ -146,6 +146,18 @@ export const EDUCATIONS = [
     priority: 2,
   },
   {
+    educational_center: "AWS Student Community Day Cuenca",
+    specialty: "Menos vibe coding, más specs: creando una app Link in Bio con Kiro",
+    date: "Noviembre 2026",
+    image: "/education/aws-scd-cuenca-speaker.webp",
+    certificate: "",
+    country: "Ecuador",
+    modality: "Presencial",
+    type: "speaker",
+    url: "https://lnkd.in/p/ewWTRemP",
+    priority: 2,
+  },
+  {
     educational_center: "AWS Community Day Ecuador",
     specialty: "Certificado de Participación AWS Community Day Ecuador 2026",
     date: "Septiembre 2026",
@@ -670,4 +682,4 @@ export const TRANSITION_API = true;
 export const SITE_TITLE = "Portafolio de Luis Palacios ";
 export const SITE_DESCRIPTION = "Portafolio web de Luis Miguel Palacios.";
 export const GENERATE_SLUG_FROM_TITLE = true;
-export const MYEMAIL = "palaciosluismig@gmail.com";
+export const MYEMAIL = "palaciosluismig@gmail.com";
