@@ -81,6 +81,7 @@ const EDU_TYPE_META = {
   certification: { label: "Certificación", icon: "lucide:badge-check", badge: "badge-secondary" },
   course: { label: "Curso", icon: "lucide:book-open", badge: "badge-accent" },
   participate: { label: "Participación", icon: "lucide:users", badge: "badge-info" },
+  speaker: { label: "Speaker", icon: "lucide:mic", badge: "badge-warning" },
 };
 const eduMeta = (type: string) =>
   EDU_TYPE_META[type as keyof typeof EDU_TYPE_META] ?? EDU_TYPE_META.course;
@@ -111,7 +112,9 @@ const eduItems = EDUCATIONS.map((e, index) => {
 const eduDegrees = eduItems.filter((i) => i.data.type === "university");
 const eduCertifications = eduItems.filter((i) => i.data.type === "certification");
 const eduCourses = eduItems.filter((i) => i.data.type === "course");
-const eduParticipations = eduItems.filter((i) => i.data.type === "participate");
+const eduParticipations = eduItems.filter(
+  (i) => i.data.type === "participate" || i.data.type === "speaker"
+);
 
 // Cursos: mostramos los primeros 6 y el resto se revela con un toggle.
 const COURSES_VISIBLE = 6;
